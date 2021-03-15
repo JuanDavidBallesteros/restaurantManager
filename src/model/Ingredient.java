@@ -6,9 +6,9 @@ public class Ingredient {
     private String createdBy;
     private String modifiedBy;
     
-    public Ingredient(String name, String type, String createdBy, String modifiedBy) {
+    public Ingredient(String name, int typeNum, String createdBy, String modifiedBy) {
         this.name = name;
-        this.type = type;
+        type = IngredienteType.values()[typeNum].name();
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
     }

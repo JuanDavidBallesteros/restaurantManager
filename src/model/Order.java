@@ -16,10 +16,10 @@ public class Order {
     private String createdBy;
     private String modifiedBy;
 
-    public Order(String id, String state, List<Product> products, List<Integer> poductsQuantity, String clientName,
+    public Order(String id, int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName,
             String employeeName, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
         this.id = id;
-        this.state = state;
+        state = OrderState.values()[stateNum].name();
         products = new ArrayList<>();
         poductsQuantity = new ArrayList<>();
         this.clientName = clientName;

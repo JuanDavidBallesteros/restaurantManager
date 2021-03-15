@@ -12,12 +12,12 @@ public class Product {
     private String createdBy;
     private String modifiedBy;
     
-    public Product(String name, String type, List<Ingredient> ingedients, String size, Double price, String createdBy,
+    public Product(String name, int typeNum, List<Ingredient> ingedients, int sizeNum, Double price, String createdBy,
             String modifiedBy) {
         this.name = name;
-        this.type = type;
+        type = ProductType.values()[typeNum].name();
         ingedients = new ArrayList<>();
-        this.size = size;
+        size = productSize.values()[sizeNum].name();
         this.price = price;
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
