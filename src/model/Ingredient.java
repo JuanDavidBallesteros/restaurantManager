@@ -5,12 +5,14 @@ public class Ingredient {
     private String type;
     private String createdBy;
     private String modifiedBy;
+    private boolean isAvilable;
     
     public Ingredient(String name, int typeNum, String createdBy, String modifiedBy) {
         this.name = name;
         type = IngredienteType.values()[typeNum].name();
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
+        isAvilable = true;
     }
 
     public String getName() {
@@ -43,6 +45,14 @@ public class Ingredient {
 
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
+    }
+
+    public boolean isAvilable() {
+        return isAvilable;
+    }
+
+    public void setAvilable(boolean isAvilable) {
+        this.isAvilable = isAvilable;
     }
 
     

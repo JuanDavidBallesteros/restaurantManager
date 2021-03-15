@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Order {
-    private String id;
+    private long id;
     private String state;
     private List<Product> products;
     private List<Integer> poductsQuantity;
@@ -16,7 +16,7 @@ public class Order {
     private String createdBy;
     private String modifiedBy;
 
-    public Order(String id, int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName,
+    public Order(long id, int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName,
             String employeeName, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
         this.id = id;
         state = OrderState.values()[stateNum].name();
@@ -30,11 +30,11 @@ public class Order {
         this.modifiedBy = modifiedBy;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -36,4 +36,14 @@ public class Client extends Person {
     public void setObservations(String observations) {
         this.observations = observations;
     }
+
+    // -------------------- compare
+
+    public int compareByLastName (Client other){
+        return getLastName().compareTo(other.getLastName());
+    }
+
+    public int compareByName (Client other){
+        return getName().compareTo(other.getName());
+    }
 }

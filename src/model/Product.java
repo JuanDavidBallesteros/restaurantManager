@@ -11,6 +11,7 @@ public class Product {
     private Double price;
     private String createdBy;
     private String modifiedBy;
+    private boolean isAvilable;
     
     public Product(String name, int typeNum, List<Ingredient> ingedients, int sizeNum, Double price, String createdBy,
             String modifiedBy) {
@@ -21,6 +22,7 @@ public class Product {
         this.price = price;
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
+        isAvilable = true;
     }
 
     public String getName() {
@@ -73,6 +75,14 @@ public class Product {
 
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
+    }
+
+    public boolean isAvilable() {
+        return isAvilable;
+    }
+
+    public void setAvilable(boolean isAvilable) {
+        this.isAvilable = isAvilable;
     }
 
     
