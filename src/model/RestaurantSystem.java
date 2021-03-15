@@ -69,9 +69,9 @@ public class RestaurantSystem {
         ingredients.add(temp);
     }
 
-    public void addOrder(int stateNum, List<Product> products, List<Integer> poductsQuantity,
-            String clientName, String employeeName, Date deliveryDate, String observations) {
-                long id = ordersIdCount;
+    public void addOrder(int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName,
+            String employeeName, Date deliveryDate, String observations) {
+        long id = ordersIdCount;
         Order temp = new Order(id, stateNum, products, poductsQuantity, clientName, employeeName, deliveryDate,
                 observations, actualUser, actualUser);
         orders.add(temp);
@@ -84,7 +84,7 @@ public class RestaurantSystem {
         orderAddCliente(temp);
     }
 
-    public void orderAddCliente (Client client){
+    public void orderAddCliente(Client client) {
         boolean space = false;
         if (clients.size() > 0) {
             for (int i = 0; i < clients.size() && !space; i++) {
@@ -154,11 +154,10 @@ public class RestaurantSystem {
         ingredients.add(temp);
     }
 
-    public void actualizeOrder(Order order, int stateNum, List<Product> products,
-            List<Integer> poductsQuantity, String clientName, String employeeName, Date deliveryDate,
-            String observations) {
-        Order temp = new Order(order.getId(), stateNum, products, poductsQuantity, clientName, employeeName, deliveryDate,
-                observations, order.getCreatedBy(), actualUser);
+    public void actualizeOrder(Order order, int stateNum, List<Product> products, List<Integer> poductsQuantity,
+            String clientName, String employeeName, Date deliveryDate, String observations) {
+        Order temp = new Order(order.getId(), stateNum, products, poductsQuantity, clientName, employeeName,
+                deliveryDate, observations, order.getCreatedBy(), actualUser);
         orders.remove(order);
         orders.add(temp);
     }
@@ -199,6 +198,39 @@ public class RestaurantSystem {
 
     public void enableIngredient(Ingredient ingredient) {
         ingredient.setAvilable(true);
+    }
+
+    // -------------------- find client by name
+
+    public Client searchClientByName(String name, String lastName) {
+        Client temp = null;
+
+        int pos = -1;
+        int i = 0;
+        int j = clients.size() - 1;
+
+        while (i <= j && pos < 0) {
+
+            int m = (i + j) / 2;
+
+            if (clients.get(m).compareByLastName(lastName) == 0) {
+                if (clients.get(m).compareByName(name) == 0) {
+                    pos = m;
+                } else if (clients.get(m).compareByName(name) < 0) {
+                    i = m + 1;
+                } else if (clients.get(m).compareByName(name) > 0) {
+                    j = m - 1;
+                }
+
+            } else if (clients.get(m).compareByLastName(lastName) < 0) {
+                i = m + 1;
+            } else if (clients.get(m).compareByLastName(lastName) > 0) {
+                j = m - 1;
+            }
+        }
+
+        temp = clients.get(pos);
+        return temp;
     }
 
 }
