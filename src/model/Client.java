@@ -4,9 +4,10 @@ public class Client extends Person {
     private String address;
     private int phone;
     private String observations;
-    
-    public Client(String name, String lastName, String idNumber, String address, int phone, String observations) {
-        super(name, lastName, idNumber, observations, observations);
+
+    public Client(String name, String lastName, String idNumber, String createdBy, String modifiedBy, String address,
+            int phone, String observations) {
+        super(name, lastName, idNumber, createdBy, modifiedBy);
         this.address = address;
         this.phone = phone;
         this.observations = observations;
@@ -35,6 +36,4 @@ public class Client extends Person {
     public void setObservations(String observations) {
         this.observations = observations;
     }
-
-    
 }

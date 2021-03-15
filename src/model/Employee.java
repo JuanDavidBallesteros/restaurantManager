@@ -2,8 +2,8 @@ package model;
 
 public class Employee extends Person {
 
-    public Employee(String name, String lastName, String idNumber) {
-        super(name, lastName, idNumber, idNumber, idNumber);   
+    public Employee(String name, String lastName, String idNumber, String createdBy, String modifiedBy) {
+        super(name, lastName, idNumber, createdBy, modifiedBy);
     }
-    
+
 }
