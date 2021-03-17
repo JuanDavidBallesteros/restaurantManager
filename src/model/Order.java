@@ -5,36 +5,36 @@ import java.util.Date;
 import java.util.List;
 
 public class Order {
-    private long id;
+    private String id;
     private String state;
     private List<Product> products;
     private List<Integer> poductsQuantity;
-    private String clientName;
-    private String employeeName;
+    private Client client;
+    private Employee employee;
     private Date deliveryDate;
     private String observations;
     private String createdBy;
     private String modifiedBy;
 
-    public Order(long id, int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName,
-            String employeeName, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
+    public Order(String id, int stateNum, List<Product> products, List<Integer> poductsQuantity, Client client,
+            Employee employee, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
         this.id = id;
         state = OrderState.values()[stateNum].name();
         products = new ArrayList<>();
         poductsQuantity = new ArrayList<>();
-        this.clientName = clientName;
-        this.employeeName = employeeName;
+        this.client = client;
+        this.employee = employee;
         this.deliveryDate = deliveryDate;
         this.observations = observations;
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -54,20 +54,20 @@ public class Order {
         return poductsQuantity;
     }
 
-    public String getClientName() {
-        return clientName;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
-    public String getEmployeeName() {
-        return employeeName;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public Date getDeliveryDate() {

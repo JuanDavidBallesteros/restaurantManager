@@ -6,23 +6,25 @@ import java.util.List;
 public class Product {
     private String name;
     private String type;
-    private List<String> ingedients;
+    private List<Ingredient> ingedients;
     private String size;
     private Double price;
     private String createdBy;
     private String modifiedBy;
     private boolean isAvilable;
+    private String id;
     
-    public Product(String name, int typeNum, List<String> ingedients, int sizeNum, Double price, String createdBy,
+    public Product(String id, String name, int typeNum, List<Ingredient> ingedients, int sizeNum, Double price, String createdBy,
             String modifiedBy) {
         this.name = name;
         type = ProductType.values()[typeNum].name();
         ingedients = new ArrayList<>();
-        size = productSize.values()[sizeNum].name();
+        size = ProductSize.values()[sizeNum].name();
         this.price = price;
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
         isAvilable = true;
+        this.id = id;
     }
 
     public String getName() {
@@ -37,11 +39,11 @@ public class Product {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(int typeNum) {
+        this.type = ProductType.values()[typeNum].name();
     }
 
-    public List<String> getIngedients() {
+    public List<Ingredient> getIngedients() {
         return ingedients;
     }
 
@@ -49,8 +51,8 @@ public class Product {
         return size;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setSize(int sizeNum) {
+        this.size = ProductSize.values()[sizeNum].name();
     }
 
     public Double getPrice() {
@@ -85,5 +87,13 @@ public class Product {
         this.isAvilable = isAvilable;
     }
 
+    public String getId() {
+        return id;
+    }
     
+    // --------------- compare
+
+    public int compareById(String id){
+        return id.compareTo(id);
+    }
 }

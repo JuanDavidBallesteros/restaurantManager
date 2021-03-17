@@ -6,13 +6,15 @@ public class Ingredient {
     private String createdBy;
     private String modifiedBy;
     private boolean isAvilable;
+    private String id;
     
-    public Ingredient(String name, int typeNum, String createdBy, String modifiedBy) {
+    public Ingredient(String id, String name, int typeNum, String createdBy, String modifiedBy) {
         this.name = name;
         type = IngredienteType.values()[typeNum].name();
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
         isAvilable = true;
+        this.id = id;
     }
 
     public String getName() {
@@ -27,8 +29,8 @@ public class Ingredient {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(int typeNum) {
+        this.type = IngredienteType.values()[typeNum].name();
     }
 
     public String getCreatedBy() {
@@ -55,5 +57,13 @@ public class Ingredient {
         this.isAvilable = isAvilable;
     }
 
-    
+    public String getId() {
+        return id;
+    }    
+
+    // --------------- compare
+
+    public int compareById(String id){
+        return id.compareTo(id);
+    }
 }

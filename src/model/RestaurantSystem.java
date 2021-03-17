@@ -2,6 +2,7 @@ package model;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,8 @@ public class RestaurantSystem {
     private Import imports;
 
     private long ordersIdCount;
+    private long productIdCount;
+    private long ingredientIdCount;
 
     public RestaurantSystem(String actualUser) {
         clients = new ArrayList<>();
@@ -64,20 +67,29 @@ public class RestaurantSystem {
 
     // -------------------- adds
 
-    public void addProduct(String name, int typeNum, List<String> ingedients, int sizeNum, Double price) {
-        Product temp = new Product(name, typeNum, ingedients, sizeNum, price, actualUser, actualUser);
+    public void addProduct(String name, int typeNum, List<Ingredient> ingedients, int sizeNum, Double price) {
+        String id = "#P" + productIdCount;
+        Product temp = new Product(id, name, typeNum, ingedients, sizeNum, price, actualUser, actualUser);
         products.add(temp);
+        productIdCount += 1;
     }
 
     public void addIngredient(String name, int typeNum) {
-        Ingredient temp = new Ingredient(name, typeNum, actualUser, actualUser);
+        String id = "#I" + ingredientIdCount;
+        Ingredient temp = new Ingredient(id, name, typeNum, actualUser, actualUser);
         ingredients.add(temp);
+        ingredientIdCount += 1;
     }
 
-    public void addOrder(int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName,
-            String employeeName, Date deliveryDate, String observations) {
-        long id = ordersIdCount;
-        Order temp = new Order(id, stateNum, products, poductsQuantity, clientName, employeeName, deliveryDate,
+    public void addOrder(int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName, String clientLastName,
+            String employeeID, Date deliveryDate, String observations) {
+        String id = "#O" + ordersIdCount;
+
+        Client client = searchClientByName(clientName, clientLastName);
+
+        Employee employee = searchEmployee(employeeID);
+
+        Order temp = new Order(id, stateNum, products, poductsQuantity, client, employee, deliveryDate,
                 observations, actualUser, actualUser);
         orders.add(temp);
         ordersIdCount += 1;
@@ -146,22 +158,27 @@ public class RestaurantSystem {
 
     // -------------------- actualize
 
-    public void actualizeProduct(Product product, String name, int typeNum, List<String> ingedients, int sizeNum,
+    public void actualizeProduct(Product product, String name, int typeNum, List<Ingredient> ingedients, int sizeNum,
             Double price) {
-        Product temp = new Product(name, typeNum, ingedients, sizeNum, price, product.getCreatedBy(), actualUser);
+        Product temp = new Product(product.getId(), name, typeNum, ingedients, sizeNum, price, product.getCreatedBy(), actualUser);
         products.remove(product);
         products.add(temp);
     }
 
     public void actualizeIngredient(Ingredient ingredient, String name, int typeNum) {
-        Ingredient temp = new Ingredient(name, typeNum, ingredient.getCreatedBy(), actualUser);
+        Ingredient temp = new Ingredient(ingredient.getId(), name, typeNum, ingredient.getCreatedBy(), actualUser);
         ingredients.remove(ingredient);
         ingredients.add(temp);
     }
 
     public void actualizeOrder(Order order, int stateNum, List<Product> products, List<Integer> poductsQuantity,
-            String clientName, String employeeName, Date deliveryDate, String observations) {
-        Order temp = new Order(order.getId(), stateNum, products, poductsQuantity, clientName, employeeName,
+            String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations) {
+
+        Client client = searchClientByName(clientName, clientLastName);
+
+        Employee employee = searchEmployee(employeeID);
+
+        Order temp = new Order(order.getId(), stateNum, products, poductsQuantity, client, employee,
                 deliveryDate, observations, order.getCreatedBy(), actualUser);
         orders.remove(order);
         orders.add(temp);
@@ -205,7 +222,7 @@ public class RestaurantSystem {
         ingredient.setAvilable(true);
     }
 
-    // -------------------- find client by name
+    // -------------------- search
 
     public Client searchClientByName(String name, String lastName) {
         Client temp = null;
@@ -238,9 +255,114 @@ public class RestaurantSystem {
         return temp;
     }
 
+    public Employee searchEmployee(String employeeId){
+        Employee temp = null;
+
+        selectionSorting(employees);
+
+        int pos = -1;
+        int i = 0;
+        int j = employees.size() - 1;
+
+        while (i <= j && pos < 0) {
+
+            int m = (i + j) / 2;
+
+            if (employees.get(m).compareById(employeeId) == 0) {
+                
+                    pos = m;
+
+            } else if (employees.get(m).compareById(employeeId) < 0) {
+                i = m + 1;
+            } else if (employees.get(m).compareById(employeeId) > 0) {
+                j = m - 1;
+            }
+        }
+
+        temp = employees.get(pos);
+        return temp;
+    }
+
+    public User searchUser(String userName) {
+        User temp = null;
+
+        bubbleSorting(users);
+
+        int pos = -1;
+        int i = 0;
+        int j = users.size() - 1;
+
+        while (i <= j && pos < 0) {
+
+            int m = (i + j) / 2;
+
+            if (users.get(m).compareByUserName(userName) == 0) {
+
+                pos = m;
+
+            } else if (users.get(m).compareByUserName(userName) < 0) {
+                i = m + 1;
+            } else if (users.get(m).compareByUserName(userName) > 0) {
+                j = m - 1;
+            }
+        }
+
+        temp = users.get(pos);
+        return temp;
+    }
+
     // -------------------- imports
 
-    public void importClients(Client client, String path, String separator) throws FileNotFoundException, IOException{
+    public void importClients(String path, String separator) throws FileNotFoundException, IOException{
         imports.importClients(clients, path, separator);
     }
+
+    public void importProducts(String path, String separator) throws FileNotFoundException, IOException{
+        productIdCount = imports.importProducts(productIdCount, products, path, separator, ingredients);
+    }
+
+    public void importIngredients(String path, String separator) throws FileNotFoundException, IOException{
+        ingredientIdCount = imports.importIngredients(ingredientIdCount, ingredients, path, separator);
+    }
+
+    public void importOrders(String path, String separator) throws FileNotFoundException, IOException, ParseException{
+        ordersIdCount = imports.importOrder(ordersIdCount, orders, products, clients, employees, users, path, separator);
+    }
+
+
+    // ---------------- Sorts 
+
+    private void bubbleSorting(List<User> list) {
+
+        for (int i = list.size() - 1; i > 0; i--) {
+
+            for (int j = 0; j < list.size() - 1; j++) {
+
+                if (list.get(j).compareByUserName(list.get(j + 1).getUserName()) > 0) {
+                    User temp = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set((j + 1), temp);
+                }
+            }
+        }        
+    }
+
+    private void selectionSorting(List<Employee> list){
+
+        for (int i = 0; i < list.size(); i++) {
+            Employee minor = list.get(i);
+            int pos = i;
+
+            for (int j = i + 1; j < list.size(); j++) {
+                if (minor.compareById(list.get(j).getIdNumber()) > 0) {
+                    minor = list.get(j);
+                    pos = j;
+                }
+            }
+            Employee temp = list.get(i);
+            list.set(i, minor);
+            list.set(pos, temp);
+        }
+    }
+
 }

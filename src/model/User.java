@@ -46,4 +46,10 @@ public class User {
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
+
+    // --------------- compare
+
+    public int compareByUserName(String userName){
+        return userName.compareTo(userName);
+    }
 }

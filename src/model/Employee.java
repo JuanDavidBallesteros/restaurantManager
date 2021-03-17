@@ -6,4 +6,9 @@ public class Employee extends Person {
         super(name, lastName, idNumber, createdBy, modifiedBy);
     }
 
+    // --------------- compare
+
+    public int compareById(String idNumber){
+        return idNumber.compareTo(idNumber);
+    }
 }
