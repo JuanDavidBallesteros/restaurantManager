@@ -6,14 +6,14 @@ import java.util.List;
 public class Product {
     private String name;
     private String type;
-    private List<Ingredient> ingedients;
+    private List<String> ingedients;
     private String size;
     private Double price;
     private String createdBy;
     private String modifiedBy;
     private boolean isAvilable;
     
-    public Product(String name, int typeNum, List<Ingredient> ingedients, int sizeNum, Double price, String createdBy,
+    public Product(String name, int typeNum, List<String> ingedients, int sizeNum, Double price, String createdBy,
             String modifiedBy) {
         this.name = name;
         type = ProductType.values()[typeNum].name();
@@ -41,7 +41,7 @@ public class Product {
         this.type = type;
     }
 
-    public List<Ingredient> getIngedients() {
+    public List<String> getIngedients() {
         return ingedients;
     }
 

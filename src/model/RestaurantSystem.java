@@ -1,5 +1,7 @@
 package model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,8 @@ public class RestaurantSystem {
     private Date actualDate;
     private String actualUser;
 
+    private Import imports;
+
     private long ordersIdCount;
 
     public RestaurantSystem(String actualUser) {
@@ -25,6 +29,7 @@ public class RestaurantSystem {
         orders = new ArrayList<>();
         this.actualUser = actualUser;
         ordersIdCount = 0;
+        imports = new Import();
     }
 
     // -------------------- Getters an setters
@@ -59,7 +64,7 @@ public class RestaurantSystem {
 
     // -------------------- adds
 
-    public void addProduct(String name, int typeNum, List<Ingredient> ingedients, int sizeNum, Double price) {
+    public void addProduct(String name, int typeNum, List<String> ingedients, int sizeNum, Double price) {
         Product temp = new Product(name, typeNum, ingedients, sizeNum, price, actualUser, actualUser);
         products.add(temp);
     }
@@ -141,7 +146,7 @@ public class RestaurantSystem {
 
     // -------------------- actualize
 
-    public void actualizeProduct(Product product, String name, int typeNum, List<Ingredient> ingedients, int sizeNum,
+    public void actualizeProduct(Product product, String name, int typeNum, List<String> ingedients, int sizeNum,
             Double price) {
         Product temp = new Product(name, typeNum, ingedients, sizeNum, price, product.getCreatedBy(), actualUser);
         products.remove(product);
@@ -233,4 +238,9 @@ public class RestaurantSystem {
         return temp;
     }
 
+    // -------------------- imports
+
+    public void importClients(Client client, String path, String separator) throws FileNotFoundException, IOException{
+        imports.importClients(clients, path, separator);
+    }
 }
