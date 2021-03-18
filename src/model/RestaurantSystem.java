@@ -15,7 +15,7 @@ public class RestaurantSystem {
     private List<Ingredient> ingredients;
     private List<Order> orders;
     private Date actualDate;
-    private String actualUser;
+    private User actualUser;
 
     private Import imports;
 
@@ -23,19 +23,19 @@ public class RestaurantSystem {
     private long productIdCount;
     private long ingredientIdCount;
 
-    public RestaurantSystem(String actualUser) {
+    public RestaurantSystem() {
         clients = new ArrayList<>();
         employees = new ArrayList<>();
         users = new ArrayList<>();
         products = new ArrayList<>();
         ingredients = new ArrayList<>();
         orders = new ArrayList<>();
-        this.actualUser = actualUser;
+        this.actualUser = null;
         ordersIdCount = 0;
         imports = new Import();
     }
 
-    // -------------------- Getters an setters
+    // -------------------- Getters and setters
 
     public List<Client> getClients() {
         return clients;
@@ -69,35 +69,37 @@ public class RestaurantSystem {
 
     public void addProduct(String name, int typeNum, List<Ingredient> ingedients, int sizeNum, Double price) {
         String id = "#P" + productIdCount;
-        Product temp = new Product(id, name, typeNum, ingedients, sizeNum, price, actualUser, actualUser);
+        Product temp = new Product(id, name, typeNum, ingedients, sizeNum, price, actualUser.getUserName(),
+                actualUser.getUserName());
         products.add(temp);
         productIdCount += 1;
     }
 
     public void addIngredient(String name, int typeNum) {
         String id = "#I" + ingredientIdCount;
-        Ingredient temp = new Ingredient(id, name, typeNum, actualUser, actualUser);
+        Ingredient temp = new Ingredient(id, name, typeNum, actualUser.getUserName(), actualUser.getUserName());
         ingredients.add(temp);
         ingredientIdCount += 1;
     }
 
-    public void addOrder(int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName, String clientLastName,
-            String employeeID, Date deliveryDate, String observations) {
+    public void addOrder(int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName,
+            String clientLastName, String employeeID, Date deliveryDate, String observations) {
         String id = "#O" + ordersIdCount;
 
         Client client = searchClientByName(clientName, clientLastName);
 
         Employee employee = searchEmployee(employeeID);
 
-        Order temp = new Order(id, stateNum, products, poductsQuantity, client, employee, deliveryDate,
-                observations, actualUser, actualUser);
+        Order temp = new Order(id, stateNum, products, poductsQuantity, client, employee, deliveryDate, observations,
+                actualUser.getUserName(), actualUser.getUserName());
         orders.add(temp);
         ordersIdCount += 1;
     }
 
     public void addClient(String name, String lastName, String idNumber, String address, int phone,
             String observations) {
-        Client temp = new Client(name, lastName, idNumber, actualUser, actualUser, address, phone, observations);
+        Client temp = new Client(name, lastName, idNumber, actualUser.getUserName(), actualUser.getUserName(), address,
+                phone, observations);
         orderAddCliente(temp);
     }
 
@@ -121,12 +123,12 @@ public class RestaurantSystem {
     }
 
     public void addEmployee(String name, String lastName, String idNumber) {
-        Employee temp = new Employee(name, lastName, idNumber, actualUser, actualUser);
+        Employee temp = new Employee(name, lastName, idNumber, actualUser.getUserName(), actualUser.getUserName());
         employees.add(temp);
     }
 
     public void addUser(Employee employee, String userName, String userPassword) {
-        User temp = new User(employee, userName, userPassword, actualUser, actualUser);
+        User temp = new User(employee, userName, userPassword, actualUser.getUserName(), actualUser.getUserName());
         users.add(temp);
     }
 
@@ -160,13 +162,15 @@ public class RestaurantSystem {
 
     public void actualizeProduct(Product product, String name, int typeNum, List<Ingredient> ingedients, int sizeNum,
             Double price) {
-        Product temp = new Product(product.getId(), name, typeNum, ingedients, sizeNum, price, product.getCreatedBy(), actualUser);
+        Product temp = new Product(product.getId(), name, typeNum, ingedients, sizeNum, price, product.getCreatedBy(),
+                actualUser.getUserName());
         products.remove(product);
         products.add(temp);
     }
 
     public void actualizeIngredient(Ingredient ingredient, String name, int typeNum) {
-        Ingredient temp = new Ingredient(ingredient.getId(), name, typeNum, ingredient.getCreatedBy(), actualUser);
+        Ingredient temp = new Ingredient(ingredient.getId(), name, typeNum, ingredient.getCreatedBy(),
+                actualUser.getUserName());
         ingredients.remove(ingredient);
         ingredients.add(temp);
     }
@@ -178,28 +182,28 @@ public class RestaurantSystem {
 
         Employee employee = searchEmployee(employeeID);
 
-        Order temp = new Order(order.getId(), stateNum, products, poductsQuantity, client, employee,
-                deliveryDate, observations, order.getCreatedBy(), actualUser);
+        Order temp = new Order(order.getId(), stateNum, products, poductsQuantity, client, employee, deliveryDate,
+                observations, order.getCreatedBy(), actualUser.getUserName());
         orders.remove(order);
         orders.add(temp);
     }
 
     public void actualizeClient(Client client, String name, String lastName, String idNumber, String address, int phone,
             String observations) {
-        Client temp = new Client(name, lastName, idNumber, client.getCreatedBy(), actualUser, address, phone,
-                observations);
+        Client temp = new Client(name, lastName, idNumber, client.getCreatedBy(), actualUser.getUserName(), address,
+                phone, observations);
         removeClient(client);
         orderAddCliente(temp);
     }
 
     public void actualizeEmployee(Employee employee, String name, String lastName, String idNumber) {
-        Employee temp = new Employee(name, lastName, idNumber, employee.getCreatedBy(), actualUser);
+        Employee temp = new Employee(name, lastName, idNumber, employee.getCreatedBy(), actualUser.getUserName());
         removeEmployee(employee);
         employees.add(temp);
     }
 
     public void actualizeUser(User user, Employee employee, String userName, String userPassword) {
-        User temp = new User(employee, userName, userPassword, user.getCreatedBy(), actualUser);
+        User temp = new User(employee, userName, userPassword, user.getCreatedBy(), actualUser.getUserName());
         removeUser(user);
         users.add(temp);
     }
@@ -255,7 +259,7 @@ public class RestaurantSystem {
         return temp;
     }
 
-    public Employee searchEmployee(String employeeId){
+    public Employee searchEmployee(String employeeId) {
         Employee temp = null;
 
         selectionSorting(employees);
@@ -269,8 +273,8 @@ public class RestaurantSystem {
             int m = (i + j) / 2;
 
             if (employees.get(m).compareById(employeeId) == 0) {
-                
-                    pos = m;
+
+                pos = m;
 
             } else if (employees.get(m).compareById(employeeId) < 0) {
                 i = m + 1;
@@ -313,24 +317,24 @@ public class RestaurantSystem {
 
     // -------------------- imports
 
-    public void importClients(String path, String separator) throws FileNotFoundException, IOException{
+    public void importClients(String path, String separator) throws FileNotFoundException, IOException {
         imports.importClients(clients, path, separator);
     }
 
-    public void importProducts(String path, String separator) throws FileNotFoundException, IOException{
+    public void importProducts(String path, String separator) throws FileNotFoundException, IOException {
         productIdCount = imports.importProducts(productIdCount, products, path, separator, ingredients);
     }
 
-    public void importIngredients(String path, String separator) throws FileNotFoundException, IOException{
+    public void importIngredients(String path, String separator) throws FileNotFoundException, IOException {
         ingredientIdCount = imports.importIngredients(ingredientIdCount, ingredients, path, separator);
     }
 
-    public void importOrders(String path, String separator) throws FileNotFoundException, IOException, ParseException{
-        ordersIdCount = imports.importOrder(ordersIdCount, orders, products, clients, employees, users, path, separator);
+    public void importOrders(String path, String separator) throws FileNotFoundException, IOException, ParseException {
+        ordersIdCount = imports.importOrder(ordersIdCount, orders, products, clients, employees, users, path,
+                separator);
     }
 
-
-    // ---------------- Sorts 
+    // ---------------- Sorts
 
     private void bubbleSorting(List<User> list) {
 
@@ -344,10 +348,10 @@ public class RestaurantSystem {
                     list.set((j + 1), temp);
                 }
             }
-        }        
+        }
     }
 
-    private void selectionSorting(List<Employee> list){
+    private void selectionSorting(List<Employee> list) {
 
         for (int i = 0; i < list.size(); i++) {
             Employee minor = list.get(i);
