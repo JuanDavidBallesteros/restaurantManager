@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
@@ -18,6 +19,7 @@ public class RestaurantSystem {
     private User actualUser;
 
     private Import imports;
+    private Export exports;
 
     private long ordersIdCount;
     private long productIdCount;
@@ -33,6 +35,7 @@ public class RestaurantSystem {
         this.actualUser = null;
         ordersIdCount = 0;
         imports = new Import();
+        exports = new Export();
     }
 
     // -------------------- Getters and setters
@@ -369,4 +372,85 @@ public class RestaurantSystem {
         }
     }
 
+    // ---------------- Exports
+
+    public void exportOrders(File file, String separator, Date supLimit, Date infLimit) throws FileNotFoundException {
+        List<Order> selected = new ArrayList<>();
+
+        for (int i = 0; i < orders.size(); i++) {
+            Date temp = orders.get(i).getDeliveryDate();
+            if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0) {
+                selected.add(orders.get(i));
+            }
+        }
+
+        exports.exportOrders(file, selected, separator);
+    }
+
+    public void exportEmployeesReports(File file, String separator, Date supLimit, Date infLimit)
+            throws FileNotFoundException {
+
+        List<String> line = new ArrayList<>();
+        List<Integer> countSells = new ArrayList<>();
+        List<Long> sellsList = new ArrayList<>();
+
+        Employee tEmployee = null;
+
+        for (int k = 0; k < employees.size(); k++) {
+            tEmployee = employees.get(k);
+            int count = 0;
+            long sellAmount = 0;
+
+            for (int i = 0; i < orders.size(); i++) {
+                Date temp = orders.get(i).getDeliveryDate();
+                if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0
+                        && orders.get(i).getEmployee() == tEmployee) {
+                    count += 1;
+                    sellAmount = orders.get(i).getAmount();
+                }
+            }
+            countSells.add(count);
+            sellsList.add(sellAmount);
+        }
+
+        for (int i = 0; i < employees.size(); i++) {
+            line.add(employees.get(i).getName() + " " + employees.get(i).getLastName() + separator
+                    + countSells.get(i) + separator + sellsList.get(i));
+        }
+
+        exports.exportEmployees(file, line, separator);
+    }
+
+    public void exportProductsReport(File file, String separator, Date supLimit, Date infLimit)
+    throws FileNotFoundException {
+
+        List<String> line = new ArrayList<>();
+        List<Integer> countSells = new ArrayList<>();
+
+        Product tProduct = null;
+        for(int k = 0; k < products.size() ; k++){
+            tProduct = products.get(k);
+            int count = 0;
+
+            for (int i = 0; i < orders.size(); i++) {
+                Date temp = orders.get(i).getDeliveryDate();
+                if ( temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0 ) {
+                    for(int j = 0 ; j < orders.get(i).getProducts().size() ; j++){ //Product list of the order in rage
+                        if(orders.get(i).getProducts().get(j) == tProduct){
+                            count +=  orders.get(i).getProductsQuantity().get(j);
+                        }
+                    }
+                }
+            }
+            countSells.add(count);
+        }
+
+        for(int i = 0 ; i < products.size() ; i++){
+            long amount = (long)(products.get(i).getPrice()*countSells.get(i));
+
+            line.add(products.get(i) +separator+ countSells.get(i) +separator+ amount);
+        }
+
+        exports.exportProducts(file, line, separator);
+    }
 }

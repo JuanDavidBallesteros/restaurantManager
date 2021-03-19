@@ -8,7 +8,7 @@ public class Order {
     private String id;
     private String state;
     private List<Product> products;
-    private List<Integer> poductsQuantity;
+    private List<Integer> productsQuantity;
     private Client client;
     private Employee employee;
     private Date deliveryDate;
@@ -16,12 +16,12 @@ public class Order {
     private String createdBy;
     private String modifiedBy;
 
-    public Order(String id, int stateNum, List<Product> products, List<Integer> poductsQuantity, Client client,
+    public Order(String id, int stateNum, List<Product> products, List<Integer> productsQuantity, Client client,
             Employee employee, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
         this.id = id;
         state = OrderState.values()[stateNum].name();
         products = new ArrayList<>();
-        poductsQuantity = new ArrayList<>();
+        productsQuantity = new ArrayList<>();
         this.client = client;
         this.employee = employee;
         this.deliveryDate = deliveryDate;
@@ -50,8 +50,8 @@ public class Order {
         return products;
     }
 
-    public List<Integer> getPoductsQuantity() {
-        return poductsQuantity;
+    public List<Integer> getProductsQuantity() {
+        return productsQuantity;
     }
 
     public Client getClient() {
@@ -102,5 +102,11 @@ public class Order {
         this.modifiedBy = modifiedBy;
     }
 
-    
+    public long getAmount(){
+        long amount = 0;
+        for(int i = 0; i<products.size() ; i++){
+            amount+= (products.get(i).getPrice());
+        }
+        return amount;
+    }
 }
