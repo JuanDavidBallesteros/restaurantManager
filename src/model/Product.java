@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
+public class Product implements Comparable <Product> {
     private String name;
     private String type;
     private List<Ingredient> ingedients;
@@ -96,4 +96,19 @@ public class Product {
     public int compareById(String id){
         return id.compareTo(id);
     }
+
+    @Override
+    public int compareTo(Product other) {
+        int value = 0;
+        if((price-other.getPrice()) < 0){
+            value = -1;
+        } else if ((price-other.getPrice()) > 0){
+            value = 1;
+        }else{
+            value = 0;
+        }
+        return value;
+    } 
+
+    
 }

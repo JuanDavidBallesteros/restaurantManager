@@ -7,7 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.RestaurantSystem;
+
+import model.*;
 
 public class Main extends Application {
 
@@ -17,11 +18,12 @@ public class Main extends Application {
 	public Main() throws IOException {
         id = new RestaurantSystem();
         appGUI = new AppMainGui(id);
+		
     }
-
-	public static void main(String[] args) {
+	
+	public static void main(String[] args) throws InterruptedException {
 		System.out.println("Loading App");
-		launch(args);
+		//launch(args);
 	}
 
 	@Override

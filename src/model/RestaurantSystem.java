@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -218,7 +220,7 @@ public class RestaurantSystem {
     }
 
     public void disableIngredient(Ingredient ingredient) {
-        ingredient.setAvilable(false);
+        ingredient.setAvailable(false);
     }
 
     public void enableProduct(Product product) {
@@ -226,7 +228,7 @@ public class RestaurantSystem {
     }
 
     public void enableIngredient(Ingredient ingredient) {
-        ingredient.setAvilable(true);
+        ingredient.setAvailable(true);
     }
 
     // -------------------- search
@@ -414,30 +416,30 @@ public class RestaurantSystem {
         }
 
         for (int i = 0; i < employees.size(); i++) {
-            line.add(employees.get(i).getName() + " " + employees.get(i).getLastName() + separator
-                    + countSells.get(i) + separator + sellsList.get(i));
+            line.add(employees.get(i).getName() + " " + employees.get(i).getLastName() + separator + countSells.get(i)
+                    + separator + sellsList.get(i));
         }
 
         exports.exportEmployees(file, line, separator);
     }
 
     public void exportProductsReport(File file, String separator, Date supLimit, Date infLimit)
-    throws FileNotFoundException {
+            throws FileNotFoundException {
 
         List<String> line = new ArrayList<>();
         List<Integer> countSells = new ArrayList<>();
 
         Product tProduct = null;
-        for(int k = 0; k < products.size() ; k++){
+        for (int k = 0; k < products.size(); k++) {
             tProduct = products.get(k);
             int count = 0;
 
             for (int i = 0; i < orders.size(); i++) {
                 Date temp = orders.get(i).getDeliveryDate();
-                if ( temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0 ) {
-                    for(int j = 0 ; j < orders.get(i).getProducts().size() ; j++){ //Product list of the order in rage
-                        if(orders.get(i).getProducts().get(j) == tProduct){
-                            count +=  orders.get(i).getProductsQuantity().get(j);
+                if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0) {
+                    for (int j = 0; j < orders.get(i).getProducts().size(); j++) { // Product list of the order in rage
+                        if (orders.get(i).getProducts().get(j) == tProduct) {
+                            count += orders.get(i).getProductsQuantity().get(j);
                         }
                     }
                 }
@@ -445,12 +447,46 @@ public class RestaurantSystem {
             countSells.add(count);
         }
 
-        for(int i = 0 ; i < products.size() ; i++){
-            long amount = (long)(products.get(i).getPrice()*countSells.get(i));
+        for (int i = 0; i < products.size(); i++) {
+            long amount = (long) (products.get(i).getPrice() * countSells.get(i));
 
-            line.add(products.get(i) +separator+ countSells.get(i) +separator+ amount);
+            line.add(products.get(i) + separator + countSells.get(i) + separator + amount);
         }
 
         exports.exportProducts(file, line, separator);
+    }
+
+    // ---------------- Generate display lists
+
+    public List<Ingredient> getDisplayClientList() {
+        List<Ingredient> tempList = ingredients;
+
+        Collections.sort(tempList);
+
+        return tempList;
+    }
+
+    public List<Product> getDisplayProduct() {
+        List<Product> tempList = products;
+
+        Collections.sort(tempList);
+
+        return tempList;
+    }
+
+    public List<Order> getDisplayOrder() {
+        List<Order> tempList = orders;
+        Comparator<Order> dateComparator = new Comparator<>() {
+
+            @Override
+            public int compare(Order or1, Order or2) {
+                return or1.getDeliveryDate().compareTo(or2.getDeliveryDate());
+            }
+
+        };
+        
+        Collections.sort(tempList, dateComparator);
+
+        return tempList;
     }
 }

@@ -1,11 +1,11 @@
 package model;
 
-public class Ingredient {
+public class Ingredient implements Comparable<Ingredient>{
     private String name;
     private String type;
     private String createdBy;
     private String modifiedBy;
-    private boolean isAvilable;
+    private boolean isAvailable;
     private String id;
     
     public Ingredient(String id, String name, int typeNum, String createdBy, String modifiedBy) {
@@ -13,7 +13,7 @@ public class Ingredient {
         type = IngredienteType.values()[typeNum].name();
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
-        isAvilable = true;
+        isAvailable = true;
         this.id = id;
     }
 
@@ -49,12 +49,12 @@ public class Ingredient {
         this.modifiedBy = modifiedBy;
     }
 
-    public boolean isAvilable() {
-        return isAvilable;
+    public boolean isAvailable() {
+        return isAvailable;
     }
 
-    public void setAvilable(boolean isAvilable) {
-        this.isAvilable = isAvilable;
+    public void setAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
     }
 
     public String getId() {
@@ -65,5 +65,11 @@ public class Ingredient {
 
     public int compareById(String id){
         return id.compareTo(id);
+    }
+
+    @Override
+    public int compareTo(Ingredient other) {
+        
+        return name.compareTo(other.getName());
     }
 }
