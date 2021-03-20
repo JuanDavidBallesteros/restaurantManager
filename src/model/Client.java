@@ -2,11 +2,11 @@ package model;
 
 public class Client extends Person {
     private String address;
-    private int phone;
+    private String phone;
     private String observations;
 
     public Client(String name, String lastName, String idNumber, String createdBy, String modifiedBy, String address,
-            int phone, String observations) {
+    String phone, String observations) {
         super(name, lastName, idNumber, createdBy, modifiedBy);
         this.address = address;
         this.phone = phone;
@@ -21,11 +21,11 @@ public class Client extends Person {
         this.address = address;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

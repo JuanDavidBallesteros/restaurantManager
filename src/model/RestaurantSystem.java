@@ -119,7 +119,7 @@ public class RestaurantSystem {
         ordersIdCount += 1;
     }
 
-    public void addClient(String name, String lastName, String idNumber, String address, int phone,
+    public void addClient(String name, String lastName, String idNumber, String address, String phone,
             String observations) {
         Client temp = new Client(name, lastName, idNumber, actualUser.getUserName(), actualUser.getUserName(), address,
                 phone, observations);
@@ -181,9 +181,9 @@ public class RestaurantSystem {
         users.remove(user);
     }
 
-    // -------------------- actualize
+    // -------------------- update
 
-    public void actualizeProduct(Product product, String name, int typeNum, List<Ingredient> ingredients, int sizeNum,
+    public void updateProduct(Product product, String name, int typeNum, List<Ingredient> ingredients, int sizeNum,
             Double price) {
         Product temp = new Product(product.getId(), name, typeNum, ingredients, sizeNum, price, product.getCreatedBy(),
                 actualUser.getUserName());
@@ -191,14 +191,14 @@ public class RestaurantSystem {
         products.add(temp);
     }
 
-    public void actualizeIngredient(Ingredient ingredient, String name, int typeNum) {
+    public void updateIngredient(Ingredient ingredient, String name, int typeNum) {
         Ingredient temp = new Ingredient(ingredient.getId(), name, typeNum, ingredient.getCreatedBy(),
                 actualUser.getUserName());
         ingredients.remove(ingredient);
         ingredients.add(temp);
     }
 
-    public void actualizeOrder(Order order, int stateNum, List<Product> products, List<Integer> productsQuantity,
+    public void updateOrder(Order order, int stateNum, List<Product> products, List<Integer> productsQuantity,
             String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations) {
 
         Client client = searchClientByName(clientName, clientLastName);
@@ -211,7 +211,7 @@ public class RestaurantSystem {
         orders.add(temp);
     }
 
-    public void actualizeClient(Client client, String name, String lastName, String idNumber, String address, int phone,
+    public void updateClient(Client client, String name, String lastName, String idNumber, String address, String phone,
             String observations) {
         Client temp = new Client(name, lastName, idNumber, client.getCreatedBy(), actualUser.getUserName(), address,
                 phone, observations);
@@ -219,13 +219,13 @@ public class RestaurantSystem {
         orderAddCliente(temp);
     }
 
-    public void actualizeEmployee(Employee employee, String name, String lastName, String idNumber) {
+    public void updateEmployee(Employee employee, String name, String lastName, String idNumber) {
         Employee temp = new Employee(name, lastName, idNumber, employee.getCreatedBy(), actualUser.getUserName());
         removeEmployee(employee);
         employees.add(temp);
     }
 
-    public void actualizeUser(User user, Employee employee, String userName, String userPassword) {
+    public void updateUser(User user, Employee employee, String userName, String userPassword) {
         User temp = new User(employee, userName, userPassword, user.getCreatedBy(), actualUser.getUserName());
         removeUser(user);
         users.add(temp);
@@ -471,7 +471,7 @@ public class RestaurantSystem {
             line.add(products.get(i) + separator + countSells.get(i) + separator + amount);
         }
 
-        exports.exportProducts(file, line, separator);
+        exports.exportProducts(file, line);
     }
 
     // ---------------- Generate display lists

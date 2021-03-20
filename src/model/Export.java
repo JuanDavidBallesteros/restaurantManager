@@ -58,7 +58,7 @@ public class Export {
     pw.close();
   }
 
-  public void exportProducts(File file, List<String> productsReport, String separator) throws FileNotFoundException{
+  public void exportProducts(File file, List<String> productsReport) throws FileNotFoundException{
     PrintWriter pw = new PrintWriter(file);
     String line = "";
     pw.println(line);

@@ -49,8 +49,6 @@ public abstract class Person {
 
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
-    }
-
-    
+    }  
         
 }
