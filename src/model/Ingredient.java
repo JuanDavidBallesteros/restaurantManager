@@ -10,7 +10,7 @@ public class Ingredient implements Comparable<Ingredient>{
     
     public Ingredient(String id, String name, int typeNum, String createdBy, String modifiedBy) {
         this.name = name;
-        type = IngredienteType.values()[typeNum].name();
+        type = IngredientType.values()[typeNum].name();
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
         isAvailable = true;
@@ -30,7 +30,7 @@ public class Ingredient implements Comparable<Ingredient>{
     }
 
     public void setType(int typeNum) {
-        this.type = IngredienteType.values()[typeNum].name();
+        this.type = IngredientType.values()[typeNum].name();
     }
 
     public String getCreatedBy() {
@@ -64,12 +64,11 @@ public class Ingredient implements Comparable<Ingredient>{
     // --------------- compare
 
     public int compareById(String id){
-        return id.compareTo(id);
+        return this.id.compareTo(id);
     }
 
     @Override
     public int compareTo(Ingredient other) {
-        
         return name.compareTo(other.getName());
     }
 }
