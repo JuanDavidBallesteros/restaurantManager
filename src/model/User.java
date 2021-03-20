@@ -58,6 +58,6 @@ public class User {
     // --------------- compare
 
     public int compareByUserName(String userName){
-        return userName.compareTo(userName);
+        return this.userName.compareTo(userName);
     }
 }
