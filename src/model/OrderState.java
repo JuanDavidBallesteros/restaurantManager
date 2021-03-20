@@ -1,5 +1,5 @@
 package model;
 
 public enum OrderState {
-    SOLICITADO,PROCESO,ENVIADO,ENTREGADO;
+    SOLICITADO, PROCESO, ENVIADO, ENTREGADO;
 }

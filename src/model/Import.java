@@ -27,7 +27,7 @@ public class Import {
             String[] parts = line.split(separator);
 
             Client temp = new Client(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5],
-                (parts[6]), parts[7]);
+                    (parts[6]), parts[7]);
             orderAddClient(temp, clients);
             line = br.readLine();
         }
@@ -56,7 +56,7 @@ public class Import {
     // ------------------------- Products
 
     public long importProducts(long productIdCount, List<Product> products, String path, String separator,
-            List<Ingredient> ingredients) throws IOException, FileNotFoundException {
+                               List<Ingredient> ingredients) throws IOException, FileNotFoundException {
 
         long countProduct = productIdCount;
         List<Ingredient> addedIngredients = new ArrayList<>();
@@ -143,7 +143,7 @@ public class Import {
     // ------------------------- Orders
 
     public long importOrder(long ordersIdCount, List<Order> orders, List<Product> products, List<Client> clients,
-            List<Employee> employees, List<User> users, String path, String separator)
+                            List<Employee> employees, List<User> users, String path, String separator)
             throws IOException, ParseException {
         BufferedReader br = new BufferedReader(new FileReader(path));
 
@@ -255,9 +255,9 @@ public class Import {
         User temp = null;
 
         int pos = -1;
-       
-        for(int i = 0; i < users.size() && pos < 0 ; i++){
-            if(users.get(i).compareByUserName(userName)==0){
+
+        for (int i = 0; i < users.size() && pos < 0; i++) {
+            if (users.get(i).compareByUserName(userName) == 0) {
                 pos = i;
             }
         }
@@ -270,9 +270,9 @@ public class Import {
         Employee temp = null;
 
         int pos = -1;
-       
-        for(int i = 0; i < employees.size() && pos < 0 ; i++){
-            if(employees.get(i).compareById(employeeId)==0){
+
+        for (int i = 0; i < employees.size() && pos < 0; i++) {
+            if (employees.get(i).compareById(employeeId) == 0) {
                 pos = i;
             }
         }

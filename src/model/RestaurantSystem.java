@@ -77,14 +77,14 @@ public class RestaurantSystem {
     public void setActualUser(User actualUser) {
         this.actualUser = actualUser;
     }
-    
+
 
     // -------------------- adds
 
-    public void addFirstUser(String name, String lastName, String idNumber, String userName, String userPassword){
+    public void addFirstUser(String name, String lastName, String idNumber, String userName, String userPassword) {
         Employee tempE = new Employee(name, lastName, idNumber, userName, userName);
         employees.add(tempE);
-        
+
         User tempU = new User(tempE, userName, userPassword);
         users.add(tempU);
     }
@@ -106,7 +106,7 @@ public class RestaurantSystem {
     }
 
     public void addOrder(int stateNum, List<Product> products, List<Integer> productsQuantity, String clientName,
-            String clientLastName, String employeeID, Date deliveryDate, String observations) {
+                         String clientLastName, String employeeID, Date deliveryDate, String observations) {
         String id = "#O" + ordersIdCount;
 
         Client client = searchClientByName(clientName, clientLastName);
@@ -120,7 +120,7 @@ public class RestaurantSystem {
     }
 
     public void addClient(String name, String lastName, String idNumber, String address, String phone,
-            String observations) {
+                          String observations) {
         Client temp = new Client(name, lastName, idNumber, actualUser.getUserName(), actualUser.getUserName(), address,
                 phone, observations);
         orderAddCliente(temp);
@@ -184,7 +184,7 @@ public class RestaurantSystem {
     // -------------------- update
 
     public void updateProduct(Product product, String name, int typeNum, List<Ingredient> ingredients, int sizeNum,
-            Double price) {
+                              Double price) {
         Product temp = new Product(product.getId(), name, typeNum, ingredients, sizeNum, price, product.getCreatedBy(),
                 actualUser.getUserName());
         products.remove(product);
@@ -199,7 +199,7 @@ public class RestaurantSystem {
     }
 
     public void updateOrder(Order order, int stateNum, List<Product> products, List<Integer> productsQuantity,
-            String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations) {
+                            String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations) {
 
         Client client = searchClientByName(clientName, clientLastName);
 
@@ -212,7 +212,7 @@ public class RestaurantSystem {
     }
 
     public void updateClient(Client client, String name, String lastName, String idNumber, String address, String phone,
-            String observations) {
+                             String observations) {
         Client temp = new Client(name, lastName, idNumber, client.getCreatedBy(), actualUser.getUserName(), address,
                 phone, observations);
         removeClient(client);
@@ -488,25 +488,25 @@ public class RestaurantSystem {
         List<Product> tempList = products;
 
         Collections.sort(tempList);
-        
+
         return tempList;
     }
 
     public List<Order> getDisplayOrder() {
         List<Order> tempList = orders;
-        Comparator<Order> dateComparator = new Comparator<>() {
+        Comparator<Order> dateComparator = new Comparator<Order>() {
 
             @Override
             public int compare(Order or1, Order or2) {
-                return or1.getDeliveryDate().compareTo(or2.getDeliveryDate()); 
+                return or1.getDeliveryDate().compareTo(or2.getDeliveryDate());
             }
 
         };
 
-        Collections.sort(tempList, dateComparator); //Collections.reverseOrder(ComparatorObject) -> return a Comparator
+        tempList.sort(dateComparator); //Collections.reverseOrder(ComparatorObject) -> return a Comparator
 
         return tempList;
     }
 
-    
+
 }

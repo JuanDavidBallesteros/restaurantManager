@@ -6,7 +6,7 @@ public class Client extends Person {
     private String observations;
 
     public Client(String name, String lastName, String idNumber, String createdBy, String modifiedBy, String address,
-    String phone, String observations) {
+                  String phone, String observations) {
         super(name, lastName, idNumber, createdBy, modifiedBy);
         this.address = address;
         this.phone = phone;
@@ -39,19 +39,19 @@ public class Client extends Person {
 
     // -------------------- compare
 
-    public int compareByLastName (Client other){
+    public int compareByLastName(Client other) {
         return getLastName().compareTo(other.getLastName());
     }
 
-    public int compareByName (Client other){
+    public int compareByName(Client other) {
         return getName().compareTo(other.getName());
     }
 
-    public int compareByLastName (String other){
+    public int compareByLastName(String other) {
         return getLastName().compareTo(other);
     }
 
-    public int compareByName (String other){
+    public int compareByName(String other) {
         return getName().compareTo(other);
     }
 }

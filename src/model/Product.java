@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product implements Comparable <Product> {
+public class Product implements Comparable<Product> {
     private String name;
     private String type;
     private List<Ingredient> ingredients;
@@ -13,9 +13,9 @@ public class Product implements Comparable <Product> {
     private String modifiedBy;
     private boolean isAvailable;
     private String id;
-    
+
     public Product(String id, String name, int typeNum, List<Ingredient> ingredients, int sizeNum, Double price, String createdBy,
-            String modifiedBy) {
+                   String modifiedBy) {
         this.name = name;
         type = ProductType.values()[typeNum].name();
         ingredients = new ArrayList<>();
@@ -90,25 +90,25 @@ public class Product implements Comparable <Product> {
     public String getId() {
         return id;
     }
-    
+
     // --------------- compare
 
-    public int compareById(String id){
+    public int compareById(String id) {
         return id.compareTo(id);
     }
 
     @Override
     public int compareTo(Product other) {
         int value = 0;
-        if((price-other.getPrice()) < 0){
+        if ((price - other.getPrice()) < 0) {
             value = -1;
-        } else if ((price-other.getPrice()) > 0){
+        } else if ((price - other.getPrice()) > 0) {
             value = 1;
-        }else{
+        } else {
             value = 0;
         }
         return value;
-    } 
+    }
 
-    
+
 }

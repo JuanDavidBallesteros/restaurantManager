@@ -1,5 +1,5 @@
 package model;
 
 public enum ProductSize {
-    normal,big;
+    normal, big;
 }

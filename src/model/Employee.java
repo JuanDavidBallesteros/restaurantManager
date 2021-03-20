@@ -8,7 +8,7 @@ public class Employee extends Person {
 
     // --------------- compare
 
-    public int compareById(String idNumber){
+    public int compareById(String idNumber) {
         return idNumber.compareTo(idNumber);
     }
 }

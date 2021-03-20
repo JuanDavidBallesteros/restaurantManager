@@ -1,13 +1,13 @@
 package model;
 
-public class Ingredient implements Comparable<Ingredient>{
+public class Ingredient implements Comparable<Ingredient> {
     private String name;
     private String type;
     private String createdBy;
     private String modifiedBy;
     private boolean isAvailable;
     private String id;
-    
+
     public Ingredient(String id, String name, int typeNum, String createdBy, String modifiedBy) {
         this.name = name;
         type = IngredientType.values()[typeNum].name();
@@ -59,11 +59,11 @@ public class Ingredient implements Comparable<Ingredient>{
 
     public String getId() {
         return id;
-    }    
+    }
 
     // --------------- compare
 
-    public int compareById(String id){
+    public int compareById(String id) {
         return this.id.compareTo(id);
     }
 

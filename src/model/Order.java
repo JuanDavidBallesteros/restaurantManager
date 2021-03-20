@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Order {
+
     private String id;
     private String state;
     private List<Product> products;
@@ -17,7 +18,7 @@ public class Order {
     private String modifiedBy;
 
     public Order(String id, int stateNum, List<Product> products, List<Integer> productsQuantity, Client client,
-            Employee employee, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
+                 Employee employee, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
         this.id = id;
         state = OrderState.values()[stateNum].name();
         products = new ArrayList<>();
@@ -102,10 +103,10 @@ public class Order {
         this.modifiedBy = modifiedBy;
     }
 
-    public long getAmount(){
+    public long getAmount() {
         long amount = 0;
-        for(int i = 0; i<products.size() ; i++){
-            amount+= (products.get(i).getPrice());
+        for (int i = 0; i < products.size(); i++) {
+            amount += (products.get(i).getPrice());
         }
         return amount;
     }

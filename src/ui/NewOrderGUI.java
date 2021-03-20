@@ -162,7 +162,7 @@ public class NewOrderGUI {
         txtLastName.setText(order.getClient().getLastName());
         txtID.setText(order.getClient().getIdNumber());
         txtAddress.setText(order.getClient().getAddress());
-        txtPhone.setText(order.getClient().getPhone()+"");
+        txtPhone.setText(order.getClient().getPhone());
         txtObservations.setText(order.getClient().getObservations());
         lblClient.setText("Cliente: " + order.getClient().getName() + " " + order.getClient().getLastName());
         lblEmployee.setText("Empleado: " + order.getEmployee().getName());
