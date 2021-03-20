@@ -14,6 +14,14 @@ public class User {
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
     }
+
+    public User(Employee employee, String userName, String userPassword) {
+        this.employee = employee;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        createdBy = userName;
+        modifiedBy = userName;
+    }
     
     public Employee getEmployee() {
         return employee;

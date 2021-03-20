@@ -4,6 +4,7 @@ import model.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.Timer;
 import java.awt.event.*;
@@ -24,7 +25,8 @@ public class AppMainGui {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Calendar now = Calendar.getInstance();
-				 dateFormat.format(now.getTime());  // set the label with this line
+				Date date = (now.getTime());  
+				dateFormat.format(date); // set the label with this line
 			}
 			
 		}).start();

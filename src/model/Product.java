@@ -6,24 +6,24 @@ import java.util.List;
 public class Product implements Comparable <Product> {
     private String name;
     private String type;
-    private List<Ingredient> ingedients;
+    private List<Ingredient> ingredients;
     private String size;
     private Double price;
     private String createdBy;
     private String modifiedBy;
-    private boolean isAvilable;
+    private boolean isAvailable;
     private String id;
     
-    public Product(String id, String name, int typeNum, List<Ingredient> ingedients, int sizeNum, Double price, String createdBy,
+    public Product(String id, String name, int typeNum, List<Ingredient> ingredients, int sizeNum, Double price, String createdBy,
             String modifiedBy) {
         this.name = name;
         type = ProductType.values()[typeNum].name();
-        ingedients = new ArrayList<>();
+        ingredients = new ArrayList<>();
         size = ProductSize.values()[sizeNum].name();
         this.price = price;
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
-        isAvilable = true;
+        isAvailable = true;
         this.id = id;
     }
 
@@ -43,8 +43,8 @@ public class Product implements Comparable <Product> {
         this.type = ProductType.values()[typeNum].name();
     }
 
-    public List<Ingredient> getIngedients() {
-        return ingedients;
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 
     public String getSize() {
@@ -79,12 +79,12 @@ public class Product implements Comparable <Product> {
         this.modifiedBy = modifiedBy;
     }
 
-    public boolean isAvilable() {
-        return isAvilable;
+    public boolean isAvailable() {
+        return isAvailable;
     }
 
-    public void setAvilable(boolean isAvilable) {
-        this.isAvilable = isAvilable;
+    public void setAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
     }
 
     public String getId() {

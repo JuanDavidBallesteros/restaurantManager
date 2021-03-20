@@ -70,11 +70,29 @@ public class RestaurantSystem {
         return actualDate;
     }
 
+    public User getActualUser() {
+        return actualUser;
+    }
+
+    public void setActualUser(User actualUser) {
+        this.actualUser = actualUser;
+    }
+    
+
     // -------------------- adds
 
-    public void addProduct(String name, int typeNum, List<Ingredient> ingedients, int sizeNum, Double price) {
+    public void addFirstUser(String name, String lastName, String idNumber, String userName, String userPassword){
+        Employee tempE = new Employee(name, lastName, idNumber, userName, userName);
+        employees.add(tempE);
+        
+        User tempU = new User(tempE, userName, userPassword);
+        users.add(tempU);
+    }
+
+    public void addProduct(String name, int typeNum, List<Ingredient> ingredients, int sizeNum, Double price) {
         String id = "#P" + productIdCount;
-        Product temp = new Product(id, name, typeNum, ingedients, sizeNum, price, actualUser.getUserName(),
+
+        Product temp = new Product(id, name, typeNum, ingredients, sizeNum, price, actualUser.getUserName(),
                 actualUser.getUserName());
         products.add(temp);
         productIdCount += 1;
@@ -87,7 +105,7 @@ public class RestaurantSystem {
         ingredientIdCount += 1;
     }
 
-    public void addOrder(int stateNum, List<Product> products, List<Integer> poductsQuantity, String clientName,
+    public void addOrder(int stateNum, List<Product> products, List<Integer> productsQuantity, String clientName,
             String clientLastName, String employeeID, Date deliveryDate, String observations) {
         String id = "#O" + ordersIdCount;
 
@@ -95,7 +113,7 @@ public class RestaurantSystem {
 
         Employee employee = searchEmployee(employeeID);
 
-        Order temp = new Order(id, stateNum, products, poductsQuantity, client, employee, deliveryDate, observations,
+        Order temp = new Order(id, stateNum, products, productsQuantity, client, employee, deliveryDate, observations,
                 actualUser.getUserName(), actualUser.getUserName());
         orders.add(temp);
         ordersIdCount += 1;
@@ -165,9 +183,9 @@ public class RestaurantSystem {
 
     // -------------------- actualize
 
-    public void actualizeProduct(Product product, String name, int typeNum, List<Ingredient> ingedients, int sizeNum,
+    public void actualizeProduct(Product product, String name, int typeNum, List<Ingredient> ingredients, int sizeNum,
             Double price) {
-        Product temp = new Product(product.getId(), name, typeNum, ingedients, sizeNum, price, product.getCreatedBy(),
+        Product temp = new Product(product.getId(), name, typeNum, ingredients, sizeNum, price, product.getCreatedBy(),
                 actualUser.getUserName());
         products.remove(product);
         products.add(temp);
@@ -180,14 +198,14 @@ public class RestaurantSystem {
         ingredients.add(temp);
     }
 
-    public void actualizeOrder(Order order, int stateNum, List<Product> products, List<Integer> poductsQuantity,
+    public void actualizeOrder(Order order, int stateNum, List<Product> products, List<Integer> productsQuantity,
             String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations) {
 
         Client client = searchClientByName(clientName, clientLastName);
 
         Employee employee = searchEmployee(employeeID);
 
-        Order temp = new Order(order.getId(), stateNum, products, poductsQuantity, client, employee, deliveryDate,
+        Order temp = new Order(order.getId(), stateNum, products, productsQuantity, client, employee, deliveryDate,
                 observations, order.getCreatedBy(), actualUser.getUserName());
         orders.remove(order);
         orders.add(temp);
@@ -216,7 +234,7 @@ public class RestaurantSystem {
     // -------------------- disable / enable
 
     public void disableProduct(Product product) {
-        product.setAvilable(false);
+        product.setAvailable(false);
     }
 
     public void disableIngredient(Ingredient ingredient) {
@@ -224,7 +242,7 @@ public class RestaurantSystem {
     }
 
     public void enableProduct(Product product) {
-        product.setAvilable(true);
+        product.setAvailable(true);
     }
 
     public void enableIngredient(Ingredient ingredient) {
@@ -470,7 +488,7 @@ public class RestaurantSystem {
         List<Product> tempList = products;
 
         Collections.sort(tempList);
-
+        
         return tempList;
     }
 
@@ -480,13 +498,15 @@ public class RestaurantSystem {
 
             @Override
             public int compare(Order or1, Order or2) {
-                return or1.getDeliveryDate().compareTo(or2.getDeliveryDate());
+                return or1.getDeliveryDate().compareTo(or2.getDeliveryDate()); 
             }
 
         };
-        
-        Collections.sort(tempList, dateComparator);
+
+        Collections.sort(tempList, dateComparator); //Collections.reverseOrder(ComparatorObject) -> return a Comparator
 
         return tempList;
     }
+
+    
 }
