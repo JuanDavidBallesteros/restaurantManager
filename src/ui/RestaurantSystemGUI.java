@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.Order;
+
 import java.io.IOException;
 import java.time.LocalTime;
 
@@ -97,21 +99,23 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
-    void showNewOrder(ActionEvent event) throws IOException {
+    public NewOrderGUI showNewOrder(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newOrder.fxml"));
-        NewOrderGUI controller = new NewOrderGUI();
+        NewOrderGUI controller = new NewOrderGUI(this);
         fxmlLoader.setController(controller);
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
+        return controller;
     }
 
     @FXML
     void showOrders(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewOrders.fxml"));
-        ViewOrdersGUI controller = new ViewOrdersGUI();
+        ViewOrdersGUI controller = new ViewOrdersGUI(this);
         fxmlLoader.setController(controller);
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
+        controller.initializeTableView();
     }
 
 }

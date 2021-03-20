@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -16,6 +17,38 @@
    <children>
       <VBox prefHeight="695.0" prefWidth="640.0">
          <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="600.0">
+               <children>
+                  <Label fx:id="lblOrder" layoutX="200.0" layoutY="10.0" text="Orden: ID" />
+                  <Separator layoutX="302.0" layoutY="10.0" orientation="VERTICAL">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Separator>
+                  <Label fx:id="lblClient" layoutX="289.0" layoutY="10.0" text="Cliente: Nombre">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Label>
+                  <Separator orientation="VERTICAL">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Separator>
+                  <Label fx:id="lblEmployee" text="Empleado: Nombre">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ToggleButton fx:id="btnToggleEdit" mnemonicParsing="false" onAction="#toggleEdit" text="Editar: No">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </ToggleButton>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </HBox>
             <Label text="Cliente">
                <VBox.margin>
                   <Insets bottom="5.0" />
@@ -28,7 +61,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button maxWidth="100.0" minWidth="28.0" mnemonicParsing="false" onAction="#searchClient" prefHeight="25.0" prefWidth="61.0" text="Buscar">
+                  <Button fx:id="btnSearchClient" maxWidth="100.0" minWidth="28.0" mnemonicParsing="false" onAction="#searchClient" prefHeight="25.0" prefWidth="61.0" text="Buscar">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -151,7 +184,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button maxWidth="100.0" minWidth="28.0" mnemonicParsing="false" onAction="#searchEmployee" prefHeight="25.0" prefWidth="61.0" text="Buscar">
+                  <Button fx:id="btnSearchEmployee" maxWidth="100.0" minWidth="28.0" mnemonicParsing="false" onAction="#searchEmployee" prefHeight="25.0" prefWidth="61.0" text="Buscar">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -170,24 +203,9 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
                <VBox.margin>
-                  <Insets bottom="20.0" />
+                  <Insets />
                </VBox.margin>
             </TableView>
-            <HBox alignment="CENTER" prefHeight="63.0" prefWidth="600.0">
-               <children>
-                  <Label fx:id="lblClient" layoutX="289.0" layoutY="10.0" text="Cliente: Nombre" />
-                  <Separator orientation="VERTICAL">
-                     <HBox.margin>
-                        <Insets left="15.0" />
-                     </HBox.margin>
-                  </Separator>
-                  <Label fx:id="lblEmployee" text="Empleado: Nombre">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
          </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -207,7 +225,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button maxWidth="100.0" minWidth="28.0" mnemonicParsing="false" onAction="#searchProduct" prefHeight="25.0" prefWidth="61.0" text="Buscar">
+                  <Button fx:id="btnSearchProduct" maxWidth="100.0" minWidth="28.0" mnemonicParsing="false" onAction="#searchProduct" prefHeight="25.0" prefWidth="61.0" text="Buscar">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -234,7 +252,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
                <children>
-                  <Button maxWidth="145.0" minWidth="145.0" mnemonicParsing="false" onAction="#addSelectedProduct" prefWidth="145.0" text="Agregar Seleccionado">
+                  <Button fx:id="btnAddSelected" maxWidth="145.0" minWidth="145.0" mnemonicParsing="false" onAction="#addSelectedProduct" prefWidth="145.0" text="Agregar Seleccionado">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -242,7 +260,7 @@
                   <TextField fx:id="txtProductAmount" alignment="CENTER" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" promptText="Cantidad" />
                </children>
             </HBox>
-            <Button maxWidth="200.0" minWidth="225.0" mnemonicParsing="false" onAction="#deleteSelectedProduct" prefWidth="225.0" text="Eliminar Seleccionado">
+            <Button fx:id="btnDeleteSelected" maxWidth="200.0" minWidth="225.0" mnemonicParsing="false" onAction="#deleteSelectedProduct" prefWidth="225.0" text="Eliminar Seleccionado">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
@@ -279,7 +297,7 @@
             </HBox>
             <HBox alignment="CENTER">
                <children>
-                  <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Cancelar">
+                  <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showOrders" prefWidth="100.0" text="Cancelar">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
