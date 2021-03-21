@@ -8,18 +8,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.Order;
-import model.RestaurantSystem;
-
+import model.*;
 import java.io.IOException;
 
 public class ViewOrdersGUI {
 
-    RestaurantSystem restaurantSystem = new RestaurantSystem();
-    private RestaurantSystemGUI mainGUI;
+    private final RestaurantSystem restaurantSystem;
+    private final RestaurantSystemGUI mainGUI;
 
     public ViewOrdersGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
+        restaurantSystem = mainGUI.getRestaurantSystem();
     }
 
     @FXML

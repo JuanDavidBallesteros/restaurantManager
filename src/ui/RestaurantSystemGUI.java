@@ -16,17 +16,19 @@ import model.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalTime;
-import java.util.ResourceBundle;
+import java.util.Optional;
 
 public class RestaurantSystemGUI {
 
-    private Alert errorAlert;
-    private Alert infoAlert;
-    private Alert warningAlert;
+    private final RestaurantSystem restaurantSystem;
 
-    private RestaurantSystem restaurantSystem;
+    private final Alert errorAlert;
+    private final Alert infoAlert;
+    private final Alert warningAlert;
+    private final Alert confirmAlert;
+    private final Button confirmAlertOK;
+    private final Button confirmAlertCancel;
 
     public RestaurantSystem getRestaurantSystem() {
         return restaurantSystem;
@@ -37,7 +39,13 @@ public class RestaurantSystemGUI {
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
         this.infoAlert = new Alert(Alert.AlertType.INFORMATION);
         this.warningAlert = new Alert(Alert.AlertType.WARNING);
+        this.confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlertOK = ((Button)confirmAlert.getDialogPane().lookupButton(ButtonType.OK));
+        confirmAlertCancel = ((Button)confirmAlert.getDialogPane().lookupButton(ButtonType.CANCEL));
     }
+
+    @FXML
+    private Label lblActiveUser;
 
     @FXML
     private Label lblEmployee;
@@ -81,32 +89,28 @@ public class RestaurantSystemGUI {
     @FXML
     private Menu menuClock;
 
+    // INITIALIZE ------------------------------------------------------------------------------------------------------
+
     @FXML
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            LocalTime currentTime = LocalTime.now();
-            if(currentTime.getMinute()<10 && currentTime.getSecond()<10){
-                menuClock.setText(currentTime.getHour() + ":0" + currentTime.getMinute() + ":0" + currentTime.getSecond());
-            } else if(currentTime.getMinute()<10) {
-                menuClock.setText(currentTime.getHour() + ":0" + currentTime.getMinute() + ":" + currentTime.getSecond());
-            } else if(currentTime.getSecond()<10) {
-                menuClock.setText(currentTime.getHour() + ":" + currentTime.getMinute() + ":0" + currentTime.getSecond());
-            } else {
-                menuClock.setText(currentTime.getHour() + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
-            }
-        }),
-                new KeyFrame(Duration.seconds(1))
-        );
-        clock.setCycleCount(Animation.INDEFINITE);
-        clock.play();
+    public void initialize() {
+        startClock();
     }
 
-    // AUTHENTICATION METHODS
+    // AUTHENTICATION METHODS ------------------------------------------------------------------------------------------
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        showLogin(null);
-        restaurantSystem.setActualUser(null);
+        confirmAlert.setTitle("Cerrar Sesión");
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText("¿Está seguro que desea cerrar sesión?");
+        confirmAlertOK.setText("Sí");
+        confirmAlertCancel.setText("No");
+        Optional<ButtonType> action = confirmAlert.showAndWait();
+
+        if(action.get() == ButtonType.OK) {
+            showLogin(null);
+            restaurantSystem.setActualUser(null);
+        }
     }
 
     @FXML
@@ -114,7 +118,7 @@ public class RestaurantSystemGUI {
         showMainMenu(null);
     }
 
-    // NAVIGATION METHODS
+    // NAVIGATION ------------------------------------------------------------------------------------------------------
 
     @FXML
     void showLogin(ActionEvent event) throws IOException {
@@ -154,6 +158,8 @@ public class RestaurantSystemGUI {
         menuBar.setDisable(false);
         Stage stage = (Stage) pane.getScene().getWindow();
         stage.setWidth(1496);
+        showOrders(null);
+        lblActiveUser.setText("Usuario: " + restaurantSystem.getActualUser());
     }
 
     @FXML
@@ -216,7 +222,7 @@ public class RestaurantSystemGUI {
         controller.initializeTableView();
     }
 
-    // VERIFICATIONS
+    // VERIFICATIONS ---------------------------------------------------------------------------------------------------
 
     @FXML
     void registerUser(ActionEvent event) {
@@ -248,7 +254,7 @@ public class RestaurantSystemGUI {
 
     }
 
-    // OTHER
+    // IMPORTS ---------------------------------------------------------------------------------------------------------
 
     @FXML
     void importClients(ActionEvent event) throws IOException {
@@ -279,6 +285,27 @@ public class RestaurantSystemGUI {
 
         }
 
+    }
+
+    // EXTRA -----------------------------------------------------------------------------------------------------------
+
+    void startClock() {
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            LocalTime currentTime = LocalTime.now();
+            if(currentTime.getMinute()<10 && currentTime.getSecond()<10){
+                menuClock.setText(currentTime.getHour() + ":0" + currentTime.getMinute() + ":0" + currentTime.getSecond());
+            } else if(currentTime.getMinute()<10) {
+                menuClock.setText(currentTime.getHour() + ":0" + currentTime.getMinute() + ":" + currentTime.getSecond());
+            } else if(currentTime.getSecond()<10) {
+                menuClock.setText(currentTime.getHour() + ":" + currentTime.getMinute() + ":0" + currentTime.getSecond());
+            } else {
+                menuClock.setText(currentTime.getHour() + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
+            }
+        }),
+                new KeyFrame(Duration.seconds(1))
+        );
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
     }
 
 }

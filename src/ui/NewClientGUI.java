@@ -6,17 +6,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import model.Client;
-import model.Order;
-
+import model.*;
 import java.io.IOException;
 
 public class NewClientGUI {
 
-    private RestaurantSystemGUI mainGUI;
+    private final RestaurantSystem restaurantSystem;
+    private final RestaurantSystemGUI mainGUI;
 
     public NewClientGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
+        restaurantSystem = mainGUI.getRestaurantSystem();
     }
 
     @FXML

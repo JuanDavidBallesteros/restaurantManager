@@ -16,7 +16,7 @@
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="695.0" prefWidth="200.0" style="-fx-background-color: e8e8e8;">
          <children>
-            <Label text="Nombre de Usuario">
+            <Label fx:id="lblActiveUser" text="Nombre de Usuario">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>

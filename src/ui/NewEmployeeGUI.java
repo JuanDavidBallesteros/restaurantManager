@@ -3,17 +3,13 @@ package ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import model.Employee;
-import model.Order;
-import model.Person;
-import model.RestaurantSystem;
-
+import model.*;
 import java.io.IOException;
 
 public class NewEmployeeGUI {
 
-    private RestaurantSystemGUI mainGUI;
-    private RestaurantSystem restaurantSystem;
+    private final RestaurantSystem restaurantSystem;
+    private final RestaurantSystemGUI mainGUI;
 
     public NewEmployeeGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
