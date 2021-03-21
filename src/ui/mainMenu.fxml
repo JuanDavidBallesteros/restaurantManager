@@ -106,7 +106,7 @@
                      <content>
                         <VBox>
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Ver Clientes">
+                              <Button mnemonicParsing="false" onAction="#showClients" prefHeight="25.0" prefWidth="450.0" text="Ver Clientes">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
@@ -116,11 +116,29 @@
                                     <Insets bottom="15.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Nuevo Cliente">
+                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#showNewClient" prefHeight="25.0" prefWidth="450.0" text="Nuevo Cliente">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button layoutX="20.0" layoutY="83.0" mnemonicParsing="false" onAction="#importClients" prefHeight="25.0" prefWidth="450.0" text="Importar Clientes">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Separador de datos:">
+                                       <padding>
+                                          <Insets right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <TextField fx:id="txtClientSeparator" alignment="CENTER" prefWidth="25.0" />
+                                 </children>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </Button>
+                              </HBox>
                            </children>
                         </VBox>
                      </content>

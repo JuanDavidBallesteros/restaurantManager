@@ -9,10 +9,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
@@ -39,6 +41,9 @@ public class RestaurantSystemGUI {
 
     @FXML
     private Label lblEmployee;
+
+    @FXML
+    private TextField txtClientSeparator;
 
     @FXML
     private ChoiceBox<String> cbEmployees;
@@ -105,8 +110,8 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
-    void login(ActionEvent event) {
-
+    void login(ActionEvent event) throws IOException {
+        showMainMenu(null);
     }
 
     // NAVIGATION METHODS
@@ -172,6 +177,16 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
+    public NewClientGUI showNewClient(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newClient.fxml"));
+        NewClientGUI controller = new NewClientGUI(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        return controller;
+    }
+
+    @FXML
     void showOrders(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewOrders.fxml"));
         ViewOrdersGUI controller = new ViewOrdersGUI(this);
@@ -185,6 +200,16 @@ public class RestaurantSystemGUI {
     void showEmployees(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewEmployees.fxml"));
         ViewEmployeeGUI controller = new ViewEmployeeGUI(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        controller.initializeTableView();
+    }
+
+    @FXML
+    void showClients(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewClients.fxml"));
+        ViewClientsGUI controller = new ViewClientsGUI(this);
         fxmlLoader.setController(controller);
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
@@ -216,6 +241,39 @@ public class RestaurantSystemGUI {
                 if(employee!=null) {
                     restaurantSystem.addUser(employee, txtRegUser.getText(), txtRegPassword.getText());
                 }
+
+            }
+
+        }
+
+    }
+
+    // OTHER
+
+    @FXML
+    void importClients(ActionEvent event) throws IOException {
+
+        if(txtClientSeparator.getText().isEmpty()) {
+
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText("No Separator");
+            errorAlert.setContentText("Please enter the separator to use in the import file.");
+            errorAlert.showAndWait();
+
+        } else {
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select File");
+            File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
+
+            if(file!=null){
+
+                restaurantSystem.importClients(file.getPath(), txtClientSeparator.getText());
+
+                infoAlert.setTitle("Information");
+                infoAlert.setHeaderText("Clients Imported");
+                infoAlert.setContentText("Clients were successfully imported." + "There are now: " + restaurantSystem.getClients().size());
+                infoAlert.showAndWait();
 
             }
 
