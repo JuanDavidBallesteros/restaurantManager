@@ -7,18 +7,56 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-//import model.*;
+import model.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalTime;
+import java.util.ResourceBundle;
 
 public class RestaurantSystemGUI {
+
+    private Alert errorAlert;
+    private Alert infoAlert;
+    private Alert warningAlert;
+
+    private RestaurantSystem restaurantSystem;
+
+    public RestaurantSystem getRestaurantSystem() {
+        return restaurantSystem;
+    }
+
+    public RestaurantSystemGUI() {
+        restaurantSystem = new RestaurantSystem();
+        this.errorAlert = new Alert(Alert.AlertType.ERROR);
+        this.infoAlert = new Alert(Alert.AlertType.INFORMATION);
+        this.warningAlert = new Alert(Alert.AlertType.WARNING);
+    }
+
+    @FXML
+    private Label lblEmployee;
+
+    @FXML
+    private ChoiceBox<String> cbEmployees;
+
+    @FXML
+    private TextField txtName;
+
+    @FXML
+    private TextField txtLastName;
+
+    @FXML
+    private TextField txtID;
+
+    @FXML
+    private TextField txtRegUser;
+
+    @FXML
+    private PasswordField txtRegPassword;
 
     @FXML
     private MenuBar menuBar;
@@ -39,7 +77,7 @@ public class RestaurantSystemGUI {
     private Menu menuClock;
 
     @FXML
-    public void initialize() {
+    public void initialize(URL arg0, ResourceBundle arg1) {
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             LocalTime currentTime = LocalTime.now();
             if(currentTime.getMinute()<10 && currentTime.getSecond()<10){
@@ -56,10 +94,12 @@ public class RestaurantSystemGUI {
         );
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
+        cbEmployees.setOnAction(this::choiceBoxChoosed);
     }
 
     @FXML
     void login(ActionEvent event) throws IOException {
+        System.out.println(restaurantSystem.getEmployees().size());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mainMenu.fxml"));
         fxmlLoader.setController(this);
         Parent pane = fxmlLoader.load();
@@ -67,7 +107,14 @@ public class RestaurantSystemGUI {
         menuBar.setDisable(false);
         Stage stage = (Stage) pane.getScene().getWindow();
         stage.setWidth(1496);
+
     }
+
+    /*private boolean checkLogin() {
+
+
+
+    }*/
 
     @FXML
     void logout(ActionEvent event) throws IOException {
@@ -87,6 +134,33 @@ public class RestaurantSystemGUI {
         Parent pane = fxmlLoader.load();
         mainPane.getChildren().setAll(pane);
         menuBar.setDisable(true);
+
+        if(restaurantSystem.getEmployees().isEmpty()) {
+            lblEmployee.setDisable(true);
+            cbEmployees.setDisable(true);
+        } else {
+            lblEmployee.setDisable(false);
+            cbEmployees.setDisable(false);
+        }
+
+        initChoiceBox();
+
+    }
+
+    private void initChoiceBox() {
+        if(!restaurantSystem.getEmployees().isEmpty()) {
+            cbEmployees.getItems().add(null);
+            for(User user : restaurantSystem.getUsers()) {
+                if(user.getEmployee()==cbEmployees.getItems())
+                cbEmployees.getItems().add(user.getEmployee().getIdNumber());
+            }
+        }
+    }
+
+    public void choiceBoxChoosed(ActionEvent event) {
+        txtName.setDisable(true);
+        txtLastName.setDisable(true);
+        txtID.setDisable(true);
     }
 
     @FXML
@@ -96,6 +170,16 @@ public class RestaurantSystemGUI {
         Parent pane = fxmlLoader.load();
         mainPane.getChildren().setAll(pane);
         menuBar.setDisable(true);
+    }
+
+    @FXML
+    public NewEmployeeGUI showNewEmployee(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newEmployee.fxml"));
+        NewEmployeeGUI controller = new NewEmployeeGUI(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        return controller;
     }
 
     @FXML
@@ -116,6 +200,48 @@ public class RestaurantSystemGUI {
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
         controller.initializeTableView();
+    }
+
+    @FXML
+    void showEmployees(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewEmployees.fxml"));
+        ViewEmployeeGUI controller = new ViewEmployeeGUI(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        controller.initializeTableView();
+    }
+
+    @FXML
+    void registerUser(ActionEvent event) {
+
+        if(txtName.getText().isEmpty() || txtLastName.getText().isEmpty() ||txtID.getText().isEmpty() ||txtRegUser.getText().isEmpty() ||txtRegPassword.getText().isEmpty()) {
+
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText("Empty Fields");
+            errorAlert.setContentText("Please enter all the data.");
+            errorAlert.showAndWait();
+
+        } else {
+
+            if(restaurantSystem.getEmployees().isEmpty()) {
+
+                restaurantSystem.addFirstUser(txtName.getText(), txtLastName.getText(), txtID.getText(), txtRegUser.getText(), txtRegPassword.getText());
+
+            } else {
+
+                Employee employee = restaurantSystem.searchEmployee(cbEmployees.getValue());
+
+                if(employee!=null) {
+                    restaurantSystem.addUser(employee, txtRegUser.getText(), txtRegPassword.getText());
+                }
+
+            }
+
+        }
+
+        System.out.println(restaurantSystem.getEmployees().size());
+
     }
 
 }

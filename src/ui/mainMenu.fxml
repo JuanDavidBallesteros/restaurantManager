@@ -129,7 +129,7 @@
                      <content>
                         <VBox alignment="CENTER">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Ver Empleados">
+                              <Button mnemonicParsing="false" onAction="#showEmployees" prefHeight="25.0" prefWidth="450.0" text="Ver Empleados">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
@@ -139,7 +139,7 @@
                                     <Insets bottom="15.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Nuevo Empleado">
+                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#showNewEmployee" prefHeight="25.0" prefWidth="450.0" text="Nuevo Empleado">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>

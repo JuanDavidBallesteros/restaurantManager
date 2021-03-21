@@ -128,7 +128,15 @@ public class NewOrderGUI {
     @FXML
     void addOrder(ActionEvent event) {
 
+
+
     }
+
+    /*public Boolean checkForm() {
+
+        if()
+
+    }*/
 
     @FXML
     void addSelectedProduct(ActionEvent event) {

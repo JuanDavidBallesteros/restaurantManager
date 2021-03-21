@@ -45,7 +45,7 @@ public class ViewOrdersGUI {
 
     public void initializeTableView() {
 
-        ObservableList<Order> contactObservableList = FXCollections.observableList(restaurantSystem.getOrders());
+        ObservableList<Order> orderObservableList = FXCollections.observableList(restaurantSystem.getOrders());
 
         tcID.setCellValueFactory(new PropertyValueFactory<Order, String>("id"));
         tcClientName.setCellValueFactory(new PropertyValueFactory<Order, String>("client"));
@@ -54,7 +54,7 @@ public class ViewOrdersGUI {
         tcStatus.setCellValueFactory(new PropertyValueFactory<Order, String>("status"));
         tcActions.setCellValueFactory(new PropertyValueFactory<Order, Button>("actions"));
 
-        tvTable.setItems(contactObservableList);
+        tvTable.setItems(orderObservableList);
 
         tvTable.setRowFactory( tv -> {
             TableRow<Order> row = new TableRow<>();
