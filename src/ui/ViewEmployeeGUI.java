@@ -40,7 +40,6 @@ public class ViewEmployeeGUI {
     public void initializeTableView() {
 
         ObservableList<Employee> employeeObservableList = FXCollections.observableList(restaurantSystem.getEmployees());
-        System.out.println(restaurantSystem.getEmployees().size());
 
         tcName.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
         tcLastName.setCellValueFactory(new PropertyValueFactory<Employee, String>("lastName"));

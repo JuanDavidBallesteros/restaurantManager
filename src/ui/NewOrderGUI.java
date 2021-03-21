@@ -1,11 +1,15 @@
 package ui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import model.Order;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class NewOrderGUI {
 
@@ -43,13 +47,13 @@ public class NewOrderGUI {
     private Label lblSearchTime;
 
     @FXML
-    private TableView<?> tvClient;
+    private TableView<Client> tvClient;
 
     @FXML
-    private TableColumn<?, ?> tcSearchClientName;
+    private TableColumn<Client, String> tcSearchClientName;
 
     @FXML
-    private TableColumn<?, ?> tcSearchClientLastName;
+    private TableColumn<Client, String> tcSearchClientLastName;
 
     @FXML
     private TextField txtName;
@@ -73,13 +77,13 @@ public class NewOrderGUI {
     private TextField txtEmployee;
 
     @FXML
-    private TableView<?> tvEmployees;
+    private TableView<Employee> tvEmployees;
 
     @FXML
-    private TableColumn<?, ?> tcSearchEmployeeName;
+    private TableColumn<Employee, String> tcSearchEmployeeName;
 
     @FXML
-    private TableColumn<?, ?> tcSearchEmployeeLastName;
+    private TableColumn<Employee, String> tcSearchEmployeeLastName;
 
     @FXML
     private Label lblClient;
@@ -91,28 +95,28 @@ public class NewOrderGUI {
     private TextField txtProduct;
 
     @FXML
-    private TableView<?> tvProducts;
+    private TableView<Product> tvProducts;
 
     @FXML
-    private TableColumn<?, ?> tcSearchProduct;
+    private TableColumn<Product, String> tcSearchProduct;
 
     @FXML
-    private TableColumn<?, ?> tcSearchCost;
+    private TableColumn<Product, Double> tcSearchCost;
 
     @FXML
     private TextField txtProductAmount;
 
     @FXML
-    private TableView<?> tvOrder;
+    private TableView<Product> tvOrder;
 
     @FXML
-    private TableColumn<?, ?> tcOrderAmount;
+    private TableColumn<?, String> tcOrderAmount;
 
     @FXML
-    private TableColumn<?, ?> tcOrderProduct;
+    private TableColumn<Product, String> tcOrderProduct;
 
     @FXML
-    private TableColumn<?, ?> tcOrderCost;
+    private TableColumn<Product, Double> tcOrderCost;
 
     @FXML
     private TextArea lblOrderObservations;
@@ -123,20 +127,13 @@ public class NewOrderGUI {
     @FXML
     public void initialize() {
         btnToggleEdit.setVisible(false);
+
     }
 
     @FXML
     void addOrder(ActionEvent event) {
 
-
-
     }
-
-    /*public Boolean checkForm() {
-
-        if()
-
-    }*/
 
     @FXML
     void addSelectedProduct(ActionEvent event) {

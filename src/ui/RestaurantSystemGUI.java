@@ -94,30 +94,25 @@ public class RestaurantSystemGUI {
         );
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
-        cbEmployees.setOnAction(this::choiceBoxChoosed);
     }
 
-    @FXML
-    void login(ActionEvent event) throws IOException {
-        System.out.println(restaurantSystem.getEmployees().size());
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mainMenu.fxml"));
-        fxmlLoader.setController(this);
-        Parent pane = fxmlLoader.load();
-        mainPane.getChildren().setAll(pane);
-        menuBar.setDisable(false);
-        Stage stage = (Stage) pane.getScene().getWindow();
-        stage.setWidth(1496);
-
-    }
-
-    /*private boolean checkLogin() {
-
-
-
-    }*/
+    // AUTHENTICATION METHODS
 
     @FXML
     void logout(ActionEvent event) throws IOException {
+        showLogin(null);
+        restaurantSystem.setActualUser(null);
+    }
+
+    @FXML
+    void login(ActionEvent event) {
+
+    }
+
+    // NAVIGATION METHODS
+
+    @FXML
+    void showLogin(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         fxmlLoader.setController(this);
         Parent pane = fxmlLoader.load();
@@ -143,33 +138,17 @@ public class RestaurantSystemGUI {
             cbEmployees.setDisable(false);
         }
 
-        initChoiceBox();
-
-    }
-
-    private void initChoiceBox() {
-        if(!restaurantSystem.getEmployees().isEmpty()) {
-            cbEmployees.getItems().add(null);
-            for(User user : restaurantSystem.getUsers()) {
-                if(user.getEmployee()==cbEmployees.getItems())
-                cbEmployees.getItems().add(user.getEmployee().getIdNumber());
-            }
-        }
-    }
-
-    public void choiceBoxChoosed(ActionEvent event) {
-        txtName.setDisable(true);
-        txtLastName.setDisable(true);
-        txtID.setDisable(true);
     }
 
     @FXML
-    void showLogin(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
+    void showMainMenu(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mainMenu.fxml"));
         fxmlLoader.setController(this);
         Parent pane = fxmlLoader.load();
         mainPane.getChildren().setAll(pane);
-        menuBar.setDisable(true);
+        menuBar.setDisable(false);
+        Stage stage = (Stage) pane.getScene().getWindow();
+        stage.setWidth(1496);
     }
 
     @FXML
@@ -212,10 +191,12 @@ public class RestaurantSystemGUI {
         controller.initializeTableView();
     }
 
+    // VERIFICATIONS
+
     @FXML
     void registerUser(ActionEvent event) {
 
-        if(txtName.getText().isEmpty() || txtLastName.getText().isEmpty() ||txtID.getText().isEmpty() ||txtRegUser.getText().isEmpty() ||txtRegPassword.getText().isEmpty()) {
+        if(txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty() || txtRegUser.getText().isEmpty() || txtRegPassword.getText().isEmpty()) {
 
             errorAlert.setTitle("Error");
             errorAlert.setHeaderText("Empty Fields");
@@ -239,8 +220,6 @@ public class RestaurantSystemGUI {
             }
 
         }
-
-        System.out.println(restaurantSystem.getEmployees().size());
 
     }
 
