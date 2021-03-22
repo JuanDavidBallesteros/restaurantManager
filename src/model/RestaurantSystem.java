@@ -29,7 +29,7 @@ public class RestaurantSystem {
 
     private long ordersIdCount;
     private long productIdCount;
-    private long ingredientIdCount; 
+    private long ingredientIdCount;
 
     public final static String RESTAURANTSYSTEM_FILE_NAME = "data/restaurant_system.rsys";
 
@@ -77,6 +77,10 @@ public class RestaurantSystem {
         return actualDate;
     }
 
+    public void setActualDate(Date date) {
+         this.actualDate = date;
+    }
+
     public User getActualUser() {
         return actualUser;
     }
@@ -85,10 +89,10 @@ public class RestaurantSystem {
         this.actualUser = actualUser;
     }
 
-
     // -------------------- adds
 
-    public void addFirstUser(String name, String lastName, String idNumber, String userName, String userPassword) throws IOException {
+    public void addFirstUser(String name, String lastName, String idNumber, String userName, String userPassword)
+            throws IOException {
         Employee tempE = new Employee(name, lastName, idNumber, userName, userName);
         employees.add(tempE);
 
@@ -97,7 +101,8 @@ public class RestaurantSystem {
         saveData();
     }
 
-    public void addProduct(String name, int typeNum, List<Ingredient> ingredients, int sizeNum, Double price) throws IOException {
+    public void addProduct(String name, int typeNum, List<Ingredient> ingredients, int sizeNum, Double price)
+            throws IOException {
         String id = "#P" + productIdCount;
 
         Product temp = new Product(id, name, typeNum, ingredients, sizeNum, price, actualUser.getUserName(),
@@ -116,7 +121,7 @@ public class RestaurantSystem {
     }
 
     public void addOrder(int stateNum, List<Product> products, List<Integer> productsQuantity, String clientName,
-                         String clientLastName, String employeeID, Date deliveryDate, String observations) throws IOException {
+            String clientLastName, String employeeID, Date deliveryDate, String observations) throws IOException {
         String id = "#O" + ordersIdCount;
 
         Client client = searchClientByName(clientName, clientLastName);
@@ -131,7 +136,7 @@ public class RestaurantSystem {
     }
 
     public void addClient(String name, String lastName, String idNumber, String address, String phone,
-                          String observations) throws IOException {
+            String observations) throws IOException {
         Client temp = new Client(name, lastName, idNumber, actualUser.getUserName(), actualUser.getUserName(), address,
                 phone, observations);
         orderAddCliente(temp);
@@ -204,56 +209,100 @@ public class RestaurantSystem {
     // -------------------- update
 
     public void updateProduct(Product product, String name, int typeNum, List<Ingredient> ingredients, int sizeNum,
-                              Double price) throws IOException {
-        Product temp = new Product(product.getId(), name, typeNum, ingredients, sizeNum, price, product.getCreatedBy(),
-                actualUser.getUserName());
-        products.remove(product);
-        products.add(temp);
+            Double price) throws IOException {
+        /*
+         * Product temp = new Product(product.getId(), name, typeNum, ingredients,
+         * sizeNum, price, product.getCreatedBy(), actualUser.getUserName());
+         * products.remove(product); products.add(temp);
+         */
+        product.setName(name);
+        product.setType(typeNum);
+        product.setIngredients(ingredients);
+        product.setSize(sizeNum);
+        product.setPrice(price);
+        product.setModifiedBy(actualUser.getUserName());
+
         saveData();
     }
 
     public void updateIngredient(Ingredient ingredient, String name, int typeNum) throws IOException {
-        Ingredient temp = new Ingredient(ingredient.getId(), name, typeNum, ingredient.getCreatedBy(),
+        /* Ingredient temp = new Ingredient(ingredient.getId(), name, typeNum, ingredient.getCreatedBy(),
                 actualUser.getUserName());
         ingredients.remove(ingredient);
-        ingredients.add(temp);
+        ingredients.add(temp); */
+        ingredient.setName(name);
+        ingredient.setType(typeNum);
+        ingredient.setModifiedBy(actualUser.getUserName());
+
         saveData();
     }
 
     public void updateOrder(Order order, int stateNum, List<Product> products, List<Integer> productsQuantity,
-                            String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations) throws IOException {
-
-        Client client = searchClientByName(clientName, clientLastName);
-
-        Employee employee = searchEmployee(employeeID);
-
-        Order temp = new Order(order.getId(), stateNum, products, productsQuantity, client, employee, deliveryDate,
+            String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations)
+            throws IOException {
+        
+                /* Order temp = new Order(order.getId(), stateNum, products, productsQuantity, client, employee, deliveryDate,
                 observations, order.getCreatedBy(), actualUser.getUserName());
         orders.remove(order);
-        orders.add(temp);
+        orders.add(temp); */
+         
+
+        Employee employee = searchEmployee(employeeID);
+        
+        Client client = searchClientByName(clientName, clientLastName);
+
+        order.setState(stateNum);
+        order.setProducts(products);
+        order.setProductsQuantity(productsQuantity);
+        order.setClient(client);
+        order.setEmployee(employee);
+        order.setDeliveryDate(actualDate);
+        order.setObservations(observations);
+        order.setModifiedBy(actualUser.getUserName());
+
         saveData();
     }
 
     public void updateClient(Client client, String name, String lastName, String idNumber, String address, String phone,
-                             String observations) throws IOException {
-        Client temp = new Client(name, lastName, idNumber, client.getCreatedBy(), actualUser.getUserName(), address,
+            String observations) throws IOException {
+        /* Client temp = new Client(name, lastName, idNumber, client.getCreatedBy(), actualUser.getUserName(), address,
                 phone, observations);
         removeClient(client);
-        orderAddCliente(temp);
+        orderAddCliente(temp); */
+
+        client.setName(name);
+        client.setLastName(lastName);
+        client.setIdNumber(idNumber);
+        client.setAddress(address);
+        client.setPhone(phone);
+        client.setObservations(observations);
+        client.setModifiedBy(actualUser.getUserName());
+
         saveData();
     }
 
     public void updateEmployee(Employee employee, String name, String lastName, String idNumber) throws IOException {
-        Employee temp = new Employee(name, lastName, idNumber, employee.getCreatedBy(), actualUser.getUserName());
+        /* Employee temp = new Employee(name, lastName, idNumber, employee.getCreatedBy(), actualUser.getUserName());
         removeEmployee(employee);
-        employees.add(temp);
+        employees.add(temp); */
+
+        employee.setName(name);
+        employee.setLastName(lastName);
+        employee.setIdNumber(idNumber);
+        employee.setModifiedBy(actualUser.getUserName());
+
         saveData();
     }
 
     public void updateUser(User user, Employee employee, String userName, String userPassword) throws IOException {
-        User temp = new User(employee, userName, userPassword, user.getCreatedBy(), actualUser.getUserName());
+        /* User temp = new User(employee, userName, userPassword, user.getCreatedBy(), actualUser.getUserName());
         removeUser(user);
-        users.add(temp);
+        users.add(temp); */
+
+        user.setEmployee(employee);
+        user.setUserName(userName);
+        user.setUserPassword(userPassword);
+
         saveData();
     }
 
@@ -388,7 +437,7 @@ public class RestaurantSystem {
     public void importOrders(String path, String separator) throws FileNotFoundException, IOException, ParseException {
         ordersIdCount = imports.importOrder(ordersIdCount, orders, products, clients, employees, users, path,
                 separator);
-                saveData();
+        saveData();
     }
 
     // ---------------- Sorts
@@ -537,12 +586,12 @@ public class RestaurantSystem {
 
         };
 
-        tempList.sort(dateComparator); //Collections.reverseOrder(ComparatorObject) -> return a Comparator
+        tempList.sort(dateComparator); // Collections.reverseOrder(ComparatorObject) -> return a Comparator
 
         return tempList;
     }
 
-    // ---------------- Serialization        
+    // ---------------- Serialization
 
     public void saveData() throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(RESTAURANTSYSTEM_FILE_NAME));
@@ -561,26 +610,26 @@ public class RestaurantSystem {
         oos.close();
     }
 
-    @SuppressWarnings("unchecked") //Supress the cast warning
-      public boolean loadData() throws IOException, ClassNotFoundException{
+    @SuppressWarnings("unchecked") // Supress the cast warning
+    public boolean loadData() throws IOException, ClassNotFoundException {
         File f = new File(RESTAURANTSYSTEM_FILE_NAME);
         boolean loaded = false;
-        if(f.exists()){
-          ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
-          
-          employees = (List<Employee>) ois.readObject();
-          users = (List<User>) ois.readObject();
-          clients = (List<Client>) ois.readObject();
+        if (f.exists()) {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
 
-          ingredients = (List<Ingredient> ) ois.readObject();
-          products = (List<Product> ) ois.readObject();
-          orders = (List<Order> ) ois.readObject();
+            employees = (List<Employee>) ois.readObject();
+            users = (List<User>) ois.readObject();
+            clients = (List<Client>) ois.readObject();
 
-          ordersIdCount = (long) ois.readObject();
-          productIdCount = (long) ois.readObject();
-          ingredientIdCount = (long) ois.readObject();
-          ois.close();
-          loaded = true;
+            ingredients = (List<Ingredient>) ois.readObject();
+            products = (List<Product>) ois.readObject();
+            orders = (List<Order>) ois.readObject();
+
+            ordersIdCount = (long) ois.readObject();
+            productIdCount = (long) ois.readObject();
+            ingredientIdCount = (long) ois.readObject();
+            ois.close();
+            loaded = true;
         }
         return loaded;
     }

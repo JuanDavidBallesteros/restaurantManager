@@ -55,6 +55,10 @@ public class Product implements Comparable<Product>, Serializable {
         return ingredients;
     }
 
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
     public String getSize() {
         return size;
     }
@@ -117,6 +121,5 @@ public class Product implements Comparable<Product>, Serializable {
         }
         return value;
     }
-
 
 }

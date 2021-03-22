@@ -50,8 +50,8 @@ public class Order implements Serializable {
         return state;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setState(int stateNum) {
+        this.state = OrderState.values()[stateNum].name();
     }
 
     public List<Product> getProducts() {
@@ -117,4 +117,14 @@ public class Order implements Serializable {
         }
         return amount;
     }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public void setProductsQuantity(List<Integer> productsQuantity) {
+        this.productsQuantity = productsQuantity;
+    }
+
+    
 }
