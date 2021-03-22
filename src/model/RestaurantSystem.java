@@ -144,21 +144,16 @@ public class RestaurantSystem {
     }
 
     public void orderAddCliente(Client client) {
-        boolean space = false;
-        if (clients.size() > 0) {
-            for (int i = 0; i < clients.size() && !space; i++) {
-                if (client.compareByLastName(clients.get(i)) > 0) {
-                    clients.add(i, client);
-                    space = true;
-                } else if (client.compareByLastName(clients.get(i)) == 0) {
-                    if (client.compareByName(clients.get(i)) > 0) {
-                        clients.add(i, client);
-                        space = true;
-                    }
-                }
-            }
-        } else {
+        if (clients.isEmpty()) {
+
             clients.add(client);
+            
+        } else {
+           int i = 0;
+           while(i < clients.size() && client.compareByFullName(clients.get(i)) > 0) {
+            i++;
+           }
+            clients.add(i, client);
         }
     }
 

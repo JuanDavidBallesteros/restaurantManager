@@ -1,8 +1,6 @@
 package model;
 
-//import java.io.Serializable;
-
-public class Client extends Person { //implements Serializable {
+public class Client extends Person { 
      /**
      * Standard version 1.0 
      * Contains de basic features for an client element
@@ -12,6 +10,7 @@ public class Client extends Person { //implements Serializable {
     private String address;
     private String phone;
     private String observations;
+    private String fullName;
 
     public Client(String name, String lastName, String idNumber, String createdBy, String modifiedBy, String address,
                   String phone, String observations) {
@@ -19,6 +18,7 @@ public class Client extends Person { //implements Serializable {
         this.address = address;
         this.phone = phone;
         this.observations = observations;
+        fullName = name +  " " +lastName;
     }
 
     public String getAddress() {
@@ -45,6 +45,10 @@ public class Client extends Person { //implements Serializable {
         this.observations = observations;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
     // -------------------- compare
 
     public int compareByLastName(Client other) {
@@ -61,5 +65,9 @@ public class Client extends Person { //implements Serializable {
 
     public int compareByName(String other) {
         return getName().compareTo(other);
+    }
+
+    public int compareByFullName(Client other) {
+        return fullName.compareTo(other.getFullName());
     }
 }

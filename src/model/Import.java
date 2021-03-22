@@ -27,39 +27,39 @@ public class Import {
         while (line != null) {
             String[] parts = line.split(separator);
 
-            Client temp = new Client(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5],
-                    (parts[6]), parts[7]);
-            orderAddClient(temp, clients);
-            count++;
+            Client temp = new Client(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], (parts[6]), parts[7]);
+
+            count = orderAddClient(temp, clients, count);
+
             line = br.readLine();
         }
+
         br.close();
         return count;
     }
 
-    public void orderAddClient(Client client, List<Client> clients) {
-        boolean space = false;
-        if (clients.size() > 0) {
-            for (int i = 0; i < clients.size() && !space; i++) {
-                if (client.compareByLastName(clients.get(i)) > 0) {
-                    clients.add(i, client);
-                    space = true;
-                } else if (client.compareByLastName(clients.get(i)) == 0) {
-                    if (client.compareByName(clients.get(i)) > 0) {
-                        clients.add(i, client);
-                        space = true;
-                    }
-                }
-            }
-        } else {
+    public int orderAddClient(Client client, List<Client> clients, int count) {
+
+        if (clients.isEmpty()) {
+
             clients.add(client);
+            count++;
+
+        } else {
+            int i = 0;
+            while (i < clients.size() && client.compareByFullName(clients.get(i)) > 0) {
+                i++;
+            }
+            clients.add(i, client);
+            count++;
         }
+        return count;
     }
 
     // ------------------------- Products
 
     public long importProducts(long productIdCount, List<Product> products, String path, String separator,
-                               List<Ingredient> ingredients) throws IOException, FileNotFoundException {
+            List<Ingredient> ingredients) throws IOException, FileNotFoundException {
 
         long countProduct = productIdCount;
         List<Ingredient> addedIngredients = new ArrayList<>();
@@ -146,7 +146,7 @@ public class Import {
     // ------------------------- Orders
 
     public long importOrder(long ordersIdCount, List<Order> orders, List<Product> products, List<Client> clients,
-                            List<Employee> employees, List<User> users, String path, String separator)
+            List<Employee> employees, List<User> users, String path, String separator)
             throws IOException, ParseException {
         BufferedReader br = new BufferedReader(new FileReader(path));
 
