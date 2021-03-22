@@ -49,7 +49,7 @@ public class RestaurantSystemGUI {
             restaurantSystem.loadData();
         } catch (ClassNotFoundException | IOException e) {
             showAlert("ERROR", "Error", "Error en datos", "No se han podido cargar los datos");
-            //e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -126,7 +126,25 @@ public class RestaurantSystemGUI {
 
     @FXML
     void login(ActionEvent event) throws IOException {
-        showMainMenu(null);
+        boolean access = false;
+        for (int i = 0; i < restaurantSystem.getUsers().size() && !access; i++) {
+            System.out.println(restaurantSystem.getUsers().get(i).getUserName());
+            if (txtUser.getText().equals(restaurantSystem.getUsers().get(i).getUserName())) {
+                if (txtPassword.getText().equals(restaurantSystem.getUsers().get(i).getUserPassword())) {
+                    access = true;
+                }
+            }
+        }
+
+        if (access) {
+            showMainMenu(null);
+        } else {
+            warningAlert.setTitle("Alerta");
+            warningAlert.setHeaderText(null);
+            warningAlert.setContentText("Nombre de usuario o contraseña incorrectos");
+            warningAlert.showAndWait();
+        }
+
     }
 
     // NAVIGATION
@@ -256,8 +274,8 @@ public class RestaurantSystemGUI {
                 || txtRegUser.getText().isEmpty() || txtRegPassword.getText().isEmpty()) {
 
             errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("Empty Fields");
-            errorAlert.setContentText("Please enter all the data.");
+            errorAlert.setHeaderText("Campos Vacíos");
+            errorAlert.setContentText("Llena todos los campos");
             errorAlert.showAndWait();
 
         } else {
@@ -286,12 +304,22 @@ public class RestaurantSystemGUI {
 
                 if (employee != null) {
                     try {
-                        restaurantSystem.addUser(employee, txtRegUser.getText(), txtRegPassword.getText());
 
-                        infoAlert.setTitle("App");
-                        infoAlert.setHeaderText(null);
-                        infoAlert.setContentText("Hecho");
-                        infoAlert.showAndWait();
+                        for (int i = 0; i < restaurantSystem.getUsers().size(); i++) {
+                            if (restaurantSystem.getUsers().get(i).getUserName() == txtRegUser.getText()) {
+                                warningAlert.setTitle("Alerta");
+                                warningAlert.setHeaderText(null);
+                                warningAlert.setContentText("Nombre de usuario ya está registrado");
+                                warningAlert.showAndWait();
+                            } else {
+                                restaurantSystem.addUser(employee, txtRegUser.getText(), txtRegPassword.getText());
+
+                                infoAlert.setTitle("App");
+                                infoAlert.setHeaderText(null);
+                                infoAlert.setContentText("Hecho");
+                                infoAlert.showAndWait();
+                            }
+                        }
 
                     } catch (IOException e) {
                         errorAlert.setTitle("Error");
@@ -332,7 +360,7 @@ public class RestaurantSystemGUI {
 
                 infoAlert.setTitle("Información");
                 infoAlert.setHeaderText("Clientes importados");
-                if(count==1) {
+                if (count == 1) {
                     infoAlert.setContentText(count + " cliente fue importado correctamente.");
                 } else {
                     infoAlert.setContentText(count + " clientes fueron importados correctamente.");
