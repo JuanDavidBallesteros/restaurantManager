@@ -122,6 +122,9 @@ public class RestaurantSystemGUI {
 
     @FXML
     void showLogin(ActionEvent event) throws IOException {
+        System.out.println("Empleados: " + restaurantSystem.getEmployees().size());
+        System.out.println("Clientes: " + restaurantSystem.getClients().size());
+        System.out.println("Usuarios: " + restaurantSystem.getUsers().size());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         fxmlLoader.setController(this);
         Parent pane = fxmlLoader.load();
@@ -147,6 +150,18 @@ public class RestaurantSystemGUI {
             cbEmployees.setDisable(false);
         }
 
+    }
+
+    @FXML
+    void showSetup(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("setup.fxml"));
+        SetupGUI controller = new SetupGUI(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        mainPane.getChildren().setAll(pane);
+        menuBar.setDisable(true);
+        Stage stage = (Stage) pane.getScene().getWindow();
+        stage.setWidth(1296);
     }
 
     @FXML
@@ -306,6 +321,40 @@ public class RestaurantSystemGUI {
         );
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
+    }
+
+    // ALERTS ----------------------------------------------------------------------------------------------------------
+
+    public void showAlert(String type, String title, String header, String content) {
+        switch (type) {
+            case "Error":
+                errorAlert.setTitle(title);
+                errorAlert.setHeaderText(header);
+                errorAlert.setContentText(content);
+                errorAlert.showAndWait();
+                break;
+            case "Info":
+                infoAlert.setTitle(title);
+                infoAlert.setHeaderText(header);
+                infoAlert.setContentText(content);
+                infoAlert.showAndWait();
+                break;
+            case "Warning":
+                warningAlert.setTitle(title);
+                warningAlert.setHeaderText(header);
+                warningAlert.setContentText(content);
+                warningAlert.showAndWait();
+                break;
+        }
+    }
+
+    public Optional<ButtonType> showConfirmAlert(String title, String content, String ok, String cancel) {
+        confirmAlert.setTitle(title);
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText(content);
+        confirmAlertOK.setText(ok);
+        confirmAlertCancel.setText(cancel);
+        return confirmAlert.showAndWait();
     }
 
 }

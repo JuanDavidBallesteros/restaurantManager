@@ -6,8 +6,6 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -15,7 +13,7 @@
    <children>
       <VBox alignment="CENTER" prefHeight="695.0" prefWidth="1280.0">
          <children>
-            <Label text="Registrarse">
+            <Label text="¡Bienvenido! Cree su primer empleado para ingresar al sistema">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
@@ -74,39 +72,11 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
             </PasswordField>
-            <HBox alignment="CENTER">
-               <children>
-                  <Label fx:id="lblCreator" layoutX="289.0" layoutY="10.0" text="Creador por: Usuario">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Separator orientation="VERTICAL">
-                     <HBox.margin>
-                        <Insets left="15.0" />
-                     </HBox.margin>
-                  </Separator>
-                  <Label fx:id="lblModifier" text="Modificado por: Usuario">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="20.0" />
-               </VBox.margin>
-            </HBox>
-            <ToggleButton fx:id="btnToggleEdit" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#toggleEdit" prefWidth="100.0" text="Editar: No">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </ToggleButton>
-            <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#registerUser" prefWidth="100.0" text="Registrarse">
+            <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showLogin" prefWidth="100.0" text="Empezar">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-            <Button layoutX="621.0" layoutY="396.0" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showLogin" prefWidth="100.0" text="Cancelar" />
          </children>
       </VBox>
    </children>

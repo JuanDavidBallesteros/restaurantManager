@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private RestaurantSystemGUI restaurantSystemGUI;
+    private final RestaurantSystemGUI restaurantSystemGUI;
 
     public Main() {
         restaurantSystemGUI = new RestaurantSystemGUI();
@@ -23,7 +23,11 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        restaurantSystemGUI.showLogin(null);
+        if(restaurantSystemGUI.getRestaurantSystem().getUsers().isEmpty()) {
+            restaurantSystemGUI.showSetup(null);
+        } else {
+            restaurantSystemGUI.showLogin(null);
+        }
     }
 
 
