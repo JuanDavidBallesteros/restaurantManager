@@ -419,9 +419,10 @@ public class RestaurantSystem {
 
     // -------------------- imports
 
-    public void importClients(String path, String separator) throws FileNotFoundException, IOException {
-        imports.importClients(clients, path, separator);
+    public int importClients(String path, String separator) throws FileNotFoundException, IOException {
+        int count = imports.importClients(clients, path, separator);
         saveData();
+        return count;
     }
 
     public void importProducts(String path, String separator) throws FileNotFoundException, IOException {
