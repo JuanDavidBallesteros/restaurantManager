@@ -17,8 +17,9 @@ public class Import {
 
     // ------------------------- Clients
 
-    public void importClients(List<Client> clients, String path, String separator)
+    public int importClients(List<Client> clients, String path, String separator)
             throws IOException, FileNotFoundException {
+        int count = 0;
         BufferedReader br = new BufferedReader(new FileReader(path));
         String line = br.readLine();
         line = br.readLine();
@@ -29,9 +30,11 @@ public class Import {
             Client temp = new Client(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5],
                     (parts[6]), parts[7]);
             orderAddClient(temp, clients);
+            count++;
             line = br.readLine();
         }
         br.close();
+        return count;
     }
 
     public void orderAddClient(Client client, List<Client> clients) {

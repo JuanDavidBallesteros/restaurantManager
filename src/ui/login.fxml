@@ -38,10 +38,9 @@
             </PasswordField>
             <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#login" prefWidth="100.0" text="Ingresar">
                <VBox.margin>
-                  <Insets bottom="10.0" />
+                  <Insets />
                </VBox.margin>
             </Button>
-            <Button layoutX="621.0" layoutY="396.0" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showRegister" prefWidth="100.0" text="Registrarse" />
          </children>
       </VBox>
    </children>

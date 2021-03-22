@@ -47,14 +47,10 @@ public class RestaurantSystemGUI {
 
         try {
             restaurantSystem.loadData();
-
         } catch (ClassNotFoundException | IOException e) {
-
             showAlert("ERROR", "Error", "Error en datos", "No se han podido cargar los datos");
-
             //e.printStackTrace();
         }
-
     }
 
     @FXML
@@ -138,9 +134,6 @@ public class RestaurantSystemGUI {
 
     @FXML
     void showLogin(ActionEvent event) throws IOException {
-        System.out.println("Empleados: " + restaurantSystem.getEmployees().size());
-        System.out.println("Clientes: " + restaurantSystem.getClients().size());
-        System.out.println("Usuarios: " + restaurantSystem.getUsers().size());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         fxmlLoader.setController(this);
         Parent pane = fxmlLoader.load();
@@ -323,24 +316,27 @@ public class RestaurantSystemGUI {
         if (txtClientSeparator.getText().isEmpty()) {
 
             errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("No Separator");
-            errorAlert.setContentText("Please enter the separator to use in the import file.");
+            errorAlert.setHeaderText("Separador vacío");
+            errorAlert.setContentText("Por favor, ingrese el separador de datos del archivo a importar.");
             errorAlert.showAndWait();
 
         } else {
 
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select File");
+            fileChooser.setTitle("Seleccionar Archivo");
             File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
 
             if (file != null) {
 
-                restaurantSystem.importClients(file.getPath(), txtClientSeparator.getText());
+                int count = restaurantSystem.importClients(file.getPath(), txtClientSeparator.getText());
 
-                infoAlert.setTitle("Information");
-                infoAlert.setHeaderText("Clients Imported");
-                infoAlert.setContentText("Clients were successfully imported." + "There are now: "
-                        + restaurantSystem.getClients().size());
+                infoAlert.setTitle("Información");
+                infoAlert.setHeaderText("Clientes importados");
+                if(count==1) {
+                    infoAlert.setContentText(count + " cliente fue importado correctamente.");
+                } else {
+                    infoAlert.setContentText(count + " clientes fueron importados correctamente.");
+                }
                 infoAlert.showAndWait();
 
             }
