@@ -32,6 +32,6 @@ public class Main extends Application {
             restaurantSystemGUI.showSetup(null);
         } else {
             restaurantSystemGUI.showLogin(null);
-        }
+        } 
     }
 }

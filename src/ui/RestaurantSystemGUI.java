@@ -38,31 +38,19 @@ public class RestaurantSystemGUI {
     public RestaurantSystemGUI() {
         restaurantSystem = new RestaurantSystem();
 
-        this.errorAlert = new Alert(Alert.AlertType.ERROR);
-        this.infoAlert = new Alert(Alert.AlertType.INFORMATION);
-        this.warningAlert = new Alert(Alert.AlertType.WARNING);
-        this.confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        this.errorAlert = new Alert(AlertType.ERROR);
+        this.infoAlert = new Alert(AlertType.INFORMATION);
+        this.warningAlert = new Alert(AlertType.WARNING);
+        this.confirmAlert = new Alert(AlertType.CONFIRMATION);
         confirmAlertOK = ((Button) confirmAlert.getDialogPane().lookupButton(ButtonType.OK));
         confirmAlertCancel = ((Button) confirmAlert.getDialogPane().lookupButton(ButtonType.CANCEL));
 
         try {
-            boolean loaded = restaurantSystem.loadData();
-            if (!loaded) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("App");
-                alert.setHeaderText(null);
-                alert.setContentText("Bienvenido por primera vez");
+            restaurantSystem.loadData();
 
-                alert.showAndWait();
-            }
         } catch (ClassNotFoundException | IOException e) {
 
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Datos corruptos, no se podrán cargar y se perderán");
-
-            alert.showAndWait();
+            showAlert("ERROR", "Error", "Error en datos", "No se han podido cargar los datos");
 
             //e.printStackTrace();
         }
@@ -390,19 +378,19 @@ public class RestaurantSystemGUI {
 
     public void showAlert(String type, String title, String header, String content) {
         switch (type) {
-        case "Error":
+        case "ERROR":
             errorAlert.setTitle(title);
             errorAlert.setHeaderText(header);
             errorAlert.setContentText(content);
             errorAlert.showAndWait();
             break;
-        case "Info":
+        case "INFORMATION":
             infoAlert.setTitle(title);
             infoAlert.setHeaderText(header);
             infoAlert.setContentText(content);
             infoAlert.showAndWait();
             break;
-        case "Warning":
+        case "WARNING":
             warningAlert.setTitle(title);
             warningAlert.setHeaderText(header);
             warningAlert.setContentText(content);
