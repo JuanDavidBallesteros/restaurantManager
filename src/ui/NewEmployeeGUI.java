@@ -2,6 +2,7 @@ package ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import model.*;
 import java.io.IOException;
@@ -11,9 +12,17 @@ public class NewEmployeeGUI {
     private final RestaurantSystem restaurantSystem;
     private final RestaurantSystemGUI mainGUI;
 
+    private final Alert errorAlert;
+    private final Alert infoAlert;
+    private final Alert warningAlert;
+
     public NewEmployeeGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
         restaurantSystem = mainGUI.getRestaurantSystem();
+
+        this.errorAlert = new Alert(Alert.AlertType.ERROR);
+        this.infoAlert = new Alert(Alert.AlertType.INFORMATION);
+        this.warningAlert = new Alert(Alert.AlertType.WARNING);
     }
 
     @FXML
@@ -27,7 +36,21 @@ public class NewEmployeeGUI {
 
     @FXML
     void addEmployee(ActionEvent event) {
-        restaurantSystem.addEmployee(txtName.getText(), txtLastName.getText(), txtID.getText());
+        try {
+            restaurantSystem.addEmployee(txtName.getText(), txtLastName.getText(), txtID.getText());
+
+            infoAlert.setTitle("App");
+            infoAlert.setHeaderText(null);
+            infoAlert.setContentText("Hecho");
+            infoAlert.showAndWait();
+
+        } catch (IOException e) {
+            
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("Acción incompleta");
+            errorAlert.showAndWait();
+        }
     }
 
     @FXML

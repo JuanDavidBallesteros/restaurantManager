@@ -1,8 +1,12 @@
 package model;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,11 +29,11 @@ public class RestaurantSystem {
 
     private long ordersIdCount;
     private long productIdCount;
-    private long ingredientIdCount;
+    private long ingredientIdCount; 
+
+    public final static String RESTAURANTSYSTEM_FILE_NAME = "data/restaurant_system.rsys";
 
     public RestaurantSystem() {
-
-
 
         clients = new ArrayList<>();
         employees = new ArrayList<>();
@@ -84,32 +88,35 @@ public class RestaurantSystem {
 
     // -------------------- adds
 
-    public void addFirstUser(String name, String lastName, String idNumber, String userName, String userPassword) {
+    public void addFirstUser(String name, String lastName, String idNumber, String userName, String userPassword) throws IOException {
         Employee tempE = new Employee(name, lastName, idNumber, userName, userName);
         employees.add(tempE);
 
         User tempU = new User(tempE, userName, userPassword);
         users.add(tempU);
+        saveData();
     }
 
-    public void addProduct(String name, int typeNum, List<Ingredient> ingredients, int sizeNum, Double price) {
+    public void addProduct(String name, int typeNum, List<Ingredient> ingredients, int sizeNum, Double price) throws IOException {
         String id = "#P" + productIdCount;
 
         Product temp = new Product(id, name, typeNum, ingredients, sizeNum, price, actualUser.getUserName(),
                 actualUser.getUserName());
         products.add(temp);
         productIdCount += 1;
+        saveData();
     }
 
-    public void addIngredient(String name, int typeNum) {
+    public void addIngredient(String name, int typeNum) throws IOException {
         String id = "#I" + ingredientIdCount;
         Ingredient temp = new Ingredient(id, name, typeNum, actualUser.getUserName(), actualUser.getUserName());
         ingredients.add(temp);
         ingredientIdCount += 1;
+        saveData();
     }
 
     public void addOrder(int stateNum, List<Product> products, List<Integer> productsQuantity, String clientName,
-                         String clientLastName, String employeeID, Date deliveryDate, String observations) {
+                         String clientLastName, String employeeID, Date deliveryDate, String observations) throws IOException {
         String id = "#O" + ordersIdCount;
 
         Client client = searchClientByName(clientName, clientLastName);
@@ -120,13 +127,15 @@ public class RestaurantSystem {
                 actualUser.getUserName(), actualUser.getUserName());
         orders.add(temp);
         ordersIdCount += 1;
+        saveData();
     }
 
     public void addClient(String name, String lastName, String idNumber, String address, String phone,
-                          String observations) {
+                          String observations) throws IOException {
         Client temp = new Client(name, lastName, idNumber, actualUser.getUserName(), actualUser.getUserName(), address,
                 phone, observations);
         orderAddCliente(temp);
+        saveData();
     }
 
     public void orderAddCliente(Client client) {
@@ -148,61 +157,71 @@ public class RestaurantSystem {
         }
     }
 
-    public void addEmployee(String name, String lastName, String idNumber) {
+    public void addEmployee(String name, String lastName, String idNumber) throws IOException {
         Employee temp = new Employee(name, lastName, idNumber, actualUser.getUserName(), actualUser.getUserName());
         employees.add(temp);
+        saveData();
     }
 
-    public void addUser(Employee employee, String userName, String userPassword) {
+    public void addUser(Employee employee, String userName, String userPassword) throws IOException {
         User temp = new User(employee, userName, userPassword, actualUser.getUserName(), actualUser.getUserName());
         users.add(temp);
+        saveData();
     }
 
     // -------------------- remove
 
-    public void removeProduct(Product product) {
+    public void removeProduct(Product product) throws IOException {
         products.remove(product);
+        saveData();
     }
 
-    public void removeIngredient(Ingredient ingredient) {
+    public void removeIngredient(Ingredient ingredient) throws IOException {
         ingredients.remove(ingredient);
+        saveData();
     }
 
-    public void removeOrder(Order order) {
+    public void removeOrder(Order order) throws IOException {
         orders.remove(order);
+        saveData();
     }
 
-    public void removeClient(Client client) {
+    public void removeClient(Client client) throws IOException {
         clients.remove(client);
+        saveData();
     }
 
-    public void removeEmployee(Employee employee) {
+    public void removeEmployee(Employee employee) throws IOException {
         employees.remove(employee);
+        saveData();
     }
 
-    public void removeUser(User user) {
+    public void removeUser(User user) throws IOException {
         users.remove(user);
+        saveData();
     }
 
     // -------------------- update
 
     public void updateProduct(Product product, String name, int typeNum, List<Ingredient> ingredients, int sizeNum,
-                              Double price) {
+                              Double price) throws IOException {
         Product temp = new Product(product.getId(), name, typeNum, ingredients, sizeNum, price, product.getCreatedBy(),
                 actualUser.getUserName());
         products.remove(product);
         products.add(temp);
+        saveData();
     }
 
-    public void updateIngredient(Ingredient ingredient, String name, int typeNum) {
+    public void updateIngredient(Ingredient ingredient, String name, int typeNum) throws IOException {
         Ingredient temp = new Ingredient(ingredient.getId(), name, typeNum, ingredient.getCreatedBy(),
                 actualUser.getUserName());
         ingredients.remove(ingredient);
         ingredients.add(temp);
+        saveData();
     }
 
     public void updateOrder(Order order, int stateNum, List<Product> products, List<Integer> productsQuantity,
-                            String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations) {
+                            String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations) throws IOException {
 
         Client client = searchClientByName(clientName, clientLastName);
 
@@ -212,44 +231,52 @@ public class RestaurantSystem {
                 observations, order.getCreatedBy(), actualUser.getUserName());
         orders.remove(order);
         orders.add(temp);
+        saveData();
     }
 
     public void updateClient(Client client, String name, String lastName, String idNumber, String address, String phone,
-                             String observations) {
+                             String observations) throws IOException {
         Client temp = new Client(name, lastName, idNumber, client.getCreatedBy(), actualUser.getUserName(), address,
                 phone, observations);
         removeClient(client);
         orderAddCliente(temp);
+        saveData();
     }
 
-    public void updateEmployee(Employee employee, String name, String lastName, String idNumber) {
+    public void updateEmployee(Employee employee, String name, String lastName, String idNumber) throws IOException {
         Employee temp = new Employee(name, lastName, idNumber, employee.getCreatedBy(), actualUser.getUserName());
         removeEmployee(employee);
         employees.add(temp);
+        saveData();
     }
 
-    public void updateUser(User user, Employee employee, String userName, String userPassword) {
+    public void updateUser(User user, Employee employee, String userName, String userPassword) throws IOException {
         User temp = new User(employee, userName, userPassword, user.getCreatedBy(), actualUser.getUserName());
         removeUser(user);
         users.add(temp);
+        saveData();
     }
 
     // -------------------- disable / enable
 
-    public void disableProduct(Product product) {
+    public void disableProduct(Product product) throws IOException {
         product.setAvailable(false);
+        saveData();
     }
 
-    public void disableIngredient(Ingredient ingredient) {
+    public void disableIngredient(Ingredient ingredient) throws IOException {
         ingredient.setAvailable(false);
+        saveData();
     }
 
-    public void enableProduct(Product product) {
+    public void enableProduct(Product product) throws IOException {
         product.setAvailable(true);
+        saveData();
     }
 
-    public void enableIngredient(Ingredient ingredient) {
+    public void enableIngredient(Ingredient ingredient) throws IOException {
         ingredient.setAvailable(true);
+        saveData();
     }
 
     // -------------------- search
@@ -345,19 +372,23 @@ public class RestaurantSystem {
 
     public void importClients(String path, String separator) throws FileNotFoundException, IOException {
         imports.importClients(clients, path, separator);
+        saveData();
     }
 
     public void importProducts(String path, String separator) throws FileNotFoundException, IOException {
         productIdCount = imports.importProducts(productIdCount, products, path, separator, ingredients);
+        saveData();
     }
 
     public void importIngredients(String path, String separator) throws FileNotFoundException, IOException {
         ingredientIdCount = imports.importIngredients(ingredientIdCount, ingredients, path, separator);
+        saveData();
     }
 
     public void importOrders(String path, String separator) throws FileNotFoundException, IOException, ParseException {
         ordersIdCount = imports.importOrder(ordersIdCount, orders, products, clients, employees, users, path,
                 separator);
+                saveData();
     }
 
     // ---------------- Sorts
@@ -511,5 +542,47 @@ public class RestaurantSystem {
         return tempList;
     }
 
+    // ---------------- Serialization        
+
+    public void saveData() throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(RESTAURANTSYSTEM_FILE_NAME));
+
+        oos.writeObject(employees);
+        oos.writeObject(users);
+        oos.writeObject(clients);
+
+        oos.writeObject(ingredients);
+        oos.writeObject(products);
+        oos.writeObject(orders);
+
+        oos.writeObject(ordersIdCount);
+        oos.writeObject(productIdCount);
+        oos.writeObject(ingredientIdCount);
+        oos.close();
+    }
+
+    @SuppressWarnings("unchecked") //Supress the cast warning
+      public boolean loadData() throws IOException, ClassNotFoundException{
+        File f = new File(RESTAURANTSYSTEM_FILE_NAME);
+        boolean loaded = false;
+        if(f.exists()){
+          ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+          
+          employees = (List<Employee>) ois.readObject();
+          users = (List<User>) ois.readObject();
+          clients = (List<Client>) ois.readObject();
+
+          ingredients = (List<Ingredient> ) ois.readObject();
+          products = (List<Product> ) ois.readObject();
+          orders = (List<Order> ) ois.readObject();
+
+          ordersIdCount = (long) ois.readObject();
+          productIdCount = (long) ois.readObject();
+          ingredientIdCount = (long) ois.readObject();
+          ois.close();
+          loaded = true;
+        }
+        return loaded;
+    }
 
 }

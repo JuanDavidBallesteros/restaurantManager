@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -36,12 +37,36 @@ public class RestaurantSystemGUI {
 
     public RestaurantSystemGUI() {
         restaurantSystem = new RestaurantSystem();
+
         this.errorAlert = new Alert(Alert.AlertType.ERROR);
         this.infoAlert = new Alert(Alert.AlertType.INFORMATION);
         this.warningAlert = new Alert(Alert.AlertType.WARNING);
         this.confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlertOK = ((Button)confirmAlert.getDialogPane().lookupButton(ButtonType.OK));
-        confirmAlertCancel = ((Button)confirmAlert.getDialogPane().lookupButton(ButtonType.CANCEL));
+        confirmAlertOK = ((Button) confirmAlert.getDialogPane().lookupButton(ButtonType.OK));
+        confirmAlertCancel = ((Button) confirmAlert.getDialogPane().lookupButton(ButtonType.CANCEL));
+
+        try {
+            boolean loaded = restaurantSystem.loadData();
+            if (!loaded) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("App");
+                alert.setHeaderText(null);
+                alert.setContentText("Bienvenido por primera vez");
+
+                alert.showAndWait();
+            }
+        } catch (ClassNotFoundException | IOException e) {
+
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Datos corruptos, no se podrán cargar y se perderán");
+
+            alert.showAndWait();
+
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -89,14 +114,16 @@ public class RestaurantSystemGUI {
     @FXML
     private Menu menuClock;
 
-    // INITIALIZE ------------------------------------------------------------------------------------------------------
+    // INITIALIZE
+    // ------------------------------------------------------------------------------------------------------
 
     @FXML
     public void initialize() {
         startClock();
     }
 
-    // AUTHENTICATION METHODS ------------------------------------------------------------------------------------------
+    // AUTHENTICATION METHODS
+    // ------------------------------------------------------------------------------------------
 
     @FXML
     void logout(ActionEvent event) throws IOException {
@@ -107,7 +134,7 @@ public class RestaurantSystemGUI {
         confirmAlertCancel.setText("No");
         Optional<ButtonType> action = confirmAlert.showAndWait();
 
-        if(action.get() == ButtonType.OK) {
+        if (action.get() == ButtonType.OK) {
             showLogin(null);
             restaurantSystem.setActualUser(null);
         }
@@ -118,7 +145,8 @@ public class RestaurantSystemGUI {
         showMainMenu(null);
     }
 
-    // NAVIGATION ------------------------------------------------------------------------------------------------------
+    // NAVIGATION
+    // ------------------------------------------------------------------------------------------------------
 
     @FXML
     void showLogin(ActionEvent event) throws IOException {
@@ -142,7 +170,7 @@ public class RestaurantSystemGUI {
         mainPane.getChildren().setAll(pane);
         menuBar.setDisable(true);
 
-        if(restaurantSystem.getEmployees().isEmpty()) {
+        if (restaurantSystem.getEmployees().isEmpty()) {
             lblEmployee.setDisable(true);
             cbEmployees.setDisable(true);
         } else {
@@ -237,12 +265,14 @@ public class RestaurantSystemGUI {
         controller.initializeTableView();
     }
 
-    // VERIFICATIONS ---------------------------------------------------------------------------------------------------
+    // VERIFICATIONS
+    // ---------------------------------------------------------------------------------------------------
 
     @FXML
     void registerUser(ActionEvent event) {
 
-        if(txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty() || txtRegUser.getText().isEmpty() || txtRegPassword.getText().isEmpty()) {
+        if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()
+                || txtRegUser.getText().isEmpty() || txtRegPassword.getText().isEmpty()) {
 
             errorAlert.setTitle("Error");
             errorAlert.setHeaderText("Empty Fields");
@@ -251,16 +281,43 @@ public class RestaurantSystemGUI {
 
         } else {
 
-            if(restaurantSystem.getEmployees().isEmpty()) {
+            if (restaurantSystem.getEmployees().isEmpty()) {
 
-                restaurantSystem.addFirstUser(txtName.getText(), txtLastName.getText(), txtID.getText(), txtRegUser.getText(), txtRegPassword.getText());
+                try {
+                    restaurantSystem.addFirstUser(txtName.getText(), txtLastName.getText(), txtID.getText(),
+                            txtRegUser.getText(), txtRegPassword.getText());
+
+                    infoAlert.setTitle("App");
+                    infoAlert.setHeaderText(null);
+                    infoAlert.setContentText("Hecho");
+                    infoAlert.showAndWait();
+
+                } catch (IOException e) {
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText(null);
+                    errorAlert.setContentText("Acción incompleta");
+                    errorAlert.showAndWait();
+                }
 
             } else {
 
                 Employee employee = restaurantSystem.searchEmployee(cbEmployees.getValue());
 
-                if(employee!=null) {
-                    restaurantSystem.addUser(employee, txtRegUser.getText(), txtRegPassword.getText());
+                if (employee != null) {
+                    try {
+                        restaurantSystem.addUser(employee, txtRegUser.getText(), txtRegPassword.getText());
+
+                        infoAlert.setTitle("App");
+                        infoAlert.setHeaderText(null);
+                        infoAlert.setContentText("Hecho");
+                        infoAlert.showAndWait();
+
+                    } catch (IOException e) {
+                        errorAlert.setTitle("Error");
+                        errorAlert.setHeaderText(null);
+                        errorAlert.setContentText("Acción incompleta");
+                        errorAlert.showAndWait();
+                    }
                 }
 
             }
@@ -269,12 +326,13 @@ public class RestaurantSystemGUI {
 
     }
 
-    // IMPORTS ---------------------------------------------------------------------------------------------------------
+    // IMPORTS
+    // ---------------------------------------------------------------------------------------------------------
 
     @FXML
     void importClients(ActionEvent event) throws IOException {
 
-        if(txtClientSeparator.getText().isEmpty()) {
+        if (txtClientSeparator.getText().isEmpty()) {
 
             errorAlert.setTitle("Error");
             errorAlert.setHeaderText("No Separator");
@@ -287,13 +345,14 @@ public class RestaurantSystemGUI {
             fileChooser.setTitle("Select File");
             File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
 
-            if(file!=null){
+            if (file != null) {
 
                 restaurantSystem.importClients(file.getPath(), txtClientSeparator.getText());
 
                 infoAlert.setTitle("Information");
                 infoAlert.setHeaderText("Clients Imported");
-                infoAlert.setContentText("Clients were successfully imported." + "There are now: " + restaurantSystem.getClients().size());
+                infoAlert.setContentText("Clients were successfully imported." + "There are now: "
+                        + restaurantSystem.getClients().size());
                 infoAlert.showAndWait();
 
             }
@@ -302,49 +361,53 @@ public class RestaurantSystemGUI {
 
     }
 
-    // EXTRA -----------------------------------------------------------------------------------------------------------
+    // EXTRA
+    // -----------------------------------------------------------------------------------------------------------
 
     void startClock() {
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             LocalTime currentTime = LocalTime.now();
-            if(currentTime.getMinute()<10 && currentTime.getSecond()<10){
-                menuClock.setText(currentTime.getHour() + ":0" + currentTime.getMinute() + ":0" + currentTime.getSecond());
-            } else if(currentTime.getMinute()<10) {
-                menuClock.setText(currentTime.getHour() + ":0" + currentTime.getMinute() + ":" + currentTime.getSecond());
-            } else if(currentTime.getSecond()<10) {
-                menuClock.setText(currentTime.getHour() + ":" + currentTime.getMinute() + ":0" + currentTime.getSecond());
+            if (currentTime.getMinute() < 10 && currentTime.getSecond() < 10) {
+                menuClock.setText(
+                        currentTime.getHour() + ":0" + currentTime.getMinute() + ":0" + currentTime.getSecond());
+            } else if (currentTime.getMinute() < 10) {
+                menuClock.setText(
+                        currentTime.getHour() + ":0" + currentTime.getMinute() + ":" + currentTime.getSecond());
+            } else if (currentTime.getSecond() < 10) {
+                menuClock.setText(
+                        currentTime.getHour() + ":" + currentTime.getMinute() + ":0" + currentTime.getSecond());
             } else {
-                menuClock.setText(currentTime.getHour() + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
+                menuClock
+                        .setText(currentTime.getHour() + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
             }
-        }),
-                new KeyFrame(Duration.seconds(1))
-        );
+        }), new KeyFrame(Duration.seconds(1)));
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
 
-    // ALERTS ----------------------------------------------------------------------------------------------------------
+    // ALERTS
+    // ----------------------------------------------------------------------------------------------------------
 
     public void showAlert(String type, String title, String header, String content) {
         switch (type) {
-            case "Error":
-                errorAlert.setTitle(title);
-                errorAlert.setHeaderText(header);
-                errorAlert.setContentText(content);
-                errorAlert.showAndWait();
-                break;
-            case "Info":
-                infoAlert.setTitle(title);
-                infoAlert.setHeaderText(header);
-                infoAlert.setContentText(content);
-                infoAlert.showAndWait();
-                break;
-            case "Warning":
-                warningAlert.setTitle(title);
-                warningAlert.setHeaderText(header);
-                warningAlert.setContentText(content);
-                warningAlert.showAndWait();
-                break;
+        case "Error":
+            errorAlert.setTitle(title);
+            errorAlert.setHeaderText(header);
+            errorAlert.setContentText(content);
+            errorAlert.showAndWait();
+            break;
+        case "Info":
+            infoAlert.setTitle(title);
+            infoAlert.setHeaderText(header);
+            infoAlert.setContentText(content);
+            infoAlert.showAndWait();
+            break;
+        case "Warning":
+            warningAlert.setTitle(title);
+            warningAlert.setHeaderText(header);
+            warningAlert.setContentText(content);
+            warningAlert.showAndWait();
+            break;
         }
     }
 
@@ -358,4 +421,3 @@ public class RestaurantSystemGUI {
     }
 
 }
-

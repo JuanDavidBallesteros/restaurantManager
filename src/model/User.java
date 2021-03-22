@@ -1,6 +1,14 @@
 package model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+    /**
+     * Standard version 1.0 
+     * Contains de basic features for an user element
+     */
+    private static final long serialVersionUID = 1L;
+
     private Employee employee;
     private String userName;
     private String userPassword;

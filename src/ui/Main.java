@@ -10,6 +10,11 @@ public class Main extends Application {
 
     private final RestaurantSystemGUI restaurantSystemGUI;
 
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     public Main() {
         restaurantSystemGUI = new RestaurantSystemGUI();
     }
@@ -28,10 +33,5 @@ public class Main extends Application {
         } else {
             restaurantSystemGUI.showLogin(null);
         }
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

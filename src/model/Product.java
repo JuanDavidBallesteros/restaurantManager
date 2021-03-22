@@ -1,9 +1,16 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product implements Comparable<Product> {
+public class Product implements Comparable<Product>, Serializable {
+    /**
+     * Standard version 1.0 
+     * Contains de basic features for an Product element
+     */
+    private static final long serialVersionUID = 1L;
+    
     private String name;
     private String type;
     private List<Ingredient> ingredients;

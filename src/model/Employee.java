@@ -1,6 +1,14 @@
 package model;
 
-public class Employee extends Person {
+import java.io.Serializable;
+
+public class Employee extends Person implements Serializable {
+
+    /**
+     * Standard version 1.0 
+     * Contains de basic features for an employee element
+     */
+    private static final long serialVersionUID = 1L;
 
     public Employee(String name, String lastName, String idNumber, String createdBy, String modifiedBy) {
         super(name, lastName, idNumber, createdBy, modifiedBy);
