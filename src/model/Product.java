@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Product implements Comparable<Product>, Serializable {
+    
     /**
      * Standard version 1.0 
      * Contains de basic features for an Product element
      */
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = 3042400769680388411L;
+
     private String name;
     private String type;
     private List<Ingredient> ingredients;

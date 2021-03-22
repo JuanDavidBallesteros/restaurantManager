@@ -3,12 +3,13 @@ package model;
 import java.io.Serializable;
 
 public class Ingredient implements Comparable<Ingredient>, Serializable {
+    
     /**
      * Standard version 1.0 
      * Contains de basic features for an Ingredient element
      */
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = 7918050140709892827L;
+
     private String name;
     private String type;
     private String createdBy;

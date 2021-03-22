@@ -3,11 +3,12 @@ package model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    /**
+
+     /**
      * Standard version 1.0 
      * Contains de basic features for an user element
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5614535401457398882L;
 
     private Employee employee;
     private String userName;

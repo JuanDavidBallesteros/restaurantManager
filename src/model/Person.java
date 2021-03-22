@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 public abstract class Person implements Serializable {
     /**
-     *
+     * Standard version 1.0 
+     * Contains de basic features for a person element
      */
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = 4154816871133299828L;
+
     private String name;
     private String lastName;
     private String idNumber;

@@ -11,8 +11,8 @@ public class Order implements Serializable {
      * Standard version 1.0 
      * Contains de basic features for an Order element
      */
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 5935813510141312573L;
+    
     private String id;
     private String state;
     private List<Product> products;

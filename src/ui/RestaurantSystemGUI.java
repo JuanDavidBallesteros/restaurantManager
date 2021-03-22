@@ -64,7 +64,7 @@ public class RestaurantSystemGUI {
 
             alert.showAndWait();
 
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
     }
