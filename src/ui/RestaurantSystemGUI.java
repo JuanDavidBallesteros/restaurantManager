@@ -48,7 +48,7 @@ public class RestaurantSystemGUI {
         try {
             restaurantSystem.loadData();
         } catch (ClassNotFoundException | IOException e) {
-            showAlert("ERROR", "Error", "Error en datos", "No se han podido cargar los datos");
+            showAlert("ERROR", "Error", "Error en datos", "No se han podido cargar los datos.");
             // e.printStackTrace();
         }
     }
@@ -111,14 +111,7 @@ public class RestaurantSystemGUI {
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        confirmAlert.setTitle("Cerrar Sesión");
-        confirmAlert.setHeaderText(null);
-        confirmAlert.setContentText("¿Está seguro que desea cerrar sesión?");
-        confirmAlertOK.setText("Sí");
-        confirmAlertCancel.setText("No");
-        Optional<ButtonType> action = confirmAlert.showAndWait();
-
-        if (action.get() == ButtonType.OK) {
+        if(showConfirmAlert("Cerrar Sesión", "¿Está seguro que desea cerrar sesión?", "Si", "No")) {
             showLogin(null);
             restaurantSystem.setActualUser(null);
         }
@@ -127,8 +120,8 @@ public class RestaurantSystemGUI {
     @FXML
     void login(ActionEvent event) throws IOException {
         boolean access = false;
+
         for (int i = 0; i < restaurantSystem.getUsers().size() && !access; i++) {
-            
             if (txtUser.getText().equals(restaurantSystem.getUsers().get(i).getUserName())) {
                 if (txtPassword.getText().equals(restaurantSystem.getUsers().get(i).getUserPassword())) {
                     access = true;
@@ -140,14 +133,11 @@ public class RestaurantSystemGUI {
             User actualUser = restaurantSystem.searchUser(txtUser.getText());
             restaurantSystem.setActualUser(actualUser);
             showMainMenu(null);
-            
         } else {
-            warningAlert.setTitle("Alerta");
-            warningAlert.setHeaderText(null);
-            warningAlert.setContentText("Nombre de usuario o contraseña incorrectos");
-            warningAlert.showAndWait();
+            showAlert("ERROR", "Error", "Datos incorrectos", "El usuario no existe o la contraseña es incorrecta.");
+            txtUser.setText("");
+            txtPassword.setText("");
         }
-
     }
 
     // NAVIGATION
@@ -162,24 +152,6 @@ public class RestaurantSystemGUI {
         menuBar.setDisable(true);
         Stage stage = (Stage) pane.getScene().getWindow();
         stage.setWidth(1296);
-    }
-
-    @FXML
-    void showRegister(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("register.fxml"));
-        fxmlLoader.setController(this);
-        Parent pane = fxmlLoader.load();
-        mainPane.getChildren().setAll(pane);
-        menuBar.setDisable(true);
-
-        if (restaurantSystem.getEmployees().isEmpty()) {
-            lblEmployee.setDisable(true);
-            cbEmployees.setDisable(true);
-        } else {
-            lblEmployee.setDisable(false);
-            cbEmployees.setDisable(false);
-        }
-
     }
 
     @FXML
@@ -204,7 +176,7 @@ public class RestaurantSystemGUI {
         Stage stage = (Stage) pane.getScene().getWindow();
         stage.setWidth(1496);
         showOrders(null);
-        lblActiveUser.setText("Usuario: " + restaurantSystem.getActualUser());
+        lblActiveUser.setText("Usuario: " + restaurantSystem.getActualUser().getUserName());
     }
 
     @FXML
@@ -267,77 +239,6 @@ public class RestaurantSystemGUI {
         controller.initializeTableView();
     }
 
-    // VERIFICATIONS
-    // ---------------------------------------------------------------------------------------------------
-
-    @FXML
-    void registerUser(ActionEvent event) {
-
-        if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()
-                || txtRegUser.getText().isEmpty() || txtRegPassword.getText().isEmpty()) {
-
-            errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("Campos Vacíos");
-            errorAlert.setContentText("Llena todos los campos");
-            errorAlert.showAndWait();
-
-        } else {
-
-            if (restaurantSystem.getEmployees().isEmpty()) {
-
-                try {
-                    restaurantSystem.addFirstUser(txtName.getText(), txtLastName.getText(), txtID.getText(),
-                            txtRegUser.getText(), txtRegPassword.getText());
-
-                    infoAlert.setTitle("App");
-                    infoAlert.setHeaderText(null);
-                    infoAlert.setContentText("Hecho");
-                    infoAlert.showAndWait();
-
-                } catch (IOException e) {
-                    errorAlert.setTitle("Error");
-                    errorAlert.setHeaderText(null);
-                    errorAlert.setContentText("Acción incompleta");
-                    errorAlert.showAndWait();
-                }
-
-            } else {
-
-                Employee employee = restaurantSystem.searchEmployee(cbEmployees.getValue());
-
-                if (employee != null) {
-                    try {
-
-                        for (int i = 0; i < restaurantSystem.getUsers().size(); i++) {
-                            if (restaurantSystem.getUsers().get(i).getUserName() == txtRegUser.getText()) {
-                                warningAlert.setTitle("Alerta");
-                                warningAlert.setHeaderText(null);
-                                warningAlert.setContentText("Nombre de usuario ya está registrado");
-                                warningAlert.showAndWait();
-                            } else {
-                                restaurantSystem.addUser(employee, txtRegUser.getText(), txtRegPassword.getText());
-
-                                infoAlert.setTitle("App");
-                                infoAlert.setHeaderText(null);
-                                infoAlert.setContentText("Hecho");
-                                infoAlert.showAndWait();
-                            }
-                        }
-
-                    } catch (IOException e) {
-                        errorAlert.setTitle("Error");
-                        errorAlert.setHeaderText(null);
-                        errorAlert.setContentText("Acción incompleta");
-                        errorAlert.showAndWait();
-                    }
-                }
-
-            }
-
-        }
-
-    }
-
     // IMPORTS
     // ---------------------------------------------------------------------------------------------------------
 
@@ -345,35 +246,21 @@ public class RestaurantSystemGUI {
     void importClients(ActionEvent event) throws IOException {
 
         if (txtClientSeparator.getText().isEmpty()) {
-
-            errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("Separador vacío");
-            errorAlert.setContentText("Por favor, ingrese el separador de datos del archivo a importar.");
-            errorAlert.showAndWait();
-
+            showAlert("ERROR", "Error", "Separador vacío", "Ingrese el separador de datos del archivo a importar.");
         } else {
-
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Seleccionar Archivo");
             File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
 
             if (file != null) {
-
                 int count = restaurantSystem.importClients(file.getPath(), txtClientSeparator.getText());
-
-                infoAlert.setTitle("Información");
-                infoAlert.setHeaderText("Clientes importados");
                 if (count == 1) {
-                    infoAlert.setContentText(count + " cliente fue importado correctamente.");
+                    showAlert("INFORMATION", "Información", "Cliente importado", count + " cliente fue importado correctamente.");
                 } else {
-                    infoAlert.setContentText(count + " clientes fueron importados correctamente.");
+                    showAlert("INFORMATION", "Información", "Clientes importados", count + " clientes fueron importados correctamente.");
                 }
-                infoAlert.showAndWait();
-
             }
-
         }
-
     }
 
     // EXTRA
@@ -426,13 +313,19 @@ public class RestaurantSystemGUI {
         }
     }
 
-    public Optional<ButtonType> showConfirmAlert(String title, String content, String ok, String cancel) {
+    public boolean showConfirmAlert(String title, String content, String ok, String cancel) {
         confirmAlert.setTitle(title);
         confirmAlert.setHeaderText(null);
         confirmAlert.setContentText(content);
         confirmAlertOK.setText(ok);
         confirmAlertCancel.setText(cancel);
-        return confirmAlert.showAndWait();
+        Optional<ButtonType> action = confirmAlert.showAndWait();
+
+        if (action.get() == ButtonType.OK) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

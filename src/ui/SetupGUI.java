@@ -15,17 +15,9 @@ public class SetupGUI {
     private final RestaurantSystem restaurantSystem;
     private final RestaurantSystemGUI mainGUI;
 
-    private final Alert errorAlert;
-    private final Alert infoAlert;
-    private final Alert warningAlert;
-
     public SetupGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
         restaurantSystem = mainGUI.getRestaurantSystem();
-
-        this.errorAlert = new Alert(AlertType.ERROR);
-        this.infoAlert = new Alert(AlertType.INFORMATION);
-        this.warningAlert = new Alert(AlertType.WARNING);
     }
 
     @FXML
@@ -47,31 +39,16 @@ public class SetupGUI {
     void showLogin(ActionEvent event) {
         if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()
                 || txtRegUser.getText().isEmpty() || txtRegPassword.getText().isEmpty()) {
-
-            warningAlert.setTitle("Error");
-            warningAlert.setHeaderText("Campos Vacíos");
-            warningAlert.setContentText("Llena todos los campos");
-            warningAlert.showAndWait();
-
+            mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos", "Asegúrese de rellenar los campos obligatorios marcados con (*).");
         } else {
             try {
                 restaurantSystem.addFirstUser(txtName.getText(), txtLastName.getText(), txtID.getText(),
                         txtRegUser.getText(), txtRegPassword.getText());
-
-                infoAlert.setTitle("App");
-                infoAlert.setHeaderText(null);
-                infoAlert.setContentText("Hecho");
-                infoAlert.showAndWait();
-
+                mainGUI.showAlert("INFORMATION", "Información", "Configuración completada", "Inicie sesión para empezar a usar el programa.");
                 mainGUI.showLogin(null);
-
             } catch (IOException e) {
-                errorAlert.setTitle("Error");
-                errorAlert.setHeaderText(null);
-                errorAlert.setContentText("Acción incompleta");
-                errorAlert.showAndWait();
+                mainGUI.showAlert("ERROR", "Error", "Error al crear", "Ha ocurrido un error al crear el usuario.");
             }
         }
     }
-
 }

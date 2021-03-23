@@ -14,8 +14,8 @@ import java.io.IOException;
 
 public class ViewClientsGUI {
 
-    private RestaurantSystemGUI mainGUI;
-    private RestaurantSystem restaurantSystem;
+    private final RestaurantSystemGUI mainGUI;
+    private final RestaurantSystem restaurantSystem;
 
     public ViewClientsGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;

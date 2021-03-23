@@ -12,17 +12,9 @@ public class NewEmployeeGUI {
     private final RestaurantSystem restaurantSystem;
     private final RestaurantSystemGUI mainGUI;
 
-    private final Alert errorAlert;
-    private final Alert infoAlert;
-    private final Alert warningAlert;
-
     public NewEmployeeGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
         restaurantSystem = mainGUI.getRestaurantSystem();
-
-        this.errorAlert = new Alert(Alert.AlertType.ERROR);
-        this.infoAlert = new Alert(Alert.AlertType.INFORMATION);
-        this.warningAlert = new Alert(Alert.AlertType.WARNING);
     }
 
     @FXML
@@ -37,29 +29,15 @@ public class NewEmployeeGUI {
     @FXML
     void addEmployee(ActionEvent event) {
         try {
-            if(txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty() ){ 
-                warningAlert.setTitle("Atención");
-                warningAlert.setHeaderText(null);
-                warningAlert.setContentText("Campos vacíos");
-                warningAlert.showAndWait();
+            if(txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty() ){
+                mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos", "Asegúrese de rellenar los campos obligatorios marcados con (*).");
             } else { 
             restaurantSystem.addEmployee(txtName.getText(), txtLastName.getText(), txtID.getText());
-
-            infoAlert.setTitle("App");
-            infoAlert.setHeaderText(null);
-            infoAlert.setContentText("Hecho");
-            infoAlert.showAndWait();
-
-            mainGUI.showMainMenu(null);
+                mainGUI.showAlert("INFO", "Información", "Empleado agregado", "Se ha agregado el empleado correctamente.");
+            mainGUI.showEmployees(null);
             }
-            
-
         } catch (IOException e) {
-            
-            errorAlert.setTitle("Error");
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Acción incompleta");
-            errorAlert.showAndWait();
+            mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el empleado.");
         }
     }
 
