@@ -10,7 +10,6 @@ public class Main extends Application {
 
     private final RestaurantSystemGUI restaurantSystemGUI;
 
-
     public static void main(String[] args) {
         launch(args);
     }
