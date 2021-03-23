@@ -137,7 +137,10 @@ public class RestaurantSystemGUI {
         }
 
         if (access) {
+            User actualUser = restaurantSystem.searchUser(txtUser.getText());
+            restaurantSystem.setActualUser(actualUser);
             showMainMenu(null);
+            
         } else {
             warningAlert.setTitle("Alerta");
             warningAlert.setHeaderText(null);

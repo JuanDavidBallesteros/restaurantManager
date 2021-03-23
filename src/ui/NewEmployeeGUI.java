@@ -37,12 +37,22 @@ public class NewEmployeeGUI {
     @FXML
     void addEmployee(ActionEvent event) {
         try {
+            if(txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty() ){ 
+                warningAlert.setTitle("Atención");
+                warningAlert.setHeaderText(null);
+                warningAlert.setContentText("Campos vacíos");
+                warningAlert.showAndWait();
+            } else { 
             restaurantSystem.addEmployee(txtName.getText(), txtLastName.getText(), txtID.getText());
 
             infoAlert.setTitle("App");
             infoAlert.setHeaderText(null);
             infoAlert.setContentText("Hecho");
             infoAlert.showAndWait();
+
+            mainGUI.showMainMenu(null);
+            }
+            
 
         } catch (IOException e) {
             
