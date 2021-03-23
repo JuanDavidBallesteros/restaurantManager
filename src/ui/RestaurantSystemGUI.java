@@ -259,6 +259,7 @@ public class RestaurantSystemGUI {
                 } else {
                     showAlert("INFORMATION", "Información", "Clientes importados", count + " clientes fueron importados correctamente.");
                 }
+                showClients(null);
             }
         }
     }
