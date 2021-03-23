@@ -128,7 +128,7 @@ public class RestaurantSystemGUI {
     void login(ActionEvent event) throws IOException {
         boolean access = false;
         for (int i = 0; i < restaurantSystem.getUsers().size() && !access; i++) {
-            System.out.println(restaurantSystem.getUsers().get(i).getUserName());
+            
             if (txtUser.getText().equals(restaurantSystem.getUsers().get(i).getUserName())) {
                 if (txtPassword.getText().equals(restaurantSystem.getUsers().get(i).getUserPassword())) {
                     access = true;

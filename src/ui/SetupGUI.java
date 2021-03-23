@@ -63,8 +63,6 @@ public class SetupGUI {
                 infoAlert.setContentText("Hecho");
                 infoAlert.showAndWait();
 
-                //System.out.println(txtRegUser.getText() + " " + txtRegPassword.getText());
-
                 mainGUI.showLogin(null);
 
             } catch (IOException e) {
