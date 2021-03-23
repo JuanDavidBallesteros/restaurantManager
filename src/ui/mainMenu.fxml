@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
@@ -16,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="695.0" prefWidth="200.0" style="-fx-background-color: e8e8e8;">
          <children>
@@ -48,9 +44,26 @@
                               </Separator>
                               <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#showNewOrder" prefHeight="25.0" prefWidth="450.0" text="Nueva Orden">
                                  <VBox.margin>
-                                    <Insets bottom="20.0" />
+                                    <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Button>
+                              <Button mnemonicParsing="false" onAction="#importClients" prefHeight="25.0" prefWidth="450.0" text="Importar Ordenes">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin></Button>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Separador de datos:">
+                                       <padding>
+                                          <Insets right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <TextField fx:id="txtClientSeparator111" alignment="CENTER" prefWidth="25.0" promptText="," />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" />
+                                 </VBox.margin>
+                              </HBox>
                               <Separator layoutX="20.0" layoutY="65.0" prefWidth="200.0">
                                  <VBox.margin>
                                     <Insets bottom="15.0" />
@@ -102,23 +115,6 @@
                                     <Insets />
                                  </VBox.margin>
                               </Button>
-                              <Separator layoutX="20.0" layoutY="146.0" prefWidth="200.0">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </VBox.margin>
-                              </Separator>
-                              <Button mnemonicParsing="false" onAction="#importClients" prefHeight="25.0" prefWidth="450.0" text="Importar Ordenes" />
-                              <HBox alignment="CENTER">
-                                 <children>
-                                    <Label text="Separador de datos:">
-                                       <padding>
-                                          <Insets right="5.0" />
-                                       </padding>
-                                    </Label>
-                                    <TextField fx:id="txtClientSeparator111" alignment="CENTER" prefWidth="25.0" />
-                                 </children>
-                              </HBox>
-                              <Separator prefWidth="200.0" />
                            </children>
                         </VBox>
                      </content>
@@ -154,7 +150,7 @@
                                           <Insets right="5.0" />
                                        </padding>
                                     </Label>
-                                    <TextField fx:id="txtClientSeparator" alignment="CENTER" prefWidth="25.0" />
+                                    <TextField fx:id="txtClientSeparator" alignment="CENTER" prefWidth="25.0" promptText="," />
                                  </children>
                                  <VBox.margin>
                                     <Insets />
@@ -254,9 +250,26 @@
                               </Separator>
                               <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Nuevo Producto">
                                  <VBox.margin>
-                                    <Insets bottom="20.0" />
+                                    <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Button>
+                              <Button mnemonicParsing="false" onAction="#importClients" prefHeight="25.0" prefWidth="450.0" text="Importar Productos">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin></Button>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Separador de datos:">
+                                       <padding>
+                                          <Insets right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <TextField fx:id="txtClientSeparator11" alignment="CENTER" prefWidth="25.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" />
+                                 </VBox.margin>
+                              </HBox>
                               <Separator layoutX="20.0" layoutY="65.0" prefWidth="200.0">
                                  <VBox.margin>
                                     <Insets bottom="15.0" />
@@ -287,14 +300,6 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </TextField>
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Generar Archivo">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </Button>
                               <HBox alignment="CENTER">
                                  <children>
                                     <Label text="Separador de datos:">
@@ -308,18 +313,11 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <Separator layoutX="20.0" layoutY="135.0" prefWidth="200.0" />
-                              <Button mnemonicParsing="false" onAction="#importClients" prefHeight="25.0" prefWidth="450.0" text="Importar IProductos" />
-                              <HBox alignment="CENTER">
-                                 <children>
-                                    <Label text="Separador de datos:">
-                                       <padding>
-                                          <Insets right="5.0" />
-                                       </padding>
-                                    </Label>
-                                    <TextField fx:id="txtClientSeparator11" alignment="CENTER" prefWidth="25.0" />
-                                 </children>
-                              </HBox>
+                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Generar Archivo">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Button>
                            </children>
                         </VBox>
                      </content>
@@ -340,10 +338,13 @@
                               </Separator>
                               <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Nuevo Ingrediente">
                                  <VBox.margin>
-                                    <Insets />
+                                    <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#importClients" prefHeight="25.0" prefWidth="450.0" text="Importar Ingredientes" />
+                              <Button mnemonicParsing="false" onAction="#importClients" prefHeight="25.0" prefWidth="450.0" text="Importar Ingredientes">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin></Button>
                               <HBox alignment="CENTER">
                                  <children>
                                     <Label text="Separador de datos:">
@@ -351,7 +352,7 @@
                                           <Insets right="5.0" />
                                        </padding>
                                     </Label>
-                                    <TextField fx:id="txtClientSeparator1" alignment="CENTER" prefWidth="25.0" />
+                                    <TextField fx:id="txtClientSeparator1" alignment="CENTER" prefWidth="25.0" promptText="," />
                                  </children>
                               </HBox>
                            </children>
