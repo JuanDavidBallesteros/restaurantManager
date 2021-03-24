@@ -40,18 +40,20 @@ public class Import {
 
     public int orderAddClient(Client client, List<Client> clients, int count) {
 
-        if (clients.isEmpty()) {
+        if (searchClientByName(client.getName(), client.getLastName(), clients) == null) {
+            if (clients.isEmpty()) {
 
-            clients.add(client);
-            count++;
+                clients.add(client);
+                count++;
 
-        } else {
-            int i = 0;
-            while (i < clients.size() && client.compareByFullName(clients.get(i)) > 0) {
-                i++;
+            } else {
+                int i = 0;
+                while (i < clients.size() && client.compareByFullName(clients.get(i)) > 0) {
+                    i++;
+                }
+                clients.add(i, client);
+                count++;
             }
-            clients.add(i, client);
-            count++;
         }
         return count;
     }
@@ -116,7 +118,10 @@ public class Import {
             }
         }
 
-        temp = list.get(pos);
+        if (pos != -1) {
+            temp = list.get(pos);
+        }
+
         return temp;
     }
 
@@ -132,15 +137,30 @@ public class Import {
         while (line != null) {
             String[] parts = line.split(separator);
             String id = "#I" + ingredientIdCount;
-            ingredientIdCount += 1;
+            
 
             Ingredient temp = new Ingredient(id, parts[0], Integer.parseInt(parts[1]), parts[2], parts[3]);
-            ingredients.add(temp);
+            if(validateName(ingredients, temp)== -1){
+                ingredientIdCount += 1;
+                ingredients.add(temp);
+            }
+            
             line = br.readLine();
         }
         br.close();
 
         return ingredientIdCount;
+    }
+
+    private int validateName(List<Ingredient> ingredients, Ingredient ingredient){
+        int out= -1;
+
+        for(int i = 0 ; i < ingredients.size() && out == -1 ; i++){
+            if(ingredient.compareByName(ingredients.get(i)) != 0){
+                out = i;
+            }
+        }
+        return out;
     }
 
     // ------------------------- Orders
@@ -219,12 +239,15 @@ public class Import {
             }
         }
 
-        temp = list.get(pos);
+        if (pos != -1) {
+            temp = list.get(pos);
+        }
         return temp;
     }
 
     public Client searchClientByName(String name, String lastName, List<Client> clients) {
         Client temp = null;
+        String fullname = name + " " + lastName;
 
         int pos = -1;
         int i = 0;
@@ -234,23 +257,18 @@ public class Import {
 
             int m = (i + j) / 2;
 
-            if (clients.get(m).compareByLastName(lastName) == 0) {
-                if (clients.get(m).compareByName(name) == 0) {
-                    pos = m;
-                } else if (clients.get(m).compareByName(name) < 0) {
-                    i = m + 1;
-                } else if (clients.get(m).compareByName(name) > 0) {
-                    j = m - 1;
-                }
+            if (clients.get(m).compareByFullNameString(fullname) == 0) {
+                pos = m;
 
-            } else if (clients.get(m).compareByLastName(lastName) < 0) {
+            } else if (clients.get(m).compareByFullNameString(fullname) < 0) {
                 i = m + 1;
-            } else if (clients.get(m).compareByLastName(lastName) > 0) {
+            } else if (clients.get(m).compareByFullNameString(fullname) > 0) {
                 j = m - 1;
             }
         }
-
-        temp = clients.get(pos);
+        if (pos != -1) {
+            temp = clients.get(pos);
+        }
         return temp;
     }
 
@@ -280,7 +298,9 @@ public class Import {
             }
         }
 
-        temp = employees.get(pos);
+        if (pos != -1) {
+            temp = employees.get(pos);
+        }
         return temp;
     }
 }

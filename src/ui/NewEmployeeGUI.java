@@ -2,7 +2,6 @@ package ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import model.*;
 import java.io.IOException;
@@ -29,12 +28,14 @@ public class NewEmployeeGUI {
     @FXML
     void addEmployee(ActionEvent event) {
         try {
-            if(txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty() ){
-                mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos", "Asegúrese de rellenar los campos obligatorios marcados con (*).");
-            } else { 
-            restaurantSystem.addEmployee(txtName.getText(), txtLastName.getText(), txtID.getText());
-                mainGUI.showAlert("INFO", "Información", "Empleado agregado", "Se ha agregado el empleado correctamente.");
-            mainGUI.showEmployees(null);
+            if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()) {
+                mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                        "Asegúrese de rellenar los campos obligatorios marcados con (*).");
+            } else {
+                restaurantSystem.addEmployee(txtName.getText(), txtLastName.getText(), txtID.getText());
+                mainGUI.showAlert("INFORMATION", "Información", "Empleado agregado",
+                        "Se ha agregado el empleado correctamente.");
+                mainGUI.showEmployees(null);
             }
         } catch (IOException e) {
             mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el empleado.");

@@ -70,4 +70,12 @@ public class Client extends Person {
     public int compareByFullName(Client other) {
         return fullName.compareTo(other.getFullName());
     }
+
+    public int compareByFullNameString(String otherFulName) {
+        return fullName.compareTo(otherFulName);
+    }
+
+    public int compareById(Client other) {
+        return getIdNumber().compareTo(other.getIdNumber());
+    }
 }

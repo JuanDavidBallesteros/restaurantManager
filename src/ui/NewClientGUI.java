@@ -46,6 +46,34 @@ public class NewClientGUI {
     @FXML
     void addClient(ActionEvent event) {
 
+        try {
+            
+            if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()
+                    || txtAddress.getText().isEmpty() || txtPhone.getText().isEmpty()) {
+
+                mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                        "Asegúrese de rellenar los campos obligatorios marcados con (*).");
+
+                        //System.out.println("Entrada vacia");
+            } else if (restaurantSystem.addClient(txtName.getText(), txtLastName.getText(), txtID.getText(),
+                    txtAddress.getText(), txtPhone.getText(), txtObservations.getText())) {
+                mainGUI.showAlert("INFO", "Información", "Cliente agregado",
+                        "Se ha agregado el cliente correctamente.");
+                        mainGUI.showClients(null);
+
+                        //System.out.println("Creado");
+            } else {
+                mainGUI.showAlert("WARNING", "Alerta", "Error al agregar", "El empleado existe");
+                txtName.setText("");
+                txtLastName.setText("");
+                txtID.setText("");
+
+                //System.out.println("Existe");
+            }
+        } catch (IOException e) {
+            mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el cliente.");
+        }
+
     }
 
     @FXML

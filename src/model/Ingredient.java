@@ -76,6 +76,10 @@ public class Ingredient implements Comparable<Ingredient>, Serializable {
         return this.id.compareTo(id);
     }
 
+    public int compareByName(Ingredient other) {
+        return this.name.compareTo(other.getName());
+    }
+
     @Override
     public int compareTo(Ingredient other) {
         return name.compareTo(other.getName());

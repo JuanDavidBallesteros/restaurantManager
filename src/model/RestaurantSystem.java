@@ -78,7 +78,7 @@ public class RestaurantSystem {
     }
 
     public void setActualDate(Date date) {
-         this.actualDate = date;
+        this.actualDate = date;
     }
 
     public User getActualUser() {
@@ -130,29 +130,75 @@ public class RestaurantSystem {
 
         Order temp = new Order(id, stateNum, products, productsQuantity, client, employee, deliveryDate, observations,
                 actualUser.getUserName(), actualUser.getUserName());
+
         orders.add(temp);
         ordersIdCount += 1;
         saveData();
     }
 
-    public void addClient(String name, String lastName, String idNumber, String address, String phone,
+    public boolean addClient(String name, String lastName, String idNumber, String address, String phone,
             String observations) throws IOException {
+
+        boolean added = false;
+
         Client temp = new Client(name, lastName, idNumber, actualUser.getUserName(), actualUser.getUserName(), address,
                 phone, observations);
-        orderAddCliente(temp);
-        saveData();
+
+        if (idVerificationClient(temp) == -1) {
+            orderAddCliente(temp);
+            saveData();
+            //added = true;
+        }
+
+        return added;
+    }
+
+    private int idVerificationClient(Client client) {
+
+        List<Client> temp = clients;
+        
+        Comparator<Client> idComparator = new Comparator<Client>() {
+
+            @Override
+            public int compare(Client cl1, Client cl2) {
+                return cl1.compareById(cl2);
+            }
+
+        };
+
+        temp.sort(idComparator);
+
+        int pos = -1;
+        int i = 0;
+        int j = employees.size() - 1;
+
+        while (i <= j && pos < 0) {
+
+            int m = (i + j) / 2;
+
+            if (client.compareById(clients.get(m)) == 0) {
+
+                pos = m;
+
+            } else if (client.compareById(clients.get(m)) < 0) {
+                i = m + 1;
+            } else if (client.compareById(clients.get(m)) > 0) {
+                j = m - 1;
+            }
+        }
+        return pos;
     }
 
     public void orderAddCliente(Client client) {
         if (clients.isEmpty()) {
 
             clients.add(client);
-            
+
         } else {
-           int i = 0;
-           while(i < clients.size() && client.compareByFullName(clients.get(i)) > 0) {
-            i++;
-           }
+            int i = 0;
+            while (i < clients.size() && client.compareByFullName(clients.get(i)) > 0) {
+                i++;
+            }
             clients.add(i, client);
         }
     }
@@ -221,10 +267,11 @@ public class RestaurantSystem {
     }
 
     public void updateIngredient(Ingredient ingredient, String name, int typeNum) throws IOException {
-        /* Ingredient temp = new Ingredient(ingredient.getId(), name, typeNum, ingredient.getCreatedBy(),
-                actualUser.getUserName());
-        ingredients.remove(ingredient);
-        ingredients.add(temp); */
+        /*
+         * Ingredient temp = new Ingredient(ingredient.getId(), name, typeNum,
+         * ingredient.getCreatedBy(), actualUser.getUserName());
+         * ingredients.remove(ingredient); ingredients.add(temp);
+         */
         ingredient.setName(name);
         ingredient.setType(typeNum);
         ingredient.setModifiedBy(actualUser.getUserName());
@@ -235,15 +282,15 @@ public class RestaurantSystem {
     public void updateOrder(Order order, int stateNum, List<Product> products, List<Integer> productsQuantity,
             String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations)
             throws IOException {
-        
-                /* Order temp = new Order(order.getId(), stateNum, products, productsQuantity, client, employee, deliveryDate,
-                observations, order.getCreatedBy(), actualUser.getUserName());
-        orders.remove(order);
-        orders.add(temp); */
-         
+
+        /*
+         * Order temp = new Order(order.getId(), stateNum, products, productsQuantity,
+         * client, employee, deliveryDate, observations, order.getCreatedBy(),
+         * actualUser.getUserName()); orders.remove(order); orders.add(temp);
+         */
 
         Employee employee = searchEmployee(employeeID);
-        
+
         Client client = searchClientByName(clientName, clientLastName);
 
         order.setState(stateNum);
@@ -260,10 +307,11 @@ public class RestaurantSystem {
 
     public void updateClient(Client client, String name, String lastName, String idNumber, String address, String phone,
             String observations) throws IOException {
-        /* Client temp = new Client(name, lastName, idNumber, client.getCreatedBy(), actualUser.getUserName(), address,
-                phone, observations);
-        removeClient(client);
-        orderAddCliente(temp); */
+        /*
+         * Client temp = new Client(name, lastName, idNumber, client.getCreatedBy(),
+         * actualUser.getUserName(), address, phone, observations);
+         * removeClient(client); orderAddCliente(temp);
+         */
 
         client.setName(name);
         client.setLastName(lastName);
@@ -277,9 +325,11 @@ public class RestaurantSystem {
     }
 
     public void updateEmployee(Employee employee, String name, String lastName, String idNumber) throws IOException {
-        /* Employee temp = new Employee(name, lastName, idNumber, employee.getCreatedBy(), actualUser.getUserName());
-        removeEmployee(employee);
-        employees.add(temp); */
+        /*
+         * Employee temp = new Employee(name, lastName, idNumber,
+         * employee.getCreatedBy(), actualUser.getUserName()); removeEmployee(employee);
+         * employees.add(temp);
+         */
 
         employee.setName(name);
         employee.setLastName(lastName);
@@ -290,9 +340,10 @@ public class RestaurantSystem {
     }
 
     public void updateUser(User user, Employee employee, String userName, String userPassword) throws IOException {
-        /* User temp = new User(employee, userName, userPassword, user.getCreatedBy(), actualUser.getUserName());
-        removeUser(user);
-        users.add(temp); */
+        /*
+         * User temp = new User(employee, userName, userPassword, user.getCreatedBy(),
+         * actualUser.getUserName()); removeUser(user); users.add(temp);
+         */
 
         user.setEmployee(employee);
         user.setUserName(userName);
@@ -327,6 +378,7 @@ public class RestaurantSystem {
 
     public Client searchClientByName(String name, String lastName) {
         Client temp = null;
+        String fullname = name + " " + lastName;
 
         int pos = -1;
         int i = 0;
@@ -336,23 +388,18 @@ public class RestaurantSystem {
 
             int m = (i + j) / 2;
 
-            if (clients.get(m).compareByLastName(lastName) == 0) {
-                if (clients.get(m).compareByName(name) == 0) {
-                    pos = m;
-                } else if (clients.get(m).compareByName(name) < 0) {
-                    i = m + 1;
-                } else if (clients.get(m).compareByName(name) > 0) {
-                    j = m - 1;
-                }
+            if (clients.get(m).compareByFullNameString(fullname) == 0) {
+                pos = m;
 
-            } else if (clients.get(m).compareByLastName(lastName) < 0) {
+            } else if (clients.get(m).compareByFullNameString(fullname) < 0) {
                 i = m + 1;
-            } else if (clients.get(m).compareByLastName(lastName) > 0) {
+            } else if (clients.get(m).compareByFullNameString(fullname) > 0) {
                 j = m - 1;
             }
         }
-
-        temp = clients.get(pos);
+        if (pos != -1) {
+            temp = clients.get(pos);
+        }
         return temp;
     }
 
