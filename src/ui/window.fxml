@@ -23,7 +23,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Datos">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#deleteClients" text="Borrar clientes" />
+                  <MenuItem mnemonicParsing="false" onAction="#deleteAllClients" text="Borrar clientes" />
             </items>
           </Menu>
         </menus>
