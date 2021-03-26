@@ -144,10 +144,17 @@ public class RestaurantSystem {
         Client temp = new Client(name, lastName, idNumber, actualUser.getUserName(), actualUser.getUserName(), address,
                 phone, observations);
 
-        if (idVerificationClient(temp) == -1) {
+        if (clients.isEmpty()) {
             orderAddCliente(temp);
             saveData();
-            //added = true;
+            added = true;
+        } else {
+            if (idVerificationClient(temp) == -1) {
+                orderAddCliente(temp);
+                saveData();
+                added = true;
+            }
+
         }
 
         return added;
@@ -156,7 +163,11 @@ public class RestaurantSystem {
     private int idVerificationClient(Client client) {
 
         List<Client> temp = clients;
-        
+
+        int pos = -1;
+        int i = 0;
+        int j = employees.size() - 1;
+
         Comparator<Client> idComparator = new Comparator<Client>() {
 
             @Override
@@ -167,10 +178,6 @@ public class RestaurantSystem {
         };
 
         temp.sort(idComparator);
-
-        int pos = -1;
-        int i = 0;
-        int j = employees.size() - 1;
 
         while (i <= j && pos < 0) {
 
@@ -186,6 +193,7 @@ public class RestaurantSystem {
                 j = m - 1;
             }
         }
+
         return pos;
     }
 
