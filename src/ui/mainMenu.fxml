@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
@@ -12,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="695.0" prefWidth="200.0" style="-fx-background-color: e8e8e8;">
          <children>
@@ -326,7 +330,7 @@
                      <content>
                         <VBox>
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Ver Ingredientes">
+                              <Button mnemonicParsing="false" onAction="#showIngredients" prefHeight="25.0" prefWidth="450.0" text="Ver Ingredientes">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
@@ -336,7 +340,7 @@
                                     <Insets bottom="15.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Nuevo Ingrediente">
+                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#showNewIngredient" prefHeight="25.0" prefWidth="450.0" text="Nuevo Ingrediente">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>

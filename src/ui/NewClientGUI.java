@@ -57,7 +57,7 @@ public class NewClientGUI {
                         //System.out.println("Entrada vacia");
             } else if (restaurantSystem.addClient(txtName.getText(), txtLastName.getText(), txtID.getText(),
                     txtAddress.getText(), txtPhone.getText(), txtObservations.getText())) {
-                mainGUI.showAlert("INFO", "Información", "Cliente agregado",
+                mainGUI.showAlert("INFORMATION", "Información", "Cliente agregado",
                         "Se ha agregado el cliente correctamente.");
                         mainGUI.showClients(null);
 

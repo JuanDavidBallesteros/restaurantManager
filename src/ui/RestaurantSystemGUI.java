@@ -110,7 +110,7 @@ public class RestaurantSystemGUI {
     // ------------------------------------------------------------------------------------------
 
     @FXML
-    void logout(ActionEvent event) throws IOException {
+    public void logout(ActionEvent event) throws IOException {
         if(showConfirmAlert("Cerrar Sesión", "¿Está seguro que desea cerrar sesión?", "Si", "No")) {
             showLogin(null);
             restaurantSystem.setActualUser(null);
@@ -118,7 +118,7 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
-    void login(ActionEvent event) throws IOException {
+    public void login(ActionEvent event) throws IOException {
         boolean access = false;
 
         for (int i = 0; i < restaurantSystem.getUsers().size() && !access; i++) {
@@ -144,7 +144,7 @@ public class RestaurantSystemGUI {
     // ------------------------------------------------------------------------------------------------------
 
     @FXML
-    void showLogin(ActionEvent event) throws IOException {
+    public void showLogin(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         fxmlLoader.setController(this);
         Parent pane = fxmlLoader.load();
@@ -155,7 +155,7 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
-    void showSetup(ActionEvent event) throws IOException {
+    public void showSetup(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("setup.fxml"));
         SetupGUI controller = new SetupGUI(this);
         fxmlLoader.setController(controller);
@@ -167,7 +167,7 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
-    void showMainMenu(ActionEvent event) throws IOException {
+    public void showMainMenu(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mainMenu.fxml"));
         fxmlLoader.setController(this);
         Parent pane = fxmlLoader.load();
@@ -210,7 +210,7 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
-    void showOrders(ActionEvent event) throws IOException {
+    public void showOrders(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewOrders.fxml"));
         ViewOrdersGUI controller = new ViewOrdersGUI(this);
         fxmlLoader.setController(controller);
@@ -220,7 +220,7 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
-    void showEmployees(ActionEvent event) throws IOException {
+    public void showEmployees(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewEmployees.fxml"));
         ViewEmployeeGUI controller = new ViewEmployeeGUI(this);
         fxmlLoader.setController(controller);
@@ -230,13 +230,34 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
-    void showClients(ActionEvent event) throws IOException {
+    public void showClients(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewClients.fxml"));
         ViewClientsGUI controller = new ViewClientsGUI(this);
         fxmlLoader.setController(controller);
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
         controller.initializeTableView();
+    }
+
+    @FXML
+    public void showIngredients(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewIngredients.fxml"));
+        ViewIngredients controller = new ViewIngredients(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        controller.initializeTableView();
+    }
+
+    @FXML
+    public NewIngredientGUI showNewIngredient(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newIngredient.fxml"));
+        NewIngredientGUI controller = new NewIngredientGUI(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        controller.comboInitialization();
+        return controller;
     }
 
     // IMPORTS
@@ -267,7 +288,7 @@ public class RestaurantSystemGUI {
     // EXTRA
     // -----------------------------------------------------------------------------------------------------------
 
-    void startClock() {
+    public void startClock() {
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             LocalTime currentTime = LocalTime.now();
             if (currentTime.getMinute() < 10 && currentTime.getSecond() < 10) {
@@ -332,7 +353,7 @@ public class RestaurantSystemGUI {
     // DATA ------------------------------------------------------------------------------------------------------------
 
     @FXML
-    void deleteAllClients(ActionEvent event) throws IOException {
+    public void deleteAllClients(ActionEvent event) throws IOException {
         if(showConfirmAlert("Borrar Clientes", "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar", "Cancelar")) {
             restaurantSystem.getClients().clear();
             restaurantSystem.saveData();
