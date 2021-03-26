@@ -329,4 +329,15 @@ public class RestaurantSystemGUI {
         }
     }
 
+    // DATA ------------------------------------------------------------------------------------------------------------
+
+    @FXML
+    void deleteAllClients(ActionEvent event) throws IOException {
+        if(showConfirmAlert("Borrar Clientes", "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar", "Cancelar")) {
+            restaurantSystem.getClients().clear();
+            restaurantSystem.saveData();
+            showClients(null);
+        }
+    }
+
 }
