@@ -640,8 +640,14 @@ public class RestaurantSystem {
 
     // ---------------- Generate display lists
 
-    public List<Ingredient> getDisplayClientList() {
-        List<Ingredient> tempList = ingredients;
+    public List<Ingredient> getDisplayIngredients() {
+        List<Ingredient> tempList = new ArrayList<>();
+
+        for(int i = 0; i< ingredients.size() ; i++){
+            if(ingredients.get(i).isAvailable()){
+                tempList.add(ingredients.get(i));
+            }
+        }
 
         Collections.sort(tempList);
 

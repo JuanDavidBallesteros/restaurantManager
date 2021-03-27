@@ -69,15 +69,15 @@ public class NewIngredientGUI {
     }
 
     public void fillForm(Ingredient ingredient) {
+        title.setText("Actualizar Ingrediente");
+        addButton.setText("Actualizar");
+        
         txtName.setText(ingredient.getName());
         comoBox.setValue(ingredient.getType());
         this.ingredient = ingredient;
     }
 
     public void comboInitialization() {
-
-        title.setText("Actualizar Ingrediente");
-        addButton.setText("Actualizar");
 
         List<String> types = new ArrayList<>();
         int i = 0;

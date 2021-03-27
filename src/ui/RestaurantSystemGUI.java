@@ -265,6 +265,29 @@ public class RestaurantSystemGUI {
         return controller;
     }
 
+    @FXML
+    void showProducts(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewProducts.fxml"));
+        ViewProductsGUI controller = new ViewProductsGUI(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        controller.initializeTableView();
+    }
+
+    @FXML
+    public NewProductGUI showNewProduct(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newProduct.fxml"));
+        NewProductGUI controller = new NewProductGUI(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        controller.initializeTableView();
+        controller.comboInitialization();
+        
+        return controller;
+    }
+
     // IMPORTS
     // ---------------------------------------------------------------------------------------------------------
 
@@ -382,10 +405,11 @@ public class RestaurantSystemGUI {
 
     @FXML
     public void deleteAllClients(ActionEvent event) throws IOException {
-        if (showConfirmAlert("Borrar Clientes",
+        if (showConfirmAlert("Borrar Datos",
                 "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar",
                 "Cancelar")) {
             restaurantSystem.getClients().clear();
+            restaurantSystem.getIngredients().clear();
             restaurantSystem.saveData();
             showClients(null);
         }

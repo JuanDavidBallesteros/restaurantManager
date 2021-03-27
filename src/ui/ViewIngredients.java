@@ -39,7 +39,7 @@ public class ViewIngredients {
 
     public void initializeTableView() {
 
-        ObservableList<Ingredient> ingredientObservableList = FXCollections.observableList(restaurantSystem.getIngredients());
+        ObservableList<Ingredient> ingredientObservableList = FXCollections.observableList(restaurantSystem.getDisplayIngredients());
 
         tcID.setCellValueFactory(new PropertyValueFactory<Ingredient, String>("id"));
         tcIngredientName.setCellValueFactory(new PropertyValueFactory<Ingredient, String>("name"));

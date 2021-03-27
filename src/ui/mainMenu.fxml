@@ -242,7 +242,7 @@
                      <content>
                         <VBox alignment="CENTER">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Ver Productos">
+                              <Button mnemonicParsing="false" onAction="#showProducts" prefHeight="25.0" prefWidth="450.0" text="Ver Productos">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
@@ -252,7 +252,7 @@
                                     <Insets bottom="15.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Nuevo Producto">
+                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#showNewProduct" prefHeight="25.0" prefWidth="450.0" text="Nuevo Producto">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
