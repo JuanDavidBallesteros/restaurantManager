@@ -130,11 +130,15 @@ public class Import {
     public long importIngredients(long ingredientIdCount, List<Ingredient> ingredients, String path, String separator)
             throws IOException {
 
+                //int testcount = 0;
+
         BufferedReader br = new BufferedReader(new FileReader(path));
         String line = br.readLine();
         line = br.readLine();
 
         while (line != null) {
+            
+
             String[] parts = line.split(separator);
             String id = "#I" + ingredientIdCount;
             
@@ -156,7 +160,7 @@ public class Import {
         int out= -1;
 
         for(int i = 0 ; i < ingredients.size() && out == -1 ; i++){
-            if(ingredient.compareByName(ingredients.get(i)) != 0){
+            if(ingredient.compareByName(ingredients.get(i)) == 0){
                 out = i;
             }
         }

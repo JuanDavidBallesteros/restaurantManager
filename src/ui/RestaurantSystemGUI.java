@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import model.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Optional;
@@ -60,7 +61,10 @@ public class RestaurantSystemGUI {
     private Label lblEmployee;
 
     @FXML
-    private TextField txtClientSeparator;
+    private TextField txtClientSeparator;    
+    
+    @FXML
+    private TextField txtIngredientSeparator;  
 
     @FXML
     private ChoiceBox<String> cbEmployees;
@@ -111,7 +115,7 @@ public class RestaurantSystemGUI {
 
     @FXML
     public void logout(ActionEvent event) throws IOException {
-        if(showConfirmAlert("Cerrar Sesión", "¿Está seguro que desea cerrar sesión?", "Si", "No")) {
+        if (showConfirmAlert("Cerrar Sesión", "¿Está seguro que desea cerrar sesión?", "Si", "No")) {
             showLogin(null);
             restaurantSystem.setActualUser(null);
         }
@@ -257,6 +261,7 @@ public class RestaurantSystemGUI {
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
         controller.comboInitialization();
+        
         return controller;
     }
 
@@ -264,7 +269,7 @@ public class RestaurantSystemGUI {
     // ---------------------------------------------------------------------------------------------------------
 
     @FXML
-    void importClients(ActionEvent event) throws IOException {
+    public void importClients(ActionEvent event) throws IOException {
 
         if (txtClientSeparator.getText().isEmpty()) {
             showAlert("ERROR", "Error", "Separador vacío", "Ingrese el separador de datos del archivo a importar.");
@@ -276,11 +281,33 @@ public class RestaurantSystemGUI {
             if (file != null) {
                 int count = restaurantSystem.importClients(file.getPath(), txtClientSeparator.getText());
                 if (count == 1) {
-                    showAlert("INFORMATION", "Información", "Cliente importado", count + " cliente fue importado correctamente.");
+                    showAlert("INFORMATION", "Información", "Cliente importado",
+                            count + " cliente fue importado correctamente.");
                 } else {
-                    showAlert("INFORMATION", "Información", "Clientes importados", count + " clientes fueron importados correctamente.");
+                    showAlert("INFORMATION", "Información", "Clientes importados",
+                            count + " clientes fueron importados correctamente.");
                 }
                 showClients(null);
+            }
+        }
+    }
+
+    @FXML
+    public void importIngredients(ActionEvent event) throws FileNotFoundException, IOException {
+        if (txtIngredientSeparator.getText().isEmpty()) {
+            showAlert("ERROR", "Error", "Separador vacío", "Ingrese el separador de datos del archivo a importar.");
+        } else {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Seleccionar Archivo");
+            File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
+
+            if (file != null) {
+                int count = restaurantSystem.importIngredients(file.getPath(), txtIngredientSeparator.getText());
+
+                showAlert("INFORMATION", "Información", "Clientes importados",
+                        count + " clientes fueron importados correctamente.");
+
+                showIngredients(null);
             }
         }
     }
@@ -350,11 +377,14 @@ public class RestaurantSystemGUI {
         }
     }
 
-    // DATA ------------------------------------------------------------------------------------------------------------
+    // DATA
+    // ------------------------------------------------------------------------------------------------------------
 
     @FXML
     public void deleteAllClients(ActionEvent event) throws IOException {
-        if(showConfirmAlert("Borrar Clientes", "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar", "Cancelar")) {
+        if (showConfirmAlert("Borrar Clientes",
+                "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar",
+                "Cancelar")) {
             restaurantSystem.getClients().clear();
             restaurantSystem.saveData();
             showClients(null);

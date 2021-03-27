@@ -345,7 +345,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#importClients" prefHeight="25.0" prefWidth="450.0" text="Importar Ingredientes">
+                              <Button mnemonicParsing="false" onAction="#importIngredients" prefHeight="25.0" prefWidth="450.0" text="Importar Ingredientes">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin></Button>
@@ -356,7 +356,7 @@
                                           <Insets right="5.0" />
                                        </padding>
                                     </Label>
-                                    <TextField fx:id="txtClientSeparator1" alignment="CENTER" prefWidth="25.0" promptText="," />
+                                    <TextField fx:id="txtIngredientSeparator" alignment="CENTER" prefWidth="25.0" promptText="," />
                                  </children>
                               </HBox>
                            </children>

@@ -26,24 +26,40 @@ public class NewIngredientGUI {
     private TextField txtName;
 
     @FXML
-    private Label Title;
+    private Label title;
 
     @FXML
     private ComboBox<String> comoBox;
 
     @FXML
-    void add(ActionEvent event) {
-        try {
-            if (txtName.getText().isEmpty() || comoBox.getSelectionModel().getSelectedItem().equals("Select")) {
-                mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
-                        "Asegúrese de rellenar los campos obligatorios marcados con (*).");
-            } else {
-                restaurantSystem.addIngredient(txtName.getText(), comoBox.getSelectionModel().getSelectedIndex());
-                mainGUI.showAlert("INFORMATION", "Información", "Ingrdiente agregado",
-                        "Se ha agregado el ingrediente correctamente.");
+    private Button addButton;
+
+    private Ingredient ingredient;
+
+    @FXML
+    void add(ActionEvent event) throws IOException {
+        if (addButton.getText().equals("Crear")) {
+            try {
+                if (txtName.getText().isEmpty() || comoBox.getSelectionModel().getSelectedItem().equals("Select")) {
+                    mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                            "Asegúrese de rellenar los campos obligatorios marcados con (*).");
+                } else {
+                    if (restaurantSystem.addIngredient(txtName.getText(),
+                            comoBox.getSelectionModel().getSelectedIndex())) {
+                        mainGUI.showAlert("INFORMATION", "Información", "Ingrediente agregado",
+                                "Se ha agregado el ingrediente correctamente.");
+                    } else {
+                        mainGUI.showAlert("WARNING", "Alerta", "Error al agregar", "El ingrediente existe");
+                    }
+                }
+            } catch (IOException e) {
+                mainGUI.showAlert("ERROR", "Error", "Error al agregar",
+                        "Ha ocurrido un error al agregar el ingrediente.");
             }
-        } catch (IOException e) {
-            mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el ingrediente.");
+        } else {
+            restaurantSystem.updateIngredient(ingredient, txtName.getText(), comoBox.getSelectionModel().getSelectedIndex());
+            mainGUI.showAlert("INFORMATION", "Información", "Ingrediente actualizado",
+                                "Se ha actualizado el ingrediente correctamente.");
         }
     }
 
@@ -55,9 +71,14 @@ public class NewIngredientGUI {
     public void fillForm(Ingredient ingredient) {
         txtName.setText(ingredient.getName());
         comoBox.setValue(ingredient.getType());
+        this.ingredient = ingredient;
     }
 
     public void comboInitialization() {
+
+        title.setText("Actualizar Ingrediente");
+        addButton.setText("Actualizar");
+
         List<String> types = new ArrayList<>();
         int i = 0;
 

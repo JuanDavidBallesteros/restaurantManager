@@ -112,12 +112,37 @@ public class RestaurantSystem {
         saveData();
     }
 
-    public void addIngredient(String name, int typeNum) throws IOException {
+    public boolean addIngredient(String name, int typeNum) throws IOException {
+        boolean added = false; 
+
         String id = "#I" + ingredientIdCount;
         Ingredient temp = new Ingredient(id, name, typeNum, actualUser.getUserName(), actualUser.getUserName());
-        ingredients.add(temp);
-        ingredientIdCount += 1;
+        if(ingredients.isEmpty()){
+            ingredients.add(temp);
+            ingredientIdCount += 1;
+            added = true;
+        } else {
+            if (validateName(temp) == -1) {
+                ingredients.add(temp);
+                ingredientIdCount += 1;
+                added = true;
+            }
+        }
+        
+        
         saveData();
+        return added;
+    }
+
+    private int validateName(Ingredient ingredient) {
+        int out = -1;
+
+        for (int i = 0; i < ingredients.size() && out == -1; i++) {
+            if (ingredient.compareByName(ingredients.get(i)) == 0) {
+                out = i;
+            }
+        }
+        return out;
     }
 
     public void addOrder(int stateNum, List<Product> products, List<Integer> productsQuantity, String clientName,
@@ -480,9 +505,14 @@ public class RestaurantSystem {
         saveData();
     }
 
-    public void importIngredients(String path, String separator) throws FileNotFoundException, IOException {
+    public int importIngredients(String path, String separator) throws FileNotFoundException, IOException {
+        int count = 0;
+        long temp = ingredientIdCount;
         ingredientIdCount = imports.importIngredients(ingredientIdCount, ingredients, path, separator);
+
+        count = (int) (ingredientIdCount - temp);
         saveData();
+        return count;
     }
 
     public void importOrders(String path, String separator) throws FileNotFoundException, IOException, ParseException {
