@@ -89,6 +89,10 @@ public class RestaurantSystem {
         this.actualUser = actualUser;
     }
 
+    public long getOrdersIdCount(){
+        return ordersIdCount;
+    }
+
     // -------------------- adds
 
     public void addFirstUser(String name, String lastName, String idNumber, String userName, String userPassword)
@@ -145,19 +149,18 @@ public class RestaurantSystem {
         return out;
     }
 
-    public void addOrder(int stateNum, List<Product> products, String clientName,
-            String clientLastName, String employeeID, Date deliveryDate, String observations) throws IOException {
+    public void addOrder(int stateNum, List<Product> products, Client client,
+            Employee employee, Date deliveryDate, String observations) throws IOException {
         String id = "#O" + ordersIdCount;
 
-        Client client = searchClientByName(clientName, clientLastName);
+        /*
+         * Order temp = new Order(id, stateNum, products, productsQuantity, client,
+         * employee, deliveryDate, observations, actualUser.getUserName(),
+         * actualUser.getUserName());
+         */
 
-        Employee employee = searchEmployee(employeeID);
-
-       /*  Order temp = new Order(id, stateNum, products, productsQuantity, client, employee, deliveryDate, observations,
-                actualUser.getUserName(), actualUser.getUserName()); */
-
-            Order temp = new Order(id, stateNum, products, client, employee, deliveryDate, observations,
-                actualUser.getUserName(), actualUser.getUserName());        
+        Order temp = new Order(id, stateNum, products, client, employee, deliveryDate, observations,
+                actualUser.getUserName(), actualUser.getUserName());
 
         orders.add(temp);
         ordersIdCount += 1;
@@ -194,7 +197,7 @@ public class RestaurantSystem {
 
         int pos = -1;
         int i = 0;
-        int j = employees.size() - 1;
+        int j = temp.size() - 1;
 
         Comparator<Client> idComparator = new Comparator<Client>() {
 
@@ -211,17 +214,17 @@ public class RestaurantSystem {
 
             int m = (i + j) / 2;
 
-            if (client.compareById(clients.get(m)) == 0) {
+            if (client.compareById(temp.get(m)) == 0) {
 
                 pos = m;
 
-            } else if (client.compareById(clients.get(m)) < 0) {
+            } else if (client.compareById(temp.get(m)) < 0) {
                 i = m + 1;
-            } else if (client.compareById(clients.get(m)) > 0) {
+            } else if (client.compareById(temp.get(m)) > 0) {
                 j = m - 1;
             }
         }
-
+        
         return pos;
     }
 
@@ -251,10 +254,10 @@ public class RestaurantSystem {
         User temp = new User(employee, userName, userPassword, actualUser.getUserName(), actualUser.getUserName());
 
         if (searchUser(temp.getUserName()) == null) {
-            
+
             users.add(temp);
             added = true;
-        } 
+        }
         saveData();
         return added;
     }
@@ -335,11 +338,13 @@ public class RestaurantSystem {
 
         Employee employee = searchEmployee(employeeID);
 
-        Client client = searchClientByName(clientName, clientLastName);
+        String fullname = clientName + " "+ clientLastName;
+
+        Client client = searchClientByName(fullname);
 
         order.setState(stateNum);
         order.setProducts(products);
-        //order.setProductsQuantity(productsQuantity);
+        // order.setProductsQuantity(productsQuantity);
         order.setClient(client);
         order.setEmployee(employee);
         order.setDeliveryDate(actualDate);
@@ -420,9 +425,9 @@ public class RestaurantSystem {
 
     // -------------------- search
 
-    public Client searchClientByName(String name, String lastName) {
+    public Client searchClientByName(String fullname) {
         Client temp = null;
-        String fullname = name + " " + lastName;
+        
 
         int pos = -1;
         int i = 0;
@@ -470,8 +475,9 @@ public class RestaurantSystem {
                 j = m - 1;
             }
         }
-
-        temp = employees.get(pos);
+        if (pos != -1) {
+            temp = employees.get(pos);
+        }
         return temp;
     }
 
@@ -504,6 +510,48 @@ public class RestaurantSystem {
         if (pos != -1) {
             temp = tempList.get(pos);
         }
+        return temp;
+    }
+
+    public Product searchProduct(String name){
+        Product temp = null;
+        List<Product> tempList = products;
+
+        Comparator<Product> nameComparator = new Comparator<Product>() {
+
+            @Override
+            public int compare(Product pdt1, Product pdt2) {
+                return pdt1.compareByName(pdt2.getName());
+            }
+
+        };
+
+        tempList.sort(nameComparator);
+
+        int pos = -1;
+        int i = 0;
+        int j = tempList.size() - 1;
+
+        while (i <= j && pos < 0) {
+
+            int m = (i + j) / 2;
+
+            if (tempList.get(m).compareByName(name) == 0) {
+
+                pos = m;
+
+            } else if (tempList.get(m).compareByName(name) < 0) {
+                i = m + 1;
+            } else if (tempList.get(m).compareByName(name) > 0) {
+                j = m - 1;
+            }
+        }
+
+        if (pos != -1) {
+            temp = tempList.get(pos);
+        }
+
+
         return temp;
     }
 
@@ -643,7 +691,7 @@ public class RestaurantSystem {
                 if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0) {
                     for (int j = 0; j < orders.get(i).getProducts().size(); j++) { // Product list of the order in rage
                         if (orders.get(i).getProducts().get(j) == tProduct) {
-                            //count += orders.get(i).getProductsQuantity().get(j); //Integer quantity
+                            // count += orders.get(i).getProductsQuantity().get(j); //Integer quantity
                             count++;
                         }
                     }
@@ -743,5 +791,7 @@ public class RestaurantSystem {
         }
         return loaded;
     }
+
+
 
 }

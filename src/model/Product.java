@@ -122,4 +122,8 @@ public class Product implements Comparable<Product>, Serializable {
         return value;
     }
 
+    public int compareByName(String other) {
+        return name.compareTo(other);
+    }
+
 }

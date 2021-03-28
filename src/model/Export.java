@@ -33,8 +33,8 @@ public class Export {
             // Add product list at the end
             for (int j = 0; j < products.size(); j++) {
                 Product temp = products.get(j);
-                int quantity = order.getProductsQuantity().get(j);
-                line += temp.getName() + separator + quantity + separator + temp.getPrice();
+                //int quantity = order.getProductsQuantity().get(j);
+                line += temp.getName() + separator + temp.getPrice();
             }
 
             pw.println(line);

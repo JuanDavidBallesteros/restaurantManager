@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class NewOrderGUI {
@@ -20,11 +21,19 @@ public class NewOrderGUI {
     private Client selectedClient;
     private Employee selectedEmployee;
 
+    private ObservableList<Client> clientsObservableList;
+    private ObservableList<Employee> employeesObservableList2;
+    private ObservableList<Product> productsObservableList2;
+
     public NewOrderGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
         restaurantSystem = mainGUI.getRestaurantSystem();
         productsSelected = new ArrayList<>();
+
     }
+
+    @FXML
+    private ComboBox<String> comoBox;
 
     @FXML
     private Button btnSearchProduct;
@@ -99,9 +108,6 @@ public class NewOrderGUI {
     private TableColumn<Employee, String> tcSearchEmployeeId;
 
     @FXML
-    private Label lblClient;
-
-    @FXML
     private Label lblEmployee;
 
     @FXML
@@ -125,7 +131,7 @@ public class NewOrderGUI {
     @FXML
     private TextField txtProductAmount;
 
-    @FXML 
+    @FXML
     private TableView<Product> tvOrder;
 
     @FXML
@@ -150,11 +156,30 @@ public class NewOrderGUI {
     public void initialize() {
         btnToggleEdit.setVisible(false);
 
+        lblOrder.setText("#o" + restaurantSystem.getOrdersIdCount());
     }
 
     @FXML
     void addOrder(ActionEvent event) {
+        try {
+            if (comoBox.getSelectionModel().getSelectedItem().equals("Select") || productsSelected.isEmpty()
+                    || selectedClient == null || selectedEmployee == null) {
+                mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                        "Asegúrese de rellenar los campos obligatorios marcados con (*).");
 
+            } else {
+                restaurantSystem.addOrder(comoBox.getSelectionModel().getSelectedIndex(), productsSelected,
+                        selectedClient, selectedEmployee, actualDate(), lblOrderObservations.getText());
+
+                mainGUI.showAlert("INFORMATION", "Información", "Orden agregada",
+                        "Se ha agregado la orden correctamente.");
+
+                mainGUI.showOrders(null);
+
+            }
+        } catch (IOException e) {
+            mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar la orden.");
+        }
     }
 
     @FXML
@@ -169,17 +194,82 @@ public class NewOrderGUI {
 
     @FXML
     void searchClient(ActionEvent event) {
+        if (txtClient.getText().isEmpty()) {
+            mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                    "Asegúrese de rellenar los campos des búsqueda.");
+        } else {
+
+            if (restaurantSystem.searchClientByName(txtClient.getText()) != null) {
+
+                List<Client> tempList = new ArrayList<>();
+                tempList.add(restaurantSystem.searchClientByName(txtClient.getText()));
+
+                clientsObservableList = FXCollections.observableList(tempList);
+
+                tcSearchClientName.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
+                tcSearchClientLastName.setCellValueFactory(new PropertyValueFactory<Client, String>("lastName"));
+                tcSearchClientId.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
+
+                tvClient.setItems(clientsObservableList);
+
+            } else {
+                mainGUI.showAlert("WARNING", "Alerta", null, "No se encontró");
+            }
+        }
 
     }
 
     @FXML
     void searchEmployee(ActionEvent event) {
+        if (txtEmployee.getText().isEmpty()) {
+            mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                    "Asegúrese de rellenar los campos des búsqueda.");
+        } else {
 
+            if (restaurantSystem.searchEmployee(txtEmployee.getText()) != null) {
+
+                List<Employee> tempList = new ArrayList<>();
+                tempList.add(restaurantSystem.searchEmployee(txtEmployee.getText()));
+
+                employeesObservableList2 = FXCollections.observableList(tempList);
+
+                tcSearchEmployeeName.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
+                tcSearchEmployeeLastName.setCellValueFactory(new PropertyValueFactory<Employee, String>("lastName"));
+                tcSearchEmployeeId.setCellValueFactory(new PropertyValueFactory<Employee, String>("idNumber"));
+
+                tvEmployees.setItems(employeesObservableList2);
+
+            } else {
+                mainGUI.showAlert("WARNING", "Alerta", null, "No se encontró");
+            }
+        }
     }
 
     @FXML
     void searchProduct(ActionEvent event) {
+        if (txtProduct.getText().isEmpty()) {
+            mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                    "Asegúrese de rellenar los campos des búsqueda.");
+        } else {
 
+            if (restaurantSystem.searchProduct(txtProduct.getText()) != null) {
+
+                List<Product> tempList = new ArrayList<>();
+                tempList.add(restaurantSystem.searchProduct(txtProduct.getText()));
+
+                productsObservableList2 = FXCollections.observableList(tempList);
+
+                tcSearchProductName.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+                tcSearchProductType.setCellValueFactory(new PropertyValueFactory<Product, String>("type"));
+                tcSearchProductCost.setCellValueFactory(new PropertyValueFactory<Product, String>("price"));
+                tcSearchProductSize.setCellValueFactory(new PropertyValueFactory<Product, String>("size"));
+
+                tvProducts.setItems(productsObservableList2);
+
+            } else {
+                mainGUI.showAlert("WARNING", "Alerta", null, "No se encontró");
+            }
+        }
     }
 
     public void fillForm(Order order) {
@@ -191,7 +281,8 @@ public class NewOrderGUI {
         txtAddress.setText(order.getClient().getAddress());
         txtPhone.setText(order.getClient().getPhone());
         txtObservations.setText(order.getClient().getObservations());
-        lblClient.setText("Cliente: " + order.getClient().getName() + " " + order.getClient().getLastName());
+        // lblClient.setText("Cliente: " + order.getClient().getName() + " " +
+        // order.getClient().getLastName());
         lblEmployee.setText("Empleado: " + order.getEmployee().getName());
         lblOrder.setText("Orden: " + order.getId());
     }
@@ -253,13 +344,13 @@ public class NewOrderGUI {
 
         // ---------------------------------- Client
 
-        ObservableList<Client> clientsObservableList1 = FXCollections.observableList(restaurantSystem.getClients());
+        clientsObservableList = FXCollections.observableList(restaurantSystem.getClients());
 
         tcSearchClientName.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
         tcSearchClientLastName.setCellValueFactory(new PropertyValueFactory<Client, String>("lastName"));
         tcSearchClientId.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
 
-        tvClient.setItems(clientsObservableList1);
+        tvClient.setItems(clientsObservableList);
 
         tvClient.setRowFactory(tv -> {
             TableRow<Client> row = new TableRow<>();
@@ -269,7 +360,13 @@ public class NewOrderGUI {
                     selectedClient = temp;
                     initializeTableView();
 
-                    
+                    txtClient.setText(selectedClient.getFullName());
+                    txtName.setText(selectedClient.getName());
+                    txtLastName.setText(selectedClient.getLastName());
+                    txtID.setText(selectedClient.getIdNumber());
+                    txtAddress.setText(selectedClient.getAddress());
+                    txtPhone.setText(selectedClient.getPhone());
+                    txtObservations.setText(selectedClient.getObservations());
                 }
             });
             return row;
@@ -277,8 +374,7 @@ public class NewOrderGUI {
 
         // ---------------------------------- Employee
 
-        ObservableList<Employee> employeesObservableList2 = FXCollections
-                .observableList(restaurantSystem.getEmployees());
+        employeesObservableList2 = FXCollections.observableList(restaurantSystem.getEmployees());
 
         tcSearchEmployeeName.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
         tcSearchEmployeeLastName.setCellValueFactory(new PropertyValueFactory<Employee, String>("lastName"));
@@ -292,6 +388,7 @@ public class NewOrderGUI {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     Employee temp = row.getItem();
                     selectedEmployee = temp;
+                    txtEmployee.setText(temp.getIdNumber());
                     initializeTableView();
                 }
             });
@@ -300,8 +397,7 @@ public class NewOrderGUI {
 
         // ---------------------------------- Product
 
-        ObservableList<Product> productsObservableList2 = FXCollections
-                .observableList(restaurantSystem.getDisplayProduct());
+        productsObservableList2 = FXCollections.observableList(restaurantSystem.getDisplayProduct());
 
         tcSearchProductName.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
         tcSearchProductType.setCellValueFactory(new PropertyValueFactory<Product, String>("type"));
@@ -316,7 +412,9 @@ public class NewOrderGUI {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     Product temp = row.getItem();
                     productsSelected.add(temp);
+                    txtProduct.setText(temp.getName());
                     initializeTableView();
+                    calculateAmount();
                 }
             });
             return row;
@@ -324,13 +422,12 @@ public class NewOrderGUI {
 
         // ---------------------------------- Order
 
-        ObservableList<Product> orderObservableList2 = FXCollections
-                .observableList(productsSelected);
+        ObservableList<Product> orderObservableList2 = FXCollections.observableList(productsSelected);
 
-                tcOrderProduct.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-                tcOrderType.setCellValueFactory(new PropertyValueFactory<Product, String>("type"));
-                tcOrderSize.setCellValueFactory(new PropertyValueFactory<Product, String>("size"));
-                tcOrderCost.setCellValueFactory(new PropertyValueFactory<Product, String>("price"));
+        tcOrderProduct.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        tcOrderType.setCellValueFactory(new PropertyValueFactory<Product, String>("type"));
+        tcOrderSize.setCellValueFactory(new PropertyValueFactory<Product, String>("size"));
+        tcOrderCost.setCellValueFactory(new PropertyValueFactory<Product, String>("price"));
 
         tvOrder.setItems(orderObservableList2);
 
@@ -341,11 +438,49 @@ public class NewOrderGUI {
                     Product temp = row.getItem();
                     productsSelected.remove(temp);
                     initializeTableView();
+                    calculateAmount();
                 }
             });
             return row;
         });
 
+    }
+
+    public Double calculateAmount() {
+        Double amount = (double) 0;
+
+        for (int i = 0; i < productsSelected.size(); i++) {
+            amount = amount + productsSelected.get(i).getPrice();
+        }
+
+        lblTotal.setText("Total: $" + amount);
+
+        return amount;
+    }
+
+    public Date actualDate() {
+        // SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss
+        // z");
+        Date time = new Date(System.currentTimeMillis());
+        return time;
+    }
+
+    public void comboInitialization() {
+
+        List<String> types = new ArrayList<>();
+        int i = 0;
+
+        do {
+            if (OrderState.values()[i].name() != null) {
+                types.add(OrderState.values()[i].name());
+                i++;
+            }
+
+        } while (i < OrderState.values().length);
+
+        ObservableList<String> optionsComboBox = FXCollections.observableArrayList(types);
+        comoBox.setValue("Select");
+        comoBox.setItems(optionsComboBox);
     }
 
 }

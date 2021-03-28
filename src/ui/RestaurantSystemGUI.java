@@ -208,6 +208,7 @@ public class RestaurantSystemGUI {
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
         controller.initializeTableView();
+        controller.comboInitialization();
         return controller;
     }
 
@@ -459,9 +460,9 @@ public class RestaurantSystemGUI {
         if (showConfirmAlert("Borrar Datos",
                 "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar",
                 "Cancelar")) {
-            //restaurantSystem.getClients().clear();
+            restaurantSystem.getClients().clear();
             //restaurantSystem.getIngredients().clear();
-            restaurantSystem.getProducts().clear();
+            //restaurantSystem.getProducts().clear();
             restaurantSystem.saveData();
             showClients(null);
         }

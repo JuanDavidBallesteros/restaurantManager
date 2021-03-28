@@ -229,7 +229,7 @@ public class Import {
             String id = "#O" + ordersIdCount;
             ordersIdCount += 1;
 
-            Order temp = new Order(id, Integer.parseInt(parts[0]), addedProducts, productsQuantity, clientToAdd,
+            Order temp = new Order(id, Integer.parseInt(parts[0]), addedProducts, clientToAdd,
                     employeeToAdd, deliveryDate, parts[7], createdBy, modifiedBy);
             orders.add(temp);
 

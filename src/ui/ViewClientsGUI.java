@@ -42,7 +42,7 @@ public class ViewClientsGUI {
 
     public void initializeTableView() {
 
-        System.out.println(restaurantSystem.getClients().size());
+        //System.out.println(restaurantSystem.getClients().size());
 
         ObservableList<Client> employeeObservableList = FXCollections.observableList(restaurantSystem.getClients());
 
