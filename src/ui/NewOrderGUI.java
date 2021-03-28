@@ -20,6 +20,7 @@ public class NewOrderGUI {
     private List<Product> productsSelected;
     private Client selectedClient;
     private Employee selectedEmployee;
+    private Order actualOrder;
 
     private ObservableList<Client> clientsObservableList;
     private ObservableList<Employee> employeesObservableList2;
@@ -40,6 +41,9 @@ public class NewOrderGUI {
 
     @FXML
     private Button btnAddSelected;
+
+    @FXML
+    private Button add;
 
     @FXML
     private Button btnDeleteSelected;
@@ -161,24 +165,44 @@ public class NewOrderGUI {
 
     @FXML
     void addOrder(ActionEvent event) {
-        try {
+        if (add.getText().equals("Actualizar")) {
             if (comoBox.getSelectionModel().getSelectedItem().equals("Select") || productsSelected.isEmpty()
                     || selectedClient == null || selectedEmployee == null) {
                 mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
                         "Asegúrese de rellenar los campos obligatorios marcados con (*).");
-
             } else {
-                restaurantSystem.addOrder(comoBox.getSelectionModel().getSelectedIndex(), productsSelected,
-                        selectedClient, selectedEmployee, actualDate(), lblOrderObservations.getText());
+                try {
+                    restaurantSystem.updateOrder(actualOrder, comoBox.getSelectionModel().getSelectedIndex(),
+                            productsSelected, selectedClient, selectedEmployee, actualDate(),
+                            lblOrderObservations.getText());
+                    mainGUI.showAlert("INFORMATION", "Información", "Orden actualizado",
+                            "Se ha actualizado la orden correctamente.");
+                } catch (IOException e) {
+                    mainGUI.showAlert("ERROR", "Error", "Error al actualizar",
+                            "Ha ocurrido un error al actualizar la orden.");
 
-                mainGUI.showAlert("INFORMATION", "Información", "Orden agregada",
-                        "Se ha agregado la orden correctamente.");
-
-                mainGUI.showOrders(null);
-
+                }
             }
-        } catch (IOException e) {
-            mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar la orden.");
+        } else {
+            try {
+                if (comoBox.getSelectionModel().getSelectedItem().equals("Select") || productsSelected.isEmpty()
+                        || selectedClient == null || selectedEmployee == null) {
+                    mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                            "Asegúrese de rellenar los campos obligatorios marcados con (*).");
+
+                } else {
+                    restaurantSystem.addOrder(comoBox.getSelectionModel().getSelectedIndex(), productsSelected,
+                            selectedClient, selectedEmployee, actualDate(), lblOrderObservations.getText());
+
+                    mainGUI.showAlert("INFORMATION", "Información", "Orden agregada",
+                            "Se ha agregado la orden correctamente.");
+
+                    mainGUI.showOrders(null);
+
+                }
+            } catch (IOException e) {
+                mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar la orden.");
+            }
         }
     }
 
@@ -283,8 +307,18 @@ public class NewOrderGUI {
         txtObservations.setText(order.getClient().getObservations());
         // lblClient.setText("Cliente: " + order.getClient().getName() + " " +
         // order.getClient().getLastName());
+
+        add.setText("Actualizar");
         lblEmployee.setText("Empleado: " + order.getEmployee().getName());
         lblOrder.setText("Orden: " + order.getId());
+
+        comoBox.setValue(order.getState());
+
+        productsSelected = order.getProducts();
+
+        actualOrder = order;
+
+        initializeTableView();
     }
 
     @FXML
@@ -459,8 +493,6 @@ public class NewOrderGUI {
     }
 
     public Date actualDate() {
-        // SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss
-        // z");
         Date time = new Date(System.currentTimeMillis());
         return time;
     }

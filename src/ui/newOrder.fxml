@@ -312,7 +312,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#addOrder" prefWidth="100.0" text="Añadir Orden">
+                  <Button fx:id="add" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#addOrder" prefWidth="100.0" text="Añadir Orden">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>

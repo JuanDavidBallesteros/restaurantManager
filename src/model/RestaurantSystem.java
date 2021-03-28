@@ -326,8 +326,8 @@ public class RestaurantSystem {
         saveData();
     }
 
-    public void updateOrder(Order order, int stateNum, List<Product> products, List<Integer> productsQuantity,
-            String clientName, String clientLastName, String employeeID, Date deliveryDate, String observations)
+    public void updateOrder(Order order, int stateNum, List<Product> products,
+           Client client, Employee employee, Date deliveryDate, String observations)
             throws IOException {
 
         /*
@@ -335,12 +335,6 @@ public class RestaurantSystem {
          * client, employee, deliveryDate, observations, order.getCreatedBy(),
          * actualUser.getUserName()); orders.remove(order); orders.add(temp);
          */
-
-        Employee employee = searchEmployee(employeeID);
-
-        String fullname = clientName + " "+ clientLastName;
-
-        Client client = searchClientByName(fullname);
 
         order.setState(stateNum);
         order.setProducts(products);

@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,7 @@ public class Order implements Serializable {
     private String observations;
     private String createdBy;
     private String modifiedBy;
+    private String dateTxt;
 
     public Order(String id, int stateNum, List<Product> products,  Client client,
                  Employee employee, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
@@ -36,6 +38,7 @@ public class Order implements Serializable {
         this.observations = observations;
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
+        dateToTxt();
     }
 
     public String getId() {
@@ -122,9 +125,18 @@ public class Order implements Serializable {
         this.products = products;
     }
 
+    public String getDateTxt() {
+        return dateTxt;
+    }
+
     /* public void setProductsQuantity(List<Integer> productsQuantity) {
         this.productsQuantity = productsQuantity;
     }
  */
+
+    public void dateToTxt(){
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        dateTxt = formatter.format(deliveryDate);
+    }
     
 }
