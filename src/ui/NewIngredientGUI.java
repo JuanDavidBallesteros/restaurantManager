@@ -48,6 +48,8 @@ public class NewIngredientGUI {
                             comoBox.getSelectionModel().getSelectedIndex())) {
                         mainGUI.showAlert("INFORMATION", "Información", "Ingrediente agregado",
                                 "Se ha agregado el ingrediente correctamente.");
+
+                        mainGUI.showIngredients(null);
                     } else {
                         mainGUI.showAlert("WARNING", "Alerta", "Error al agregar", "El ingrediente existe");
                     }
@@ -57,9 +59,12 @@ public class NewIngredientGUI {
                         "Ha ocurrido un error al agregar el ingrediente.");
             }
         } else {
-            restaurantSystem.updateIngredient(ingredient, txtName.getText(), comoBox.getSelectionModel().getSelectedIndex());
+            restaurantSystem.updateIngredient(ingredient, txtName.getText(),
+                    comoBox.getSelectionModel().getSelectedIndex());
             mainGUI.showAlert("INFORMATION", "Información", "Ingrediente actualizado",
-                                "Se ha actualizado el ingrediente correctamente.");
+                    "Se ha actualizado el ingrediente correctamente.");
+
+            mainGUI.showIngredients(null);
         }
     }
 
@@ -71,7 +76,7 @@ public class NewIngredientGUI {
     public void fillForm(Ingredient ingredient) {
         title.setText("Actualizar Ingrediente");
         addButton.setText("Actualizar");
-        
+
         txtName.setText(ingredient.getName());
         comoBox.setValue(ingredient.getType());
         this.ingredient = ingredient;

@@ -16,8 +16,9 @@ public class NewUserGUI {
     private final RestaurantSystem restaurantSystem;
     private final RestaurantSystemGUI mainGUI;
 
-    private Employee selectedEmployee;
+    private User actualUser;
 
+    private Employee selectedEmployee;
 
     public NewUserGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
@@ -37,17 +38,66 @@ public class NewUserGUI {
     private TableColumn<Employee, String> tcIdE;
 
     @FXML
+    private TableColumn<Employee, String> tcLastNameE;
+
+    @FXML
     private Label title;
 
     @FXML
     private TextField txtEmployeeName;
 
     @FXML
-    private TextField txtPassword;
+    private PasswordField txtPassword;
+
+    @FXML
+    private Button add;
 
     @FXML
     void add(ActionEvent event) {
 
+        if (title.getText().equals("Actualizar Usuario")) {
+
+            if (txtName.getText().isEmpty() || txtPassword.getText().isEmpty()
+                        || txtEmployeeName.getText().isEmpty()) {
+                    mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                            "Asegúrese de rellenar los campos obligatorios marcados con (*).");
+                } else {
+                    try {
+                        restaurantSystem.updateUser(actualUser, selectedEmployee, txtName.getText(), txtPassword.getText());
+                        mainGUI.showAlert("INFORMATION", "Información", "Actualizado",
+                            "Se ha actualizado el usuario correctamente.");
+                            mainGUI.showUsers(null);
+                    } catch (IOException e) {
+                        mainGUI.showAlert("ERROR", "Error", "Error al actualizar",
+                            "Ha ocurrido un error al actualizar el usuario.");
+                    }
+
+                }
+
+        } else {
+
+            try {
+                if (txtName.getText().isEmpty() || txtPassword.getText().isEmpty()
+                        || txtEmployeeName.getText().isEmpty()) {
+                    mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                            "Asegúrese de rellenar los campos obligatorios marcados con (*).");
+                } else {
+
+                    if (restaurantSystem.addUser(selectedEmployee, txtName.getText(), txtPassword.getText())) {
+                        mainGUI.showAlert("INFORMATION", "Información", "Usuario agregado",
+                                "Se ha agregado el Usuario correctamente.");
+
+                        mainGUI.showUsers(null);
+                    } else {
+                        mainGUI.showAlert("WARNING", "Alerta", "Error al agregar", "El usuario existe");
+                    }
+                }
+
+            } catch (IOException e) {
+                mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el Usuario.");
+            }
+
+        }
     }
 
     @FXML
@@ -60,12 +110,13 @@ public class NewUserGUI {
         ObservableList<Employee> ingredientObservableList = FXCollections
                 .observableList(restaurantSystem.getEmployees());
 
-                tcNameE.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
-                tcIdE.setCellValueFactory(new PropertyValueFactory<Employee, String>("idNum"));
+        tcNameE.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
+        tcLastNameE.setCellValueFactory(new PropertyValueFactory<Employee, String>("lastName"));
+        tcIdE.setCellValueFactory(new PropertyValueFactory<Employee, String>("idNumber"));
 
-                tv.setItems(ingredientObservableList);
+        tv.setItems(ingredientObservableList);
 
-                tv.setRowFactory(tv -> {
+        tv.setRowFactory(tv -> {
             TableRow<Employee> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
@@ -76,4 +127,23 @@ public class NewUserGUI {
             return row;
         });
     }
+
+    // -------------------------- Update
+
+    public void fillForm(User user) {
+        title.setText("Actualizar Usuario");
+        add.setText("Actualizar");
+
+        txtName.setText(user.getUserName());
+        txtPassword.setText(user.getUserPassword());
+
+        selectedEmployee = user.getEmployee();
+        txtEmployeeName.setText(user.getEmployee().getName() + " " + user.getEmployee().getLastName());
+
+        initializeTableView();
+
+        actualUser = user;
+
+    }
+
 }

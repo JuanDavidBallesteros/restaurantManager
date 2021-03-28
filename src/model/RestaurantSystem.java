@@ -107,7 +107,7 @@ public class RestaurantSystem {
 
         Product temp = new Product(id, name, typeNum, ingredients, sizeNum, price, actualUser.getUserName(),
                 actualUser.getUserName());
-                
+
         products.add(temp);
         productIdCount += 1;
         saveData();
@@ -242,10 +242,18 @@ public class RestaurantSystem {
         saveData();
     }
 
-    public void addUser(Employee employee, String userName, String userPassword) throws IOException {
+    public boolean addUser(Employee employee, String userName, String userPassword) throws IOException {
+        boolean added = false;
+
         User temp = new User(employee, userName, userPassword, actualUser.getUserName(), actualUser.getUserName());
-        users.add(temp);
+
+        if (searchUser(temp.getUserName()) == null) {
+            
+            users.add(temp);
+            added = true;
+        } 
         saveData();
+        return added;
     }
 
     // -------------------- remove
@@ -465,30 +473,34 @@ public class RestaurantSystem {
     }
 
     public User searchUser(String userName) {
+
         User temp = null;
 
-        bubbleSorting(users);
+        List<User> tempList = users;
+
+        bubbleSorting(tempList);
 
         int pos = -1;
         int i = 0;
-        int j = users.size() - 1;
+        int j = tempList.size() - 1;
 
         while (i <= j && pos < 0) {
 
             int m = (i + j) / 2;
 
-            if (users.get(m).compareByUserName(userName) == 0) {
+            if (tempList.get(m).compareByUserName(userName) == 0) {
 
                 pos = m;
 
-            } else if (users.get(m).compareByUserName(userName) < 0) {
+            } else if (tempList.get(m).compareByUserName(userName) < 0) {
                 i = m + 1;
-            } else if (users.get(m).compareByUserName(userName) > 0) {
+            } else if (tempList.get(m).compareByUserName(userName) > 0) {
                 j = m - 1;
             }
         }
-
-        temp = users.get(pos);
+        if (pos != -1) {
+            temp = tempList.get(pos);
+        }
         return temp;
     }
 

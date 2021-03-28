@@ -9,13 +9,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class NewProductGUI {
 
     private final RestaurantSystem restaurantSystem;
     private final RestaurantSystemGUI mainGUI;
+
+    private Product acutalProduct;
 
     private List<Ingredient> selectIngredientsList;
 
@@ -69,7 +70,7 @@ public class NewProductGUI {
 
     @FXML
     void addProduct(ActionEvent event) {
-        try {
+        if (addButton.getText().equals("Actualizar")) {
             if (selectIngredientsList.isEmpty() || txtName.getText().isEmpty() || txtPrice.getText().isEmpty()
                     || size.getSelectionModel().getSelectedItem().equals("Select")
                     || type.getSelectionModel().getSelectedItem().equals("Select")) {
@@ -77,18 +78,45 @@ public class NewProductGUI {
                 mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
                         "Asegúrese de rellenar los campos obligatorios marcados con (*).");
             } else {
+                try {
+                    restaurantSystem.updateProduct(acutalProduct, txtName.getText(),
+                            size.getSelectionModel().getSelectedIndex(), selectIngredientsList,
+                            size.getSelectionModel().getSelectedIndex(), Double.parseDouble(txtPrice.getText()));
 
-                restaurantSystem.addProduct(txtName.getText(), size.getSelectionModel().getSelectedIndex(),
-                        selectIngredientsList, size.getSelectionModel().getSelectedIndex(),
-                        Double.parseDouble(txtPrice.getText()));
+                    mainGUI.showAlert("INFORMATION", "Información", "Producto actualizado",
+                            "Se ha actualizado el Producto correctamente.");
 
-                mainGUI.showAlert("INFORMATION", "Información", "Ingrediente agregado",
-                        "Se ha agregado el ingrediente correctamente.");
+                    mainGUI.showProducts(null);
 
-                        
+                } catch (NumberFormatException | IOException e) {
+                    mainGUI.showAlert("ERROR", "Error", "Error al actualizar",
+                            "Ha ocurrido un error al actualizar el Producto.");
+                }
             }
-        } catch (NumberFormatException | IOException e) {
-            mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el ingrediente.");
+
+        } else {
+            try {
+                if (selectIngredientsList.isEmpty() || txtName.getText().isEmpty() || txtPrice.getText().isEmpty()
+                        || size.getSelectionModel().getSelectedItem().equals("Select")
+                        || type.getSelectionModel().getSelectedItem().equals("Select")) {
+
+                    mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                            "Asegúrese de rellenar los campos obligatorios marcados con (*).");
+                } else {
+
+                    restaurantSystem.addProduct(txtName.getText(), size.getSelectionModel().getSelectedIndex(),
+                            selectIngredientsList, size.getSelectionModel().getSelectedIndex(),
+                            Double.parseDouble(txtPrice.getText()));
+
+                    mainGUI.showAlert("INFORMATION", "Información", "Producto agregado",
+                            "Se ha agregado el Producto correctamente.");
+
+                    mainGUI.showProducts(null);
+
+                }
+            } catch (NumberFormatException | IOException e) {
+                mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el Producto.");
+            }
         }
     }
 
@@ -150,12 +178,13 @@ public class NewProductGUI {
         addButton.setText("Actualizar");
 
         txtName.setText(product.getName());
-        txtPrice.setText(product.getPrice()+"");
+        txtPrice.setText(product.getPrice() + "");
         selectIngredientsList = product.getIngredients();
         initializeTableView();
         size.setValue(product.getSize());
         type.setValue(product.getType());
 
+        acutalProduct = product;
     }
 
     // ---------------------- Combox Inicialitation

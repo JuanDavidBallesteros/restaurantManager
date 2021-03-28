@@ -25,6 +25,7 @@
                   <TableColumn fx:id="tcUName" text="Nombre Usuario" />
                   <TableColumn fx:id="tcEId" text="Id Empleado" />
                   <TableColumn fx:id="tcEName" text="Nombre Empleado" />
+                  <TableColumn fx:id="tcELastName" text="Apellido Empleado" />
                   <TableColumn fx:id="tcCreated" text="Creado por" />
                </columns>
                <columnResizePolicy>
