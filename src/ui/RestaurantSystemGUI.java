@@ -102,6 +102,13 @@ public class RestaurantSystemGUI {
     @FXML
     private Menu menuClock;
 
+    @FXML
+    private TextField txtProducstSeparatorEx;
+
+
+    @FXML
+    private TextField txtProducstSeparatorImp;
+
     // INITIALIZE
     // ------------------------------------------------------------------------------------------------------
 
@@ -335,6 +342,27 @@ public class RestaurantSystemGUI {
         }
     }
 
+    @FXML
+    void importProducts(ActionEvent event) throws FileNotFoundException, IOException {
+        if (txtProducstSeparatorImp.getText().isEmpty()) {
+            showAlert("ERROR", "Error", "Separador vacío", "Ingrese el separador de datos del archivo a importar.");
+        } else {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Seleccionar Archivo");
+            File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
+
+            if (file != null) {
+                int count = restaurantSystem.importProducts(file.getPath(), txtProducstSeparatorImp.getText());
+
+                showAlert("INFORMATION", "Información", "Clientes importados",
+                        count + " clientes fueron importados correctamente.");
+
+                showProducts(null);
+            }
+        }
+    }
+
+
     // EXTRA
     // -----------------------------------------------------------------------------------------------------------
 
@@ -408,8 +436,9 @@ public class RestaurantSystemGUI {
         if (showConfirmAlert("Borrar Datos",
                 "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar",
                 "Cancelar")) {
-            restaurantSystem.getClients().clear();
-            restaurantSystem.getIngredients().clear();
+            //restaurantSystem.getClients().clear();
+            //restaurantSystem.getIngredients().clear();
+            restaurantSystem.getProducts().clear();
             restaurantSystem.saveData();
             showClients(null);
         }

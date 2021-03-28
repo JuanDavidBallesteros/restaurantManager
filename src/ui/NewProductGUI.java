@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NewProductGUI {
@@ -83,6 +84,8 @@ public class NewProductGUI {
 
                 mainGUI.showAlert("INFORMATION", "Información", "Ingrediente agregado",
                         "Se ha agregado el ingrediente correctamente.");
+
+                        
             }
         } catch (NumberFormatException | IOException e) {
             mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el ingrediente.");
@@ -149,6 +152,8 @@ public class NewProductGUI {
         txtName.setText(product.getName());
         txtPrice.setText(product.getPrice()+"");
         selectIngredientsList = product.getIngredients();
+        System.out.println(selectIngredientsList);
+        initializeTableView();
         size.setValue(product.getSize());
         type.setValue(product.getType());
 

@@ -107,17 +107,18 @@ public class RestaurantSystem {
 
         Product temp = new Product(id, name, typeNum, ingredients, sizeNum, price, actualUser.getUserName(),
                 actualUser.getUserName());
+                
         products.add(temp);
         productIdCount += 1;
         saveData();
     }
 
     public boolean addIngredient(String name, int typeNum) throws IOException {
-        boolean added = false; 
+        boolean added = false;
 
         String id = "#I" + ingredientIdCount;
         Ingredient temp = new Ingredient(id, name, typeNum, actualUser.getUserName(), actualUser.getUserName());
-        if(ingredients.isEmpty()){
+        if (ingredients.isEmpty()) {
             ingredients.add(temp);
             ingredientIdCount += 1;
             added = true;
@@ -128,8 +129,7 @@ public class RestaurantSystem {
                 added = true;
             }
         }
-        
-        
+
         saveData();
         return added;
     }
@@ -500,9 +500,16 @@ public class RestaurantSystem {
         return count;
     }
 
-    public void importProducts(String path, String separator) throws FileNotFoundException, IOException {
+    public int importProducts(String path, String separator) throws FileNotFoundException, IOException {
+        int count = 0;
+        long temp = productIdCount;
+
         productIdCount = imports.importProducts(productIdCount, products, path, separator, ingredients);
+
+        count = (int) (productIdCount - temp);
         saveData();
+
+        return count;
     }
 
     public int importIngredients(String path, String separator) throws FileNotFoundException, IOException {
@@ -643,8 +650,8 @@ public class RestaurantSystem {
     public List<Ingredient> getDisplayIngredients() {
         List<Ingredient> tempList = new ArrayList<>();
 
-        for(int i = 0; i< ingredients.size() ; i++){
-            if(ingredients.get(i).isAvailable()){
+        for (int i = 0; i < ingredients.size(); i++) {
+            if (ingredients.get(i).isAvailable()) {
                 tempList.add(ingredients.get(i));
             }
         }

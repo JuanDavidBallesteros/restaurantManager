@@ -28,8 +28,8 @@ public class Order implements Serializable {
                  Employee employee, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
         this.id = id;
         state = OrderState.values()[stateNum].name();
-        products = new ArrayList<>();
-        productsQuantity = new ArrayList<>();
+        this.products = products;
+        this.productsQuantity = productsQuantity;
         this.client = client;
         this.employee = employee;
         this.deliveryDate = deliveryDate;

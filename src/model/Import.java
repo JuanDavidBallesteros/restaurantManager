@@ -7,10 +7,14 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 public class Import {
+
+    private RestaurantSystem rs;
 
     public Import() {
     }
@@ -64,7 +68,7 @@ public class Import {
             List<Ingredient> ingredients) throws IOException, FileNotFoundException {
 
         long countProduct = productIdCount;
-        List<Ingredient> addedIngredients = new ArrayList<>();
+        
 
         BufferedReader br = new BufferedReader(new FileReader(path));
         String line = br.readLine();
@@ -73,24 +77,38 @@ public class Import {
         while (line != null) {
             String[] parts = line.split(separator);
 
-            String[] list = parts[2].split(",");
-            for (int i = 0; i < list.length; i++) {
-                if (ingredientFinder(ingredients, list[i]) != null) {
-                    addedIngredients.add(ingredientFinder(ingredients, list[i]));
-                }
-            }
+            List<Ingredient> addedIngredients = new ArrayList<>();
 
-            String id = "#P" + productIdCount;
-            productIdCount += 1;
+            int i = 5;
+
+            do {
+                if (ingredientFinder(ingredients, parts[i]) != null) {
+                    addedIngredients.add(ingredientFinder(ingredients, parts[i]));
+
+                }
+                i++;
+            } while (i < parts.length);
+
+            String id = "#P" + countProduct;
+
+            
 
             Product temp = new Product(id, parts[0], Integer.parseInt(parts[1]), addedIngredients,
-                    Integer.parseInt(parts[3]), Double.parseDouble(parts[4]), parts[5], parts[6]);
-            products.add(temp);
+                    Integer.parseInt(parts[2]), Double.parseDouble(parts[3]), parts[4], parts[5]);
+
+                    for(int j = 0; j<temp.getIngredients().size();j++){
+                        System.out.println(temp.getIngredients().get(j).getName());
+                    }
+
+                    products.add(temp);
+            
+            countProduct ++;
 
             line = br.readLine();
+
         }
 
-        addedIngredients.clear();
+        
         br.close();
 
         return countProduct;
@@ -99,27 +117,40 @@ public class Import {
     public Ingredient ingredientFinder(List<Ingredient> list, String id) {
         Ingredient temp = null;
 
+        List<Ingredient> tempList = list;
+
+        Comparator<Ingredient> idComparator = new Comparator<Ingredient>() {
+
+            @Override
+            public int compare(Ingredient in1, Ingredient in2) {
+                return in1.compareById(in2.getId());
+            }
+
+        };
+
+        tempList.sort(idComparator);
+
         int pos = -1;
         int i = 0;
-        int j = list.size() - 1;
+        int j = tempList.size() - 1;
 
         while (i <= j && pos < 0) {
 
             int m = (i + j) / 2;
 
-            if (list.get(m).compareById(id) == 0) {
+            if (tempList.get(m).compareById(id) == 0) {
 
                 pos = m;
 
-            } else if (list.get(m).compareById(id) < 0) {
+            } else if (tempList.get(m).compareById(id) < 0) {
                 i = m + 1;
-            } else if (list.get(m).compareById(id) > 0) {
+            } else if (tempList.get(m).compareById(id) > 0) {
                 j = m - 1;
             }
         }
 
         if (pos != -1) {
-            temp = list.get(pos);
+            temp = tempList.get(pos);
         }
 
         return temp;
@@ -130,25 +161,23 @@ public class Import {
     public long importIngredients(long ingredientIdCount, List<Ingredient> ingredients, String path, String separator)
             throws IOException {
 
-                //int testcount = 0;
+        // int testcount = 0;
 
         BufferedReader br = new BufferedReader(new FileReader(path));
         String line = br.readLine();
         line = br.readLine();
 
         while (line != null) {
-            
 
             String[] parts = line.split(separator);
             String id = "#I" + ingredientIdCount;
-            
 
             Ingredient temp = new Ingredient(id, parts[0], Integer.parseInt(parts[1]), parts[2], parts[3]);
-            if(validateName(ingredients, temp)== -1){
+            if (validateName(ingredients, temp) == -1) {
                 ingredientIdCount += 1;
                 ingredients.add(temp);
             }
-            
+
             line = br.readLine();
         }
         br.close();
@@ -156,11 +185,11 @@ public class Import {
         return ingredientIdCount;
     }
 
-    private int validateName(List<Ingredient> ingredients, Ingredient ingredient){
-        int out= -1;
+    private int validateName(List<Ingredient> ingredients, Ingredient ingredient) {
+        int out = -1;
 
-        for(int i = 0 ; i < ingredients.size() && out == -1 ; i++){
-            if(ingredient.compareByName(ingredients.get(i)) == 0){
+        for (int i = 0; i < ingredients.size() && out == -1; i++) {
+            if (ingredient.compareByName(ingredients.get(i)) == 0) {
                 out = i;
             }
         }

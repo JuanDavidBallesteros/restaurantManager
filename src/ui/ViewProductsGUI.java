@@ -11,7 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ViewProductsGUI {
-    
+
     private final RestaurantSystem restaurantSystem;
     private final RestaurantSystemGUI mainGUI;
 
@@ -41,10 +41,10 @@ public class ViewProductsGUI {
     @FXML
     private TableColumn<Product, String> tcSize;
 
-
     public void initializeTableView() {
 
-        ObservableList<Product> ingredientObservableList = FXCollections.observableList(restaurantSystem.getDisplayProduct());
+        ObservableList<Product> ingredientObservableList = FXCollections
+                .observableList(restaurantSystem.getDisplayProduct());
 
         tcID.setCellValueFactory(new PropertyValueFactory<Product, String>("id"));
         tcName.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
@@ -55,7 +55,7 @@ public class ViewProductsGUI {
 
         tvTable.setItems(ingredientObservableList);
 
-        tvTable.setRowFactory( tv -> {
+        tvTable.setRowFactory(tv -> {
             TableRow<Product> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
@@ -72,5 +72,5 @@ public class ViewProductsGUI {
         });
 
     }
-    
+
 }

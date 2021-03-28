@@ -26,7 +26,7 @@ public class Product implements Comparable<Product>, Serializable {
                    String modifiedBy) {
         this.name = name;
         type = ProductType.values()[typeNum].name();
-        ingredients = new ArrayList<>();
+        this.ingredients = ingredients;
         size = ProductSize.values()[sizeNum].name();
         this.price = price;
         this.createdBy = createdBy;
