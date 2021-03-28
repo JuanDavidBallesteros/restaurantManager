@@ -207,6 +207,7 @@ public class RestaurantSystemGUI {
         fxmlLoader.setController(controller);
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
+        controller.initializeTableView();
         return controller;
     }
 

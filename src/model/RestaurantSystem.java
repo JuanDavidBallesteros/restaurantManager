@@ -145,7 +145,7 @@ public class RestaurantSystem {
         return out;
     }
 
-    public void addOrder(int stateNum, List<Product> products, List<Integer> productsQuantity, String clientName,
+    public void addOrder(int stateNum, List<Product> products, String clientName,
             String clientLastName, String employeeID, Date deliveryDate, String observations) throws IOException {
         String id = "#O" + ordersIdCount;
 
@@ -153,8 +153,11 @@ public class RestaurantSystem {
 
         Employee employee = searchEmployee(employeeID);
 
-        Order temp = new Order(id, stateNum, products, productsQuantity, client, employee, deliveryDate, observations,
-                actualUser.getUserName(), actualUser.getUserName());
+       /*  Order temp = new Order(id, stateNum, products, productsQuantity, client, employee, deliveryDate, observations,
+                actualUser.getUserName(), actualUser.getUserName()); */
+
+            Order temp = new Order(id, stateNum, products, client, employee, deliveryDate, observations,
+                actualUser.getUserName(), actualUser.getUserName());        
 
         orders.add(temp);
         ordersIdCount += 1;
@@ -336,7 +339,7 @@ public class RestaurantSystem {
 
         order.setState(stateNum);
         order.setProducts(products);
-        order.setProductsQuantity(productsQuantity);
+        //order.setProductsQuantity(productsQuantity);
         order.setClient(client);
         order.setEmployee(employee);
         order.setDeliveryDate(actualDate);
@@ -640,7 +643,8 @@ public class RestaurantSystem {
                 if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0) {
                     for (int j = 0; j < orders.get(i).getProducts().size(); j++) { // Product list of the order in rage
                         if (orders.get(i).getProducts().get(j) == tProduct) {
-                            count += orders.get(i).getProductsQuantity().get(j);
+                            //count += orders.get(i).getProductsQuantity().get(j); //Integer quantity
+                            count++;
                         }
                     }
                 }

@@ -179,8 +179,10 @@ public class NewProductGUI {
 
         txtName.setText(product.getName());
         txtPrice.setText(product.getPrice() + "");
+        
         selectIngredientsList = product.getIngredients();
         initializeTableView();
+
         size.setValue(product.getSize());
         type.setValue(product.getType());
 

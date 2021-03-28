@@ -16,7 +16,7 @@ public class Order implements Serializable {
     private String id;
     private String state;
     private List<Product> products;
-    private List<Integer> productsQuantity;
+    //private List<Integer> productsQuantity;
     private Client client;
     private Employee employee;
     private Date deliveryDate;
@@ -24,12 +24,12 @@ public class Order implements Serializable {
     private String createdBy;
     private String modifiedBy;
 
-    public Order(String id, int stateNum, List<Product> products, List<Integer> productsQuantity, Client client,
+    public Order(String id, int stateNum, List<Product> products,  Client client,
                  Employee employee, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
         this.id = id;
         state = OrderState.values()[stateNum].name();
         this.products = products;
-        this.productsQuantity = productsQuantity;
+        //this.productsQuantity = productsQuantity;
         this.client = client;
         this.employee = employee;
         this.deliveryDate = deliveryDate;
@@ -58,9 +58,9 @@ public class Order implements Serializable {
         return products;
     }
 
-    public List<Integer> getProductsQuantity() {
+    /* public List<Integer> getProductsQuantity() {
         return productsQuantity;
-    }
+    } */
 
     public Client getClient() {
         return client;
@@ -122,9 +122,9 @@ public class Order implements Serializable {
         this.products = products;
     }
 
-    public void setProductsQuantity(List<Integer> productsQuantity) {
+    /* public void setProductsQuantity(List<Integer> productsQuantity) {
         this.productsQuantity = productsQuantity;
     }
-
+ */
     
 }

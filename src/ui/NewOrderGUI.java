@@ -1,19 +1,29 @@
 package ui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import model.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewOrderGUI {
 
     private final RestaurantSystem restaurantSystem;
     private final RestaurantSystemGUI mainGUI;
 
+    private List<Product> productsSelected;
+    private Client selectedClient;
+    private Employee selectedEmployee;
+
     public NewOrderGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
         restaurantSystem = mainGUI.getRestaurantSystem();
+        productsSelected = new ArrayList<>();
     }
 
     @FXML
@@ -53,6 +63,9 @@ public class NewOrderGUI {
     private TableColumn<Client, String> tcSearchClientLastName;
 
     @FXML
+    private TableColumn<Client, String> tcSearchClientId;
+
+    @FXML
     private TextField txtName;
 
     @FXML
@@ -83,6 +96,9 @@ public class NewOrderGUI {
     private TableColumn<Employee, String> tcSearchEmployeeLastName;
 
     @FXML
+    private TableColumn<Employee, String> tcSearchEmployeeId;
+
+    @FXML
     private Label lblClient;
 
     @FXML
@@ -95,25 +111,34 @@ public class NewOrderGUI {
     private TableView<Product> tvProducts;
 
     @FXML
-    private TableColumn<Product, String> tcSearchProduct;
+    private TableColumn<Product, String> tcSearchProductName;
 
     @FXML
-    private TableColumn<Product, Double> tcSearchCost;
+    private TableColumn<Product, String> tcSearchProductType;
+
+    @FXML
+    private TableColumn<Product, String> tcSearchProductSize;
+
+    @FXML
+    private TableColumn<Product, String> tcSearchProductCost;
 
     @FXML
     private TextField txtProductAmount;
 
-    @FXML
+    @FXML 
     private TableView<Product> tvOrder;
-
-    @FXML
-    private TableColumn<?, String> tcOrderAmount;
 
     @FXML
     private TableColumn<Product, String> tcOrderProduct;
 
     @FXML
-    private TableColumn<Product, Double> tcOrderCost;
+    private TableColumn<Product, String> tcOrderType;
+
+    @FXML
+    private TableColumn<Product, String> tcOrderSize;
+
+    @FXML
+    private TableColumn<Product, String> tcOrderCost;
 
     @FXML
     private TextArea lblOrderObservations;
@@ -173,7 +198,7 @@ public class NewOrderGUI {
 
     @FXML
     void toggleEdit(ActionEvent event) {
-        if(btnToggleEdit.isSelected()) {
+        if (btnToggleEdit.isSelected()) {
             btnToggleEdit.setText("Editar: Si");
             txtProduct.setDisable(false);
             btnSearchProduct.setDisable(false);
@@ -224,5 +249,103 @@ public class NewOrderGUI {
         mainGUI.showOrders(null);
     }
 
-}
+    public void initializeTableView() {
 
+        // ---------------------------------- Client
+
+        ObservableList<Client> clientsObservableList1 = FXCollections.observableList(restaurantSystem.getClients());
+
+        tcSearchClientName.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
+        tcSearchClientLastName.setCellValueFactory(new PropertyValueFactory<Client, String>("lastName"));
+        tcSearchClientId.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
+
+        tvClient.setItems(clientsObservableList1);
+
+        tvClient.setRowFactory(tv -> {
+            TableRow<Client> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Client temp = row.getItem();
+                    selectedClient = temp;
+                    initializeTableView();
+
+                    
+                }
+            });
+            return row;
+        });
+
+        // ---------------------------------- Employee
+
+        ObservableList<Employee> employeesObservableList2 = FXCollections
+                .observableList(restaurantSystem.getEmployees());
+
+        tcSearchEmployeeName.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
+        tcSearchEmployeeLastName.setCellValueFactory(new PropertyValueFactory<Employee, String>("lastName"));
+        tcSearchEmployeeId.setCellValueFactory(new PropertyValueFactory<Employee, String>("idNumber"));
+
+        tvEmployees.setItems(employeesObservableList2);
+
+        tvEmployees.setRowFactory(tv -> {
+            TableRow<Employee> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Employee temp = row.getItem();
+                    selectedEmployee = temp;
+                    initializeTableView();
+                }
+            });
+            return row;
+        });
+
+        // ---------------------------------- Product
+
+        ObservableList<Product> productsObservableList2 = FXCollections
+                .observableList(restaurantSystem.getDisplayProduct());
+
+        tcSearchProductName.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        tcSearchProductType.setCellValueFactory(new PropertyValueFactory<Product, String>("type"));
+        tcSearchProductCost.setCellValueFactory(new PropertyValueFactory<Product, String>("price"));
+        tcSearchProductSize.setCellValueFactory(new PropertyValueFactory<Product, String>("size"));
+
+        tvProducts.setItems(productsObservableList2);
+
+        tvProducts.setRowFactory(tv -> {
+            TableRow<Product> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Product temp = row.getItem();
+                    productsSelected.add(temp);
+                    initializeTableView();
+                }
+            });
+            return row;
+        });
+
+        // ---------------------------------- Order
+
+        ObservableList<Product> orderObservableList2 = FXCollections
+                .observableList(productsSelected);
+
+                tcOrderProduct.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+                tcOrderType.setCellValueFactory(new PropertyValueFactory<Product, String>("type"));
+                tcOrderSize.setCellValueFactory(new PropertyValueFactory<Product, String>("size"));
+                tcOrderCost.setCellValueFactory(new PropertyValueFactory<Product, String>("price"));
+
+        tvOrder.setItems(orderObservableList2);
+
+        tvOrder.setRowFactory(tv -> {
+            TableRow<Product> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Product temp = row.getItem();
+                    productsSelected.remove(temp);
+                    initializeTableView();
+                }
+            });
+            return row;
+        });
+
+    }
+
+}
