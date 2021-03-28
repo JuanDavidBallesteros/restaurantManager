@@ -273,7 +273,7 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
-    void showProducts(ActionEvent event) throws IOException {
+    public void showProducts(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewProducts.fxml"));
         ViewProductsGUI controller = new ViewProductsGUI(this);
         fxmlLoader.setController(controller);
@@ -291,6 +291,28 @@ public class RestaurantSystemGUI {
         paneHolder.getChildren().setAll(pane);
         controller.initializeTableView();
         controller.comboInitialization();
+        
+        return controller;
+    }
+
+    @FXML
+    public void showUsers(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("viewUsers.fxml"));
+        ViewUsers controller = new ViewUsers(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        controller.initializeTableView();
+    }
+
+    @FXML
+    public NewUserGUI newUsers(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newUser.fxml"));
+        NewUserGUI controller = new NewUserGUI(this);
+        fxmlLoader.setController(controller);
+        Parent pane = fxmlLoader.load();
+        paneHolder.getChildren().setAll(pane);
+        controller.initializeTableView();
         
         return controller;
     }

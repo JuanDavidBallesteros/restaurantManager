@@ -188,52 +188,6 @@
                                     <Insets bottom="15.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Label text="Generar Reporte">
-                                 <VBox.margin>
-                                    <Insets bottom="20.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <DatePicker promptText="Ordenes desde...">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </DatePicker>
-                              <TextField promptText="Hora (hh:mm)" text="00:00">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </TextField>
-                              <DatePicker promptText="hasta...">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </DatePicker>
-                              <TextField layoutX="20.0" layoutY="223.0" promptText="Hora (hh:mm)" text="23:59">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </TextField>
-                              <HBox alignment="CENTER">
-                                 <children>
-                                    <Label text="Separador de datos:">
-                                       <padding>
-                                          <Insets right="5.0" />
-                                       </padding>
-                                    </Label>
-                                    <TextField alignment="CENTER" prefWidth="25.0" promptText=";" text=";" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Generar Archivo">
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </Button>
                            </children>
                         </VBox>
                      </content>
@@ -359,6 +313,34 @@
                                     <TextField fx:id="txtIngredientSeparator" alignment="CENTER" prefWidth="25.0" promptText="," />
                                  </children>
                               </HBox>
+                           </children>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+                  <TitledPane layoutX="10.0" layoutY="60.0" prefWidth="180.0" text="Usuarios">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#showUsers" prefHeight="25.0" prefWidth="450.0" text="Ver Usuarios">
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" />
+                                 </VBox.margin>
+                              </Separator>
+                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#newUsers" prefHeight="25.0" prefWidth="450.0" text="Nuevo Usuarios">
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Separator layoutX="20.0" layoutY="65.0" prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" />
+                                 </VBox.margin>
+                              </Separator>
                            </children>
                         </VBox>
                      </content>

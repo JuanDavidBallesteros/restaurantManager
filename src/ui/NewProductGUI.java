@@ -93,8 +93,8 @@ public class NewProductGUI {
     }
 
     @FXML
-    void showLogin(ActionEvent event) {
-
+    void showLogin(ActionEvent event) throws IOException {
+        mainGUI.showProducts(null);
     }
 
     // -------------------------- action in table
@@ -152,7 +152,6 @@ public class NewProductGUI {
         txtName.setText(product.getName());
         txtPrice.setText(product.getPrice()+"");
         selectIngredientsList = product.getIngredients();
-        System.out.println(selectIngredientsList);
         initializeTableView();
         size.setValue(product.getSize());
         type.setValue(product.getType());

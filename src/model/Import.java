@@ -7,14 +7,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 public class Import {
-
-    private RestaurantSystem rs;
 
     public Import() {
     }
@@ -95,10 +92,6 @@ public class Import {
 
             Product temp = new Product(id, parts[0], Integer.parseInt(parts[1]), addedIngredients,
                     Integer.parseInt(parts[2]), Double.parseDouble(parts[3]), parts[4], parts[5]);
-
-                    for(int j = 0; j<temp.getIngredients().size();j++){
-                        System.out.println(temp.getIngredients().get(j).getName());
-                    }
 
                     products.add(temp);
             
