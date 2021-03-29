@@ -271,7 +271,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Generar Archivo">
+                              <Button mnemonicParsing="false" onAction="#exportProducts" prefHeight="25.0" prefWidth="450.0" text="Generar Archivo">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>

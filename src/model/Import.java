@@ -27,7 +27,7 @@ public class Import {
         line = br.readLine();
 
         while (line != null) {
-            String[] parts = line.split(separator);
+            String[] parts = line.split(separator); 
 
             Client temp = new Client(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], (parts[6]), parts[7]);
 

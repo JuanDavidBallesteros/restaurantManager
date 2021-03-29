@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.*;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -228,21 +229,17 @@ public class NewOrderGUI {
                     "Asegúrese de rellenar los campos des búsqueda.");
         } else {
 
-            long startTime = System.nanoTime();
-            Client searchResult = restaurantSystem.searchClientByName(txtClient.getText());
-            long endTime = System.nanoTime();
-            double searchTime = (double)((endTime-startTime))/1000000;
-            lblSearchTime.setText("Tiempo de búsqueda: " + searchTime + " milisegundos.");
 
-            if (searchResult != null) {
+            if (restaurantSystem.searchClientByName(txtClient.getText()) != null) {
 
                 List<Client> tempList = new ArrayList<>();
 
                 long startTime = System.nanoTime();
                 tempList.add(restaurantSystem.searchClientByName(txtClient.getText()));
-                endTime = System.nanoTime() - startTime;
+                DecimalFormat df = new DecimalFormat("#0.00##");
+                endTime = ((System.nanoTime() - startTime)/1000000);
 
-                lblSearchTime.setText("Tiempo de búsqueda: " + endTime + " ns") ;
+                lblSearchTime.setText("Tiempo de búsqueda: " + df.format(endTime) + " ms") ;
 
                 clientsObservableList = FXCollections.observableList(tempList);
 

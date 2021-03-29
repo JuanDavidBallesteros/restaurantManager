@@ -19,7 +19,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 public class RestaurantSystemGUI {
@@ -111,6 +114,12 @@ public class RestaurantSystemGUI {
 
     @FXML
     private TextField txtProducstSeparatorImp;
+
+    @FXML
+    private DatePicker productExpInit;
+
+    @FXML
+    private DatePicker productExpLim;
 
     // INITIALIZE
     // ------------------------------------------------------------------------------------------------------
@@ -413,6 +422,27 @@ public class RestaurantSystemGUI {
         }
     }
 
+    @FXML
+    void exportProducts(ActionEvent event) throws FileNotFoundException, ParseException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showSaveDialog(mainPane.getScene().getWindow());
+
+        if (file != null) {
+            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.GERMANY);
+
+            if(isoFormat.parse(productExpInit.toString()) == null){
+                System.out.println("inferior null");
+            }
+            if(isoFormat.parse(productExpLim.toString()) == null){
+                System.out.println("superior null");
+            }
+
+            restaurantSystem.exportProductsReport(file, txtProducstSeparatorEx.getText(), isoFormat.parse(productExpInit.toString()),
+            isoFormat.parse(productExpLim.toString()));
+        }
+    }
+
     // EXTRA
     // -----------------------------------------------------------------------------------------------------------
 
@@ -484,13 +514,13 @@ public class RestaurantSystemGUI {
     @FXML
     public void deleteAllClients(ActionEvent event) throws IOException {
         if (showConfirmAlert("Borrar Datos",
-                "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar",
+                "¿Está seguro que desea borrar todos los datos? Esta acción no se podrá deshacer.", "Borrar",
                 "Cancelar")) {
-            // restaurantSystem.getClients().clear();
-            // restaurantSystem.getIngredients().clear();
-            // restaurantSystem.setIngredientIdCount(0);
-            // restaurantSystem.getProducts().clear();
-            // restaurantSystem.setProductIdCount(0);
+            restaurantSystem.getClients().clear();
+            restaurantSystem.getIngredients().clear();
+            restaurantSystem.setIngredientIdCount(0);
+            restaurantSystem.getProducts().clear();
+            restaurantSystem.setProductIdCount(0);
             restaurantSystem.getOrders().clear();
             restaurantSystem.setOrdersIdCount(0);
             restaurantSystem.saveData();
