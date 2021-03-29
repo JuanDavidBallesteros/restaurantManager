@@ -45,6 +45,7 @@ public class NewEmployeeGUI {
                     restaurantSystem.updateEmployee(actualEmployee, txtName.getText(), txtLastName.getText(), txtID.getText());
                     mainGUI.showAlert("INFORMATION", "Información", "Ingrediente actualizado",
                         "Se ha actualizado el empleado correctamente.");
+                        mainGUI.showLogin(null);
                 } catch (IOException e) {
                     mainGUI.showAlert("ERROR", "ERROR", null, "No se pudo actualizar el registro.");
                 }

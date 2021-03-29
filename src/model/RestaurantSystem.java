@@ -267,9 +267,9 @@ public class RestaurantSystem {
     public boolean removeProduct(Product product) throws IOException {
         boolean delete = true;
 
-        for(int i = 0 ; i < orders.size() && delete == true ; i++){
-            for (int j = 0 ; j < orders.get(i).getProducts().size() ; j++){
-                if(orders.get(i).getProducts().get(j).equals(product)){
+        for (int i = 0; i < orders.size() && delete == true; i++) {
+            for (int j = 0; j < orders.get(i).getProducts().size(); j++) {
+                if (orders.get(i).getProducts().get(j).equals(product)) {
                     delete = false;
                 }
             }
@@ -289,7 +289,7 @@ public class RestaurantSystem {
         for (int i = 0; i < products.size() && delete == true; i++) {
             for (int j = 0; j < products.get(i).getIngredients().size(); j++) {
                 if (products.get(i).getIngredients().get(j).equals(ingredient)) {
-                    //System.out.println(j);
+                    // System.out.println(j);
                     delete = false;
                 }
             }
@@ -605,10 +605,17 @@ public class RestaurantSystem {
         return count;
     }
 
-    public void importOrders(String path, String separator) throws FileNotFoundException, IOException, ParseException {
+    public int importOrders(String path, String separator) throws FileNotFoundException, IOException, ParseException {
+        int count = 0;
+        long temp = ordersIdCount;
+
         ordersIdCount = imports.importOrder(ordersIdCount, orders, products, clients, employees, users, path,
                 separator);
+
+        count = (int) (ordersIdCount - temp);
         saveData();
+
+        return count;
     }
 
     // ---------------- Sorts

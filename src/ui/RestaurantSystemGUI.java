@@ -460,9 +460,10 @@ public class RestaurantSystemGUI {
         if (showConfirmAlert("Borrar Datos",
                 "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar",
                 "Cancelar")) {
-            restaurantSystem.getClients().clear();
+            //restaurantSystem.getClients().clear();
             //restaurantSystem.getIngredients().clear();
             //restaurantSystem.getProducts().clear();
+            restaurantSystem.getOrders().clear();
             restaurantSystem.saveData();
             showClients(null);
         }

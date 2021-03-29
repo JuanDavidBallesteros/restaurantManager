@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Import {
 
@@ -194,10 +195,7 @@ public class Import {
     public long importOrder(long ordersIdCount, List<Order> orders, List<Product> products, List<Client> clients,
             List<Employee> employees, List<User> users, String path, String separator)
             throws IOException, ParseException {
-        BufferedReader br = new BufferedReader(new FileReader(path));
-
-        List<Product> addedProducts = new ArrayList<>();
-        List<Integer> productsQuantity = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(path));        
 
         String line = br.readLine();
         line = br.readLine();
@@ -205,40 +203,37 @@ public class Import {
         while (line != null) {
             String[] parts = line.split(separator);
 
-            String[] productsIdList = parts[1].split(",");
-            for (int i = 0; i < products.size(); i++) {
-                if (productFinder(products, productsIdList[i]) != null) {
-                    addedProducts.add(productFinder(products, productsIdList[i]));
+            List<Product> addedProducts = new ArrayList<>();
+
+            int i = 8;
+
+            do {
+                if (productFinder(products, parts[i]) != null) {
+                    addedProducts.add(productFinder(products, parts[i]));
+
                 }
-            }
+                i++;
+            } while (i < parts.length);
 
-            String[] productsQuantityList = parts[2].split(",");
-            for (int i = 0; i < productsQuantityList.length; i++) {
-                productsQuantity.add(Integer.parseInt(productsQuantityList[i]));
-            }
+            Client clientToAdd = searchClientByName(parts[1], parts[2], clients);
 
-            Client clientToAdd = searchClientByName(parts[3], parts[4], clients);
+            Employee employeeToAdd = searchEmployee(parts[3], employees);
 
-            Employee employeeToAdd = searchEmployee(parts[5], employees);
+            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.GERMANY);
+            Date deliveryDate = isoFormat.parse(parts[4]);
 
-            Date deliveryDate = new SimpleDateFormat("dd/MM/yyyy").parse(parts[6]);
-
-            String createdBy = searchUser(parts[8], users).getUserName();
-            String modifiedBy = searchUser(parts[9], users).getUserName();
+            //Date deliveryDate = new SimpleDateFormat("dd/MM/yyyy").parse(parts[6]);
 
             String id = "#O" + ordersIdCount;
             ordersIdCount += 1;
 
             Order temp = new Order(id, Integer.parseInt(parts[0]), addedProducts, clientToAdd,
-                    employeeToAdd, deliveryDate, parts[7], createdBy, modifiedBy);
+                    employeeToAdd, deliveryDate, parts[5], parts[6], parts[7]);
             orders.add(temp);
 
             line = br.readLine();
         }
         br.close();
-
-        addedProducts.clear();
-        productsQuantity.clear();
 
         return ordersIdCount;
     }
