@@ -228,7 +228,13 @@ public class NewOrderGUI {
                     "Asegúrese de rellenar los campos des búsqueda.");
         } else {
 
-            if (restaurantSystem.searchClientByName(txtClient.getText()) != null) {
+            long startTime = System.nanoTime();
+            Client searchResult = restaurantSystem.searchClientByName(txtClient.getText());
+            long endTime = System.nanoTime();
+            double searchTime = (double)((endTime-startTime))/1000000;
+            lblSearchTime.setText("Tiempo de búsqueda: " + searchTime + " milisegundos.");
+
+            if (searchResult != null) {
 
                 List<Client> tempList = new ArrayList<>();
 
