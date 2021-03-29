@@ -215,10 +215,6 @@ public class Import {
 
             Employee employeeToAdd = searchEmployee(parts[3], employees);
 
-            if (employeeToAdd != null){
-                System.out.println(employeeToAdd.getFullname());
-            }
-
             SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.GERMANY);
             String sDate = parts[4].replaceAll("\\+0([0-9]){1}\\:00", "+0$100");
             Date deliveryDate = isoFormat.parse(sDate);

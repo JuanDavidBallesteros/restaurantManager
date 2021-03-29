@@ -26,6 +26,8 @@ public class NewOrderGUI {
     private ObservableList<Employee> employeesObservableList2;
     private ObservableList<Product> productsObservableList2;
 
+    private long endTime;
+
     public NewOrderGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
         restaurantSystem = mainGUI.getRestaurantSystem();
@@ -229,7 +231,12 @@ public class NewOrderGUI {
             if (restaurantSystem.searchClientByName(txtClient.getText()) != null) {
 
                 List<Client> tempList = new ArrayList<>();
+
+                long startTime = System.nanoTime();
                 tempList.add(restaurantSystem.searchClientByName(txtClient.getText()));
+                endTime = System.nanoTime() - startTime;
+
+                lblSearchTime.setText("Tiempo de búsqueda: " + endTime + " ns") ;
 
                 clientsObservableList = FXCollections.observableList(tempList);
 
