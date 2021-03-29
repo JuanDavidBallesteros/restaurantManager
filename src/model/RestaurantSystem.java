@@ -89,7 +89,7 @@ public class RestaurantSystem {
         this.actualUser = actualUser;
     }
 
-    public long getOrdersIdCount(){
+    public long getOrdersIdCount() {
         return ordersIdCount;
     }
 
@@ -149,8 +149,8 @@ public class RestaurantSystem {
         return out;
     }
 
-    public void addOrder(int stateNum, List<Product> products, Client client,
-            Employee employee, Date deliveryDate, String observations) throws IOException {
+    public void addOrder(int stateNum, List<Product> products, Client client, Employee employee, Date deliveryDate,
+            String observations) throws IOException {
         String id = "#O" + ordersIdCount;
 
         /*
@@ -224,7 +224,7 @@ public class RestaurantSystem {
                 j = m - 1;
             }
         }
-        
+
         return pos;
     }
 
@@ -264,14 +264,43 @@ public class RestaurantSystem {
 
     // -------------------- remove
 
-    public void removeProduct(Product product) throws IOException {
-        products.remove(product);
-        saveData();
+    public boolean removeProduct(Product product) throws IOException {
+        boolean delete = true;
+
+        for(int i = 0 ; i < orders.size() && delete == true ; i++){
+            for (int j = 0 ; j < orders.get(i).getProducts().size() ; j++){
+                if(orders.get(i).getProducts().get(j).equals(product)){
+                    delete = false;
+                }
+            }
+        }
+
+        if (delete) {
+            products.remove(product);
+            saveData();
+        }
+
+        return delete;
     }
 
-    public void removeIngredient(Ingredient ingredient) throws IOException {
-        ingredients.remove(ingredient);
-        saveData();
+    public boolean removeIngredient(Ingredient ingredient) throws IOException {
+        boolean delete = true;
+
+        for (int i = 0; i < products.size() && delete == true; i++) {
+            for (int j = 0; j < products.get(i).getIngredients().size(); j++) {
+                if (products.get(i).getIngredients().get(j).equals(ingredient)) {
+                    //System.out.println(j);
+                    delete = false;
+                }
+            }
+        }
+        if (delete) {
+            ingredients.remove(ingredient);
+            saveData();
+        }
+
+        return delete;
+
     }
 
     public void removeOrder(Order order) throws IOException {
@@ -326,9 +355,8 @@ public class RestaurantSystem {
         saveData();
     }
 
-    public void updateOrder(Order order, int stateNum, List<Product> products,
-           Client client, Employee employee, Date deliveryDate, String observations)
-            throws IOException {
+    public void updateOrder(Order order, int stateNum, List<Product> products, Client client, Employee employee,
+            Date deliveryDate, String observations) throws IOException {
 
         /*
          * Order temp = new Order(order.getId(), stateNum, products, productsQuantity,
@@ -421,7 +449,6 @@ public class RestaurantSystem {
 
     public Client searchClientByName(String fullname) {
         Client temp = null;
-        
 
         int pos = -1;
         int i = 0;
@@ -507,7 +534,7 @@ public class RestaurantSystem {
         return temp;
     }
 
-    public Product searchProduct(String name){
+    public Product searchProduct(String name) {
         Product temp = null;
         List<Product> tempList = products;
 
@@ -544,7 +571,6 @@ public class RestaurantSystem {
         if (pos != -1) {
             temp = tempList.get(pos);
         }
-
 
         return temp;
     }
@@ -785,7 +811,5 @@ public class RestaurantSystem {
         }
         return loaded;
     }
-
-
 
 }
