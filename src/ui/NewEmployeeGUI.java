@@ -2,6 +2,7 @@ package ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import model.*;
 import java.io.IOException;
@@ -11,10 +12,15 @@ public class NewEmployeeGUI {
     private final RestaurantSystem restaurantSystem;
     private final RestaurantSystemGUI mainGUI;
 
+    private Employee actualEmployee;
+
     public NewEmployeeGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
         restaurantSystem = mainGUI.getRestaurantSystem();
     }
+
+    @FXML
+    private Button add;
 
     @FXML
     private TextField txtName;
@@ -27,18 +33,34 @@ public class NewEmployeeGUI {
 
     @FXML
     void addEmployee(ActionEvent event) {
-        try {
+        if (add.getText().equals("Actualizar")) {
             if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()) {
                 mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
                         "Asegúrese de rellenar los campos obligatorios marcados con (*).");
             } else {
-                restaurantSystem.addEmployee(txtName.getText(), txtLastName.getText(), txtID.getText());
-                mainGUI.showAlert("INFORMATION", "Información", "Empleado agregado",
-                        "Se ha agregado el empleado correctamente.");
-                mainGUI.showEmployees(null);
+                try {
+                    restaurantSystem.updateEmployee(actualEmployee, txtName.getText(), txtLastName.getText(), txtID.getText());
+                    mainGUI.showAlert("INFORMATION", "Información", "Ingrediente actualizado",
+                        "Se ha actualizado el empleado correctamente.");
+                } catch (IOException e) {
+                    mainGUI.showAlert("ERROR", "ERROR", null, "No se pudo actualizar el registro.");
+                }
             }
-        } catch (IOException e) {
-            mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el empleado.");
+
+        } else {
+            try {
+                if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()) {
+                    mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                            "Asegúrese de rellenar los campos obligatorios marcados con (*).");
+                } else {
+                    restaurantSystem.addEmployee(txtName.getText(), txtLastName.getText(), txtID.getText());
+                    mainGUI.showAlert("INFORMATION", "Información", "Empleado agregado",
+                            "Se ha agregado el empleado correctamente.");
+                    mainGUI.showEmployees(null);
+                }
+            } catch (IOException e) {
+                mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el empleado.");
+            }
         }
     }
 
@@ -48,9 +70,14 @@ public class NewEmployeeGUI {
     }
 
     public void fillForm(Employee employee) {
+
+        add.setText("Actualizar");
+
         txtName.setText(employee.getName());
         txtLastName.setText(employee.getLastName());
         txtID.setText(employee.getIdNumber());
+
+        actualEmployee = employee;
     }
 
 }

@@ -14,6 +14,8 @@ public class NewClientGUI {
     private final RestaurantSystem restaurantSystem;
     private final RestaurantSystemGUI mainGUI;
 
+    private Client actualClient;
+
     public NewClientGUI(RestaurantSystemGUI mainGUI) {
         this.mainGUI = mainGUI;
         restaurantSystem = mainGUI.getRestaurantSystem();
@@ -46,32 +48,46 @@ public class NewClientGUI {
     @FXML
     void addClient(ActionEvent event) {
 
-        try {
-            
-            if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()
-                    || txtAddress.getText().isEmpty() || txtPhone.getText().isEmpty()) {
+        if (btnCreate.getText().equals("Actualizar")) {
 
-                mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
-                        "Asegúrese de rellenar los campos obligatorios marcados con (*).");
-
-                        //System.out.println("Entrada vacia");
-            } else if (restaurantSystem.addClient(txtName.getText(), txtLastName.getText(), txtID.getText(),
-                    txtAddress.getText(), txtPhone.getText(), txtObservations.getText())) {
-                mainGUI.showAlert("INFORMATION", "Información", "Cliente agregado",
-                        "Se ha agregado el cliente correctamente.");
-                        mainGUI.showClients(null);
-
-                        //System.out.println("Creado");
-            } else {
-                mainGUI.showAlert("WARNING", "Alerta", "Error al agregar", "El empleado existe");
-                txtName.setText("");
-                txtLastName.setText("");
-                txtID.setText("");
-
-                //System.out.println("Existe");
+            try {
+                restaurantSystem.updateClient(actualClient, txtName.getText(), txtLastName.getText(), txtID.getText(),
+                        txtAddress.getText(), txtPhone.getText(), txtObservations.getText());
+                mainGUI.showAlert("INFORMATION", "Información", "Ingrediente actualizado",
+                        "Se ha actualizado el cliente correctamente.");
+            } catch (IOException e) {
+                mainGUI.showAlert("ERROR", "ERROR", null, "No se pudo actualizar el registro.");
             }
-        } catch (IOException e) {
-            mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el cliente.");
+
+        } else {
+
+            try {
+
+                if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()
+                        || txtAddress.getText().isEmpty() || txtPhone.getText().isEmpty()) {
+
+                    mainGUI.showAlert("ERROR", "Error", "Campos obligatorios vacíos",
+                            "Asegúrese de rellenar los campos obligatorios marcados con (*).");
+
+                    // System.out.println("Entrada vacia");
+                } else if (restaurantSystem.addClient(txtName.getText(), txtLastName.getText(), txtID.getText(),
+                        txtAddress.getText(), txtPhone.getText(), txtObservations.getText())) {
+                    mainGUI.showAlert("INFORMATION", "Información", "Cliente agregado",
+                            "Se ha agregado el cliente correctamente.");
+                    mainGUI.showClients(null);
+
+                    // System.out.println("Creado");
+                } else {
+                    mainGUI.showAlert("WARNING", "Alerta", "Error al agregar", "El empleado existe");
+                    txtName.setText("");
+                    txtLastName.setText("");
+                    txtID.setText("");
+
+                    // System.out.println("Existe");
+                }
+            } catch (IOException e) {
+                mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar el cliente.");
+            }
         }
 
     }
@@ -90,6 +106,8 @@ public class NewClientGUI {
         txtAddress.setText(client.getAddress());
         txtPhone.setText(client.getPhone());
         txtObservations.setText(client.getObservations());
+
+        actualClient = client;
     }
 
 }
