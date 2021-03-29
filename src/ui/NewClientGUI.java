@@ -28,6 +28,9 @@ public class NewClientGUI {
     private Button btnCreate;
 
     @FXML
+    private Button delete;
+
+    @FXML
     private TextField txtName;
 
     @FXML
@@ -107,7 +110,22 @@ public class NewClientGUI {
         txtPhone.setText(client.getPhone());
         txtObservations.setText(client.getObservations());
 
+        delete.setVisible(true);    ///////////////////////////////////
+
         actualClient = client;
+    }
+
+    @FXML
+    void delete(ActionEvent event) {
+        try {
+
+            restaurantSystem.removeClient(actualClient);
+            mainGUI.showAlert("WARNING", "Alerta", "Eliminado", "Se eliminó el registro");
+            mainGUI.showProducts(null);
+
+        } catch (IOException e) {
+            mainGUI.showAlert("ERROR", "Error", null, "Ha ocurrido un error al eliminar.");
+        }
     }
 
 }

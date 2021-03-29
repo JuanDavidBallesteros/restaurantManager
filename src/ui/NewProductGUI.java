@@ -30,6 +30,9 @@ public class NewProductGUI {
     private TextField txtName;
 
     @FXML
+    private Label availableLabel;
+
+    @FXML
     private TextField txtPrice;
 
     @FXML
@@ -45,7 +48,13 @@ public class NewProductGUI {
     private Button addButton;
 
     @FXML
+    private Button delete; ////////
+
+    @FXML
     private Label title;
+
+    @FXML
+    private ComboBox<String> isActive;
 
     @FXML
     private ComboBox<String> type;
@@ -86,6 +95,8 @@ public class NewProductGUI {
                     mainGUI.showAlert("INFORMATION", "Información", "Producto actualizado",
                             "Se ha actualizado el Producto correctamente.");
 
+                    validateComboBox();
+
                     mainGUI.showProducts(null);
 
                 } catch (NumberFormatException | IOException e) {
@@ -123,6 +134,22 @@ public class NewProductGUI {
     @FXML
     void showLogin(ActionEvent event) throws IOException {
         mainGUI.showProducts(null);
+    }
+
+    @FXML
+    void delete(ActionEvent event) {
+        try {
+
+            if (restaurantSystem.removeProduct(acutalProduct)) {
+                mainGUI.showAlert("INFORMATION", "Eliminado", null, "Se eliminó el registro");
+                mainGUI.showProducts(null);
+            } else {
+                mainGUI.showAlert("WARNING", "Alerta", null, "Producto esta enlazado a una orden");
+            }
+
+        } catch (IOException e) {
+            mainGUI.showAlert("ERROR", "Error", null, "Ha ocurrido un error al eliminar.");
+        }
     }
 
     // -------------------------- action in table
@@ -174,12 +201,18 @@ public class NewProductGUI {
     // -------------------------- Update
 
     public void fillForm(Product product) {
+
+        delete.setVisible(true);
+
+        isActive.setDisable(false);
+        availableLabel.setDisable(false);
+
         title.setText("Actualizar Producto");
         addButton.setText("Actualizar");
 
         txtName.setText(product.getName());
         txtPrice.setText(product.getPrice() + "");
-        
+
         selectIngredientsList = product.getIngredients();
         initializeTableView();
 
@@ -224,5 +257,24 @@ public class NewProductGUI {
         ObservableList<String> optionsComboBox2 = FXCollections.observableArrayList(types2);
         size.setValue("Select");
         size.setItems(optionsComboBox2);
+
+        ///////////////////////////////////////////////////////
+
+        List<String> types3 = new ArrayList<>();
+
+        types3.add("Activo");
+        types3.add("Inactivo");
+
+        ObservableList<String> optionsComboBox3 = FXCollections.observableArrayList(types3);
+        isActive.setValue("Activo");
+        isActive.setItems(optionsComboBox3);
+    }
+
+    private void validateComboBox() {
+        if (isActive.getSelectionModel().getSelectedItem().equals("Activo")) {
+            acutalProduct.setAvailable(true);
+        } else {
+            acutalProduct.setAvailable(false);
+        }
     }
 }

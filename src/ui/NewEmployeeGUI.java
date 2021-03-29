@@ -32,6 +32,9 @@ public class NewEmployeeGUI {
     private TextField txtID;
 
     @FXML
+    private Button delete;
+
+    @FXML
     void addEmployee(ActionEvent event) {
         if (add.getText().equals("Actualizar")) {
             if (txtName.getText().isEmpty() || txtLastName.getText().isEmpty() || txtID.getText().isEmpty()) {
@@ -77,7 +80,23 @@ public class NewEmployeeGUI {
         txtLastName.setText(employee.getLastName());
         txtID.setText(employee.getIdNumber());
 
+        delete.setVisible(true); 
+
         actualEmployee = employee;
     }
+
+    @FXML                               //////////////////////
+    void delete(ActionEvent event) {
+        try {
+            
+            restaurantSystem.removeEmployee(actualEmployee);
+            mainGUI.showAlert("WARNING", "Alerta", "Eliminado", "Se eliminó el registro");
+            mainGUI.showProducts(null);
+
+        } catch (IOException e) {
+            mainGUI.showAlert("ERROR", "Error", null, "Ha ocurrido un error al eliminar.");
+        }
+    }
+
 
 }

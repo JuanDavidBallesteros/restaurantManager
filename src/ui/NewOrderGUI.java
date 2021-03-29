@@ -37,6 +37,9 @@ public class NewOrderGUI {
     private ComboBox<String> comoBox;
 
     @FXML
+    private Button delete;
+
+    @FXML
     private Button btnSearchProduct;
 
     @FXML
@@ -316,9 +319,24 @@ public class NewOrderGUI {
 
         productsSelected = order.getProducts();
 
+        delete.setVisible(true); 
+
         actualOrder = order;
 
         initializeTableView();
+    }
+
+    @FXML                               //////////////////////
+    void delete(ActionEvent event) {
+        try {
+            
+            restaurantSystem.removeOrder(actualOrder);
+            mainGUI.showAlert("WARNING", "Alerta", "Eliminado", "Se eliminó el registro");
+            mainGUI.showProducts(null);
+
+        } catch (IOException e) {
+            mainGUI.showAlert("ERROR", "Error", null, "Ha ocurrido un error al eliminar.");
+        }
     }
 
     @FXML

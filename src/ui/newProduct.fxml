@@ -59,6 +59,12 @@
                </VBox.margin>
             </Label>
             <TextField fx:id="txtPrice" alignment="CENTER" layoutX="180.0" layoutY="313.0" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+            <Label fx:id="availableLabel" disable="true" layoutX="256.0" layoutY="415.0" text="Disponible">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <ComboBox fx:id="isActive" disable="true" prefWidth="150.0" />
          </children>
       </VBox>
       <VBox layoutX="535.0" layoutY="2.0" prefHeight="695.0" prefWidth="746.0" style="-fx-background-color: #f1f1f1;">
@@ -107,6 +113,7 @@
                   </TableView>
                   <GridPane GridPane.rowIndex="4">
                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
@@ -116,8 +123,9 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="addButton" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#addProduct" prefWidth="100.0" text="Crear" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showLogin" prefWidth="100.0" text="Cancelar" GridPane.rowIndex="1" />
+                        <Button fx:id="addButton" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#addProduct" prefWidth="100.0" text="Crear" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showLogin" prefWidth="100.0" text="Cancelar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button fx:id="delete" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#delete" prefWidth="100.0" text="Eliminar" visible="false" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>

@@ -307,6 +307,11 @@
             </HBox>
             <HBox alignment="CENTER">
                <children>
+                  <Button fx:id="delete" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#delete" prefWidth="100.0" text="Eliminar" visible="false">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
                   <Button maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showOrders" prefWidth="100.0" text="Cancelar">
                      <HBox.margin>
                         <Insets right="5.0" />

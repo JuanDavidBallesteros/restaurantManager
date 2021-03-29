@@ -53,6 +53,9 @@ public class NewUserGUI {
     private Button add;
 
     @FXML
+    private Button delete;
+
+    @FXML
     void add(ActionEvent event) {
 
         if (title.getText().equals("Actualizar Usuario")) {
@@ -105,6 +108,19 @@ public class NewUserGUI {
         mainGUI.showUsers(null);
     }
 
+    @FXML                               //////////////////////
+    void delete(ActionEvent event) {
+        try {
+            
+            restaurantSystem.removeUser(actualUser);
+            mainGUI.showAlert("WARNING", "Alerta", "Eliminado", "Se eliminó el registro");
+            mainGUI.showProducts(null);
+
+        } catch (IOException e) {
+            mainGUI.showAlert("ERROR", "Error", null, "Ha ocurrido un error al eliminar.");
+        }
+    }
+
     public void initializeTableView() {
 
         ObservableList<Employee> ingredientObservableList = FXCollections
@@ -133,6 +149,8 @@ public class NewUserGUI {
     public void fillForm(User user) {
         title.setText("Actualizar Usuario");
         add.setText("Actualizar");
+
+        delete.setVisible(true); 
 
         txtName.setText(user.getUserName());
         txtPassword.setText(user.getUserPassword());

@@ -29,6 +29,15 @@ public class NewIngredientGUI {
     private Label title;
 
     @FXML
+    private Button delete;
+
+    @FXML
+    private Label availableLabel;
+
+    @FXML
+    private ComboBox<String> isActive;
+
+    @FXML
     private ComboBox<String> comoBox;
 
     @FXML
@@ -64,6 +73,8 @@ public class NewIngredientGUI {
             mainGUI.showAlert("INFORMATION", "Información", "Ingrediente actualizado",
                     "Se ha actualizado el ingrediente correctamente.");
 
+            validateComboBox();
+
             mainGUI.showIngredients(null);
         }
     }
@@ -73,7 +84,28 @@ public class NewIngredientGUI {
         mainGUI.showIngredients(null);
     }
 
+    @FXML //////////////////////
+    void delete(ActionEvent event) {
+        try {
+
+            if (restaurantSystem.removeIngredient(ingredient)) {
+                mainGUI.showAlert("INFORMATION", "Eliminado", null, "Se eliminó el registro");
+                mainGUI.showProducts(null);
+            } else {
+                mainGUI.showAlert("WARNING", "Alerta", null, "Ingrediente esta enlazado a un producto");
+            }
+
+        } catch (IOException e) {
+            mainGUI.showAlert("ERROR", "Error", null, "Ha ocurrido un error al eliminar.");
+        }
+    }
+
     public void fillForm(Ingredient ingredient) {
+        delete.setVisible(true);
+
+        isActive.setDisable(false);
+        availableLabel.setDisable(false);
+
         title.setText("Actualizar Ingrediente");
         addButton.setText("Actualizar");
 
@@ -98,5 +130,24 @@ public class NewIngredientGUI {
         ObservableList<String> optionsComboBox = FXCollections.observableArrayList(types);
         comoBox.setValue("Select");
         comoBox.setItems(optionsComboBox);
+
+        ///////////////////////////////////////////////////////
+
+        List<String> types3 = new ArrayList<>();
+
+        types3.add("Activo");
+        types3.add("Inactivo");
+
+        ObservableList<String> optionsComboBox3 = FXCollections.observableArrayList(types3);
+        isActive.setValue("Activo");
+        isActive.setItems(optionsComboBox3);
+    }
+
+    private void validateComboBox() {
+        if (isActive.getSelectionModel().getSelectedItem().equals("Activo")) {
+            ingredient.setAvailable(true);
+        } else {
+            ingredient.setAvailable(false);
+        }
     }
 }
