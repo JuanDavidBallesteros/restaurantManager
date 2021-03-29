@@ -66,7 +66,6 @@ public class Import {
             List<Ingredient> ingredients) throws IOException, FileNotFoundException {
 
         long countProduct = productIdCount;
-        
 
         BufferedReader br = new BufferedReader(new FileReader(path));
         String line = br.readLine();
@@ -89,20 +88,17 @@ public class Import {
 
             String id = "#P" + countProduct;
 
-            
-
             Product temp = new Product(id, parts[0], Integer.parseInt(parts[1]), addedIngredients,
                     Integer.parseInt(parts[2]), Double.parseDouble(parts[3]), parts[4], parts[5]);
 
-                    products.add(temp);
-            
-            countProduct ++;
+            products.add(temp);
+
+            countProduct++;
 
             line = br.readLine();
 
         }
 
-        
         br.close();
 
         return countProduct;
@@ -195,7 +191,7 @@ public class Import {
     public long importOrder(long ordersIdCount, List<Order> orders, List<Product> products, List<Client> clients,
             List<Employee> employees, List<User> users, String path, String separator)
             throws IOException, ParseException {
-        BufferedReader br = new BufferedReader(new FileReader(path));        
+        BufferedReader br = new BufferedReader(new FileReader(path));
 
         String line = br.readLine();
         line = br.readLine();
@@ -219,17 +215,34 @@ public class Import {
 
             Employee employeeToAdd = searchEmployee(parts[3], employees);
 
-            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.GERMANY);
-            Date deliveryDate = isoFormat.parse(parts[4]);
+            if (employeeToAdd != null){
+                System.out.println(employeeToAdd.getFullname());
+            }
 
-            //Date deliveryDate = new SimpleDateFormat("dd/MM/yyyy").parse(parts[6]);
+            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.GERMANY);
+            String sDate = parts[4].replaceAll("\\+0([0-9]){1}\\:00", "+0$100");
+            Date deliveryDate = isoFormat.parse(sDate);
+
+            // Date deliveryDate = new Date(System.currentTimeMillis());
+        
+
+            // Date deliveryDate = new SimpleDateFormat("dd/MM/yyyy").parse(parts[6]);
 
             String id = "#O" + ordersIdCount;
-            ordersIdCount += 1;
 
-            Order temp = new Order(id, Integer.parseInt(parts[0]), addedProducts, clientToAdd,
-                    employeeToAdd, deliveryDate, parts[5], parts[6], parts[7]);
-            orders.add(temp);
+            if (deliveryDate != null){
+               // System.out.println(employeeToAdd.getName());
+               //System.out.println("Existe");
+            }
+
+            //System.out.println(addedProducts.size());
+
+            if (clientToAdd != null && employeeToAdd != null && deliveryDate != null && addedProducts.size() > 0) {
+                ordersIdCount += 1;
+                Order temp = new Order(id, Integer.parseInt(parts[0]), addedProducts, clientToAdd, employeeToAdd,
+                        deliveryDate, parts[5], parts[6], parts[7]);
+                orders.add(temp);
+            }
 
             line = br.readLine();
         }
@@ -267,54 +280,44 @@ public class Import {
     }
 
     public Client searchClientByName(String name, String lastName, List<Client> clients) {
+
+        List<Client> tempList = clients;
+
         Client temp = null;
         String fullname = name + " " + lastName;
 
         int pos = -1;
         int i = 0;
-        int j = clients.size() - 1;
+        int j = tempList.size() - 1;
 
         while (i <= j && pos < 0) {
 
             int m = (i + j) / 2;
 
-            if (clients.get(m).compareByFullNameString(fullname) == 0) {
+            if (tempList.get(m).compareByFullNameString(fullname) == 0) {
                 pos = m;
 
-            } else if (clients.get(m).compareByFullNameString(fullname) < 0) {
+            } else if (tempList.get(m).compareByFullNameString(fullname) < 0) {
                 i = m + 1;
-            } else if (clients.get(m).compareByFullNameString(fullname) > 0) {
+            } else if (tempList.get(m).compareByFullNameString(fullname) > 0) {
                 j = m - 1;
             }
         }
+
+        
         if (pos != -1) {
             temp = clients.get(pos);
         }
         return temp;
     }
 
-    public User searchUser(String userName, List<User> users) {
-        User temp = null;
-
-        int pos = -1;
-
-        for (int i = 0; i < users.size() && pos < 0; i++) {
-            if (users.get(i).compareByUserName(userName) == 0) {
-                pos = i;
-            }
-        }
-
-        temp = users.get(pos);
-        return temp;
-    }
-
-    public Employee searchEmployee(String employeeId, List<Employee> employees) {
+    public Employee searchEmployee(String employeeName, List<Employee> employees) {
         Employee temp = null;
 
         int pos = -1;
 
         for (int i = 0; i < employees.size() && pos < 0; i++) {
-            if (employees.get(i).compareById(employeeId) == 0) {
+            if (employees.get(i).compareByFullname(employeeName) == 0) {
                 pos = i;
             }
         }

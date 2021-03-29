@@ -51,7 +51,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#importClients" prefHeight="25.0" prefWidth="450.0" text="Importar Ordenes">
+                              <Button mnemonicParsing="false" onAction="#importOrders" prefHeight="25.0" prefWidth="450.0" text="Importar Ordenes">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin></Button>
@@ -62,7 +62,7 @@
                                           <Insets right="5.0" />
                                        </padding>
                                     </Label>
-                                    <TextField fx:id="txtClientSeparator111" alignment="CENTER" prefWidth="25.0" promptText="," />
+                                    <TextField fx:id="txtOrderSeparatorImp" alignment="CENTER" prefWidth="25.0" promptText="," />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="15.0" />

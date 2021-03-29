@@ -18,6 +18,7 @@ import model.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalTime;
 import java.util.Optional;
 
@@ -61,10 +62,13 @@ public class RestaurantSystemGUI {
     private Label lblEmployee;
 
     @FXML
-    private TextField txtClientSeparator;    
-    
+    private TextField txtClientSeparator;
+
     @FXML
-    private TextField txtIngredientSeparator;  
+    private TextField txtOrderSeparatorImp;
+
+    @FXML
+    private TextField txtIngredientSeparator;
 
     @FXML
     private ChoiceBox<String> cbEmployees;
@@ -104,7 +108,6 @@ public class RestaurantSystemGUI {
 
     @FXML
     private TextField txtProducstSeparatorEx;
-
 
     @FXML
     private TextField txtProducstSeparatorImp;
@@ -270,7 +273,7 @@ public class RestaurantSystemGUI {
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
         controller.comboInitialization();
-        
+
         return controller;
     }
 
@@ -293,7 +296,7 @@ public class RestaurantSystemGUI {
         paneHolder.getChildren().setAll(pane);
         controller.initializeTableView();
         controller.comboInitialization();
-        
+
         return controller;
     }
 
@@ -315,7 +318,7 @@ public class RestaurantSystemGUI {
         Parent pane = fxmlLoader.load();
         paneHolder.getChildren().setAll(pane);
         controller.initializeTableView();
-        
+
         return controller;
     }
 
@@ -386,6 +389,29 @@ public class RestaurantSystemGUI {
         }
     }
 
+    @FXML
+    void importOrders(ActionEvent event) throws FileNotFoundException, IOException, ParseException {
+        if (txtOrderSeparatorImp.getText().isEmpty()) {
+            showAlert("ERROR", "Error", "Separador vacío", "Ingrese el separador de datos del archivo a importar.");
+        } else {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Seleccionar Archivo");
+            File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
+
+            if (file != null) {
+                int count;
+
+                count = restaurantSystem.importOrders(file.getPath(), txtOrderSeparatorImp.getText());
+                showAlert("INFORMATION", "Información", "Ordenes importadas",
+                        count + " Ordenes fueron importados correctamente.");
+
+                // showAlert("ERROR", "Error", "Importación fallida", "Ocurrió un error al
+                // importar datos.");
+
+                showOrders(null);
+            }
+        }
+    }
 
     // EXTRA
     // -----------------------------------------------------------------------------------------------------------
@@ -460,10 +486,13 @@ public class RestaurantSystemGUI {
         if (showConfirmAlert("Borrar Datos",
                 "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar",
                 "Cancelar")) {
-            //restaurantSystem.getClients().clear();
-            //restaurantSystem.getIngredients().clear();
-            //restaurantSystem.getProducts().clear();
+            // restaurantSystem.getClients().clear();
+            // restaurantSystem.getIngredients().clear();
+            // restaurantSystem.setIngredientIdCount(0);
+            // restaurantSystem.getProducts().clear();
+            // restaurantSystem.setProductIdCount(0);
             restaurantSystem.getOrders().clear();
+            restaurantSystem.setOrdersIdCount(0);
             restaurantSystem.saveData();
             showClients(null);
         }

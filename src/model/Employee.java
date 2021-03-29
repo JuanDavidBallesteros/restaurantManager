@@ -10,8 +10,12 @@ public class Employee extends Person { //implements Serializable {
      */
     private static final long serialVersionUID = -4382153301499840256L;
 
+    private String fullname;
+
     public Employee(String name, String lastName, String idNumber, String createdBy, String modifiedBy) {
         super(name, lastName, idNumber, createdBy, modifiedBy);
+
+        fullname = name + " " + lastName;
     }
 
     // --------------- compare
@@ -19,4 +23,18 @@ public class Employee extends Person { //implements Serializable {
     public int compareById(String idNumber){
         return getIdNumber().compareTo(idNumber);
     }
+
+    public int compareByFullname(String other){
+        return fullname.compareTo(other);
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    
 }

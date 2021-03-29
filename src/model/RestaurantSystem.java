@@ -93,6 +93,26 @@ public class RestaurantSystem {
         return ordersIdCount;
     }
 
+    public void setOrdersIdCount(long ordersIdCount) {
+        this.ordersIdCount = ordersIdCount;
+    }
+
+    public long getProductIdCount() {
+        return productIdCount;
+    }
+
+    public void setProductIdCount(long productIdCount) {
+        this.productIdCount = productIdCount;
+    }
+
+    public long getIngredientIdCount() {
+        return ingredientIdCount;
+    }
+
+    public void setIngredientIdCount(long ingredientIdCount) {
+        this.ingredientIdCount = ingredientIdCount;
+    }
+    
     // -------------------- adds
 
     public void addFirstUser(String name, String lastName, String idNumber, String userName, String userPassword)
@@ -819,4 +839,5 @@ public class RestaurantSystem {
         return loaded;
     }
 
+    
 }
