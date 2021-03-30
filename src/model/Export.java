@@ -26,15 +26,15 @@ public class Export {
             Order order = orders.get(i);
 
             line = client.getName() + separator + client.getLastName() + separator + client.getAddress() + separator
-                    + client.getPhone();
-            line += deliver.getName() + separator + deliver.getLastName();
-            line += order.getDeliveryDate() + separator + order.getObservations();
+                    + client.getPhone() + separator;
+            line += deliver.getName() + " " + deliver.getLastName() + separator;
+            line += order.getOrderDate() + separator + order.getObservations();
 
             // Add product list at the end
             for (int j = 0; j < products.size(); j++) {
                 Product temp = products.get(j);
                 //int quantity = order.getProductsQuantity().get(j);
-                line += temp.getName() + separator + temp.getPrice();
+                line += separator + temp.getName() + separator + temp.getPrice();
             }
 
             pw.println(line);

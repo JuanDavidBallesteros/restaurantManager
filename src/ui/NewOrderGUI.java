@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.*;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -517,8 +518,7 @@ public class NewOrderGUI {
     }
 
     public Date actualDate() {
-        Date time = new Date(System.currentTimeMillis());
-        return time;
+        return new Date();
     }
 
     public void comboInitialization() {

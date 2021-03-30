@@ -19,21 +19,21 @@ public class Order implements Serializable {
     //private List<Integer> productsQuantity;
     private Client client;
     private Employee employee;
-    private Date deliveryDate;
+    private Date orderDate;
     private String observations;
     private String createdBy;
     private String modifiedBy;
     private String dateTxt;
 
-    public Order(String id, int stateNum, List<Product> products,  Client client,
-                 Employee employee, Date deliveryDate, String observations, String createdBy, String modifiedBy) {
+    public Order(String id, int stateNum, List<Product> products, Client client,
+                 Employee employee, Date orderDate, String observations, String createdBy, String modifiedBy) {
         this.id = id;
         state = OrderState.values()[stateNum].name();
         this.products = products;
         //this.productsQuantity = productsQuantity;
         this.client = client;
         this.employee = employee;
-        this.deliveryDate = deliveryDate;
+        this.orderDate = orderDate;
         this.observations = observations;
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
@@ -80,12 +80,12 @@ public class Order implements Serializable {
         this.employee = employee;
     }
 
-    public Date getDeliveryDate() {
-        return deliveryDate;
+    public Date getOrderDate() {
+        return orderDate;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 
     public String getObservations() {
@@ -135,7 +135,7 @@ public class Order implements Serializable {
 
     public void dateToTxt(){
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-        dateTxt = formatter.format(deliveryDate);
+        dateTxt = formatter.format(orderDate);
     }
     
 }

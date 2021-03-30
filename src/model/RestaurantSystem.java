@@ -389,7 +389,7 @@ public class RestaurantSystem {
         // order.setProductsQuantity(productsQuantity);
         order.setClient(client);
         order.setEmployee(employee);
-        order.setDeliveryDate(actualDate);
+        order.setOrderDate(deliveryDate);
         order.setObservations(observations);
         order.setModifiedBy(actualUser.getUserName());
 
@@ -678,10 +678,17 @@ public class RestaurantSystem {
     public void exportOrders(File file, String separator, Date supLimit, Date infLimit) throws FileNotFoundException {
         List<Order> selected = new ArrayList<>();
 
-        for (int i = 0; i < orders.size(); i++) {
-            Date temp = orders.get(i).getDeliveryDate();
-            if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0) {
-                selected.add(orders.get(i));
+        for(Order order : orders) {
+            System.out.println("--------------------------------");
+            System.out.println("Start Date: " + infLimit);
+            System.out.println("End Date: " + supLimit);
+            System.out.println("--------------------------------");
+            System.out.println("Orden: " + order);
+            System.out.println("A Comparar: " + order.getOrderDate());
+            System.out.println("A Comparar: " + order.getDateTxt());
+            System.out.println("--------------------------------");
+            if(order.getOrderDate().compareTo(infLimit)>=0 && order.getOrderDate().compareTo(supLimit)<=0) {
+                selected.add(order);
             }
         }
 
@@ -703,7 +710,7 @@ public class RestaurantSystem {
             long sellAmount = 0;
 
             for (int i = 0; i < orders.size(); i++) {
-                Date temp = orders.get(i).getDeliveryDate();
+                Date temp = orders.get(i).getOrderDate();
                 if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0
                         && orders.get(i).getEmployee() == tEmployee) {
                     count += 1;
@@ -734,7 +741,7 @@ public class RestaurantSystem {
             int count = 0;
 
             for (int i = 0; i < orders.size(); i++) {
-                Date temp = orders.get(i).getDeliveryDate();
+                Date temp = orders.get(i).getOrderDate();
                 if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0) {
                     for (int j = 0; j < orders.get(i).getProducts().size(); j++) { // Product list of the order in rage
                         if (orders.get(i).getProducts().get(j) == tProduct) {
@@ -786,7 +793,7 @@ public class RestaurantSystem {
 
             @Override
             public int compare(Order or1, Order or2) {
-                return or1.getDeliveryDate().compareTo(or2.getDeliveryDate());
+                return or1.getOrderDate().compareTo(or2.getOrderDate());
             }
 
         };

@@ -19,7 +19,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 public class RestaurantSystemGUI {
@@ -56,6 +59,18 @@ public class RestaurantSystemGUI {
     }
 
     @FXML
+    private DatePicker startDateOrder;
+
+    @FXML
+    private TextField startTimeOrder;
+
+    @FXML
+    private DatePicker endDateOrder;
+
+    @FXML
+    private TextField endTimeOrder;
+
+    @FXML
     private Label lblActiveUser;
 
     @FXML
@@ -66,6 +81,9 @@ public class RestaurantSystemGUI {
 
     @FXML
     private TextField txtOrderSeparatorImp;
+
+    @FXML
+    private TextField txtOrderSeparatorExp;
 
     @FXML
     private TextField txtIngredientSeparator;
@@ -111,6 +129,21 @@ public class RestaurantSystemGUI {
 
     @FXML
     private TextField txtProducstSeparatorImp;
+
+    @FXML
+    private DatePicker startDateEmployee;
+
+    @FXML
+    private TextField startTimeEmployee;
+
+    @FXML
+    private DatePicker endDateEmployee;
+
+    @FXML
+    private TextField endTimeEmployee;
+
+    @FXML
+    private TextField txtEmployeeSeparatorExp;
 
     // INITIALIZE
     // ------------------------------------------------------------------------------------------------------
@@ -413,6 +446,86 @@ public class RestaurantSystemGUI {
         }
     }
 
+    // EXPORTS ---------------------------------------------------------------------------------------------------------
+
+    @FXML
+    void exportOrders(ActionEvent event) throws ParseException, FileNotFoundException {
+
+        if(restaurantSystem.getOrders().isEmpty()) {
+
+            showAlert("ERROR", "Error", "Sin Datos", "No hay ordenes para exportar.");
+
+        } else {
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Exportar Reporte");
+            fileChooser.setInitialFileName("reporte-ordenes");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text File", "*.txt"));
+            File file = fileChooser.showSaveDialog(mainPane.getScene().getWindow());
+
+            if(file!=null) {
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+                String startDateString = startDateOrder.getValue().toString();
+                String startTimeString = startTimeOrder.getText()+":00";
+                String startDateFinal = startDateString + " " + startTimeString;
+                Date startDate = dateFormat.parse(startDateFinal);
+
+                String endDateString = endDateOrder.getValue().toString();
+                String endTimeString = endTimeOrder.getText()+":00";
+                String endDateFinal = endDateString + " " + endTimeString;
+                Date endDate = dateFormat.parse(endDateFinal);
+
+                restaurantSystem.exportOrders(file, txtOrderSeparatorExp.getText(), endDate, startDate);
+
+                showAlert("INFORMATION", "Información", "Ordenes exportadas", "Las ordenes fueron exportadas correctamente.");
+
+            }
+
+        }
+
+    }
+
+    @FXML
+    void exportEmployees(ActionEvent event) throws ParseException, FileNotFoundException {
+
+        if(restaurantSystem.getEmployees().isEmpty()) {
+
+            showAlert("ERROR", "Error", "Sin Datos", "No hay empleados para exportar.");
+
+        } else {
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Exportar Reporte");
+            fileChooser.setInitialFileName("reporte-empleados");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text File", "*.txt"));
+            File file = fileChooser.showSaveDialog(mainPane.getScene().getWindow());
+
+            if(file!=null) {
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+                String startDateString = startDateEmployee.getValue().toString();
+                String startTimeString = startTimeEmployee.getText()+":00";
+                String startDateFinal = startDateString + " " + startTimeString;
+                Date startDate = dateFormat.parse(startDateFinal);
+
+                String endDateString = endDateEmployee.getValue().toString();
+                String endTimeString = endTimeEmployee.getText()+":00";
+                String endDateFinal = endDateString + " " + endTimeString;
+                Date endDate = dateFormat.parse(endDateFinal);
+
+                restaurantSystem.exportEmployeesReports(file, txtOrderSeparatorExp.getText(), endDate, startDate);
+
+                showAlert("INFORMATION", "Información", "Reporte Generado", "El reporte de los empleados fue generado correctamente.");
+
+            }
+
+        }
+
+    }
+
     // EXTRA
     // -----------------------------------------------------------------------------------------------------------
 
@@ -482,20 +595,32 @@ public class RestaurantSystemGUI {
     // ------------------------------------------------------------------------------------------------------------
 
     @FXML
-    public void deleteAllClients(ActionEvent event) throws IOException {
+    public void deleteAllData(ActionEvent event) throws IOException {
         if (showConfirmAlert("Borrar Datos",
-                "¿Está seguro que desea borrar todos los clientes? Esta acción no se podrá deshacer.", "Borrar",
+                "¿Está seguro que desea borrar todos los datos del programa? Esta acción no se podrá deshacer.", "Borrar",
                 "Cancelar")) {
-            // restaurantSystem.getClients().clear();
-            // restaurantSystem.getIngredients().clear();
-            // restaurantSystem.setIngredientIdCount(0);
-            // restaurantSystem.getProducts().clear();
-            // restaurantSystem.setProductIdCount(0);
+            /*restaurantSystem.getClients().clear();
+            restaurantSystem.getIngredients().clear();
+            restaurantSystem.setIngredientIdCount(0);
+            restaurantSystem.getProducts().clear();
+            restaurantSystem.setProductIdCount(0);*/
             restaurantSystem.getOrders().clear();
             restaurantSystem.setOrdersIdCount(0);
             restaurantSystem.saveData();
             showClients(null);
         }
     }
+
+    @FXML
+    void createTestEmployees(ActionEvent event) {
+
+        Employee employee1 = new Employee("Juan", "Lopez", "0123456789", restaurantSystem.getActualUser().getUserName(), restaurantSystem.getActualUser().getUserName());
+        restaurantSystem.getEmployees().add(employee1);
+        Employee employee2 = new Employee("Felipe", "Soto", "9876543210", restaurantSystem.getActualUser().getUserName(), restaurantSystem.getActualUser().getUserName());
+        restaurantSystem.getEmployees().add(employee2);
+
+    }
+
+
 
 }

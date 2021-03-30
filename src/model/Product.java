@@ -105,7 +105,7 @@ public class Product implements Comparable<Product>, Serializable {
     // --------------- compare
 
     public int compareById(String id) {
-        return id.compareTo(id);
+        return this.id.compareTo(id);
     }
 
     @Override

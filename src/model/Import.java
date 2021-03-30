@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class Import {
 
@@ -206,7 +207,7 @@ public class Import {
             do {
                 if (productFinder(products, parts[i]) != null) {
                     addedProducts.add(productFinder(products, parts[i]));
-
+                    //System.out.println(productFinder(products, parts[i]).getName());
                 }
                 i++;
             } while (i < parts.length);
@@ -215,25 +216,14 @@ public class Import {
 
             Employee employeeToAdd = searchEmployee(parts[3], employees);
 
-            if (employeeToAdd != null){
-                System.out.println(employeeToAdd.getFullname());
-            }
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            System.out.println(parts[4]);
+            String date = parts[4];
+            System.out.println("Date con formato: " + date);
 
-            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.GERMANY);
-            String sDate = parts[4].replaceAll("\\+0([0-9]){1}\\:00", "+0$100");
-            Date deliveryDate = isoFormat.parse(sDate);
-
-            // Date deliveryDate = new Date(System.currentTimeMillis());
-        
-
-            // Date deliveryDate = new SimpleDateFormat("dd/MM/yyyy").parse(parts[6]);
+            Date deliveryDate = dateFormat.parse(date);
 
             String id = "#O" + ordersIdCount;
-
-            if (deliveryDate != null){
-               // System.out.println(employeeToAdd.getName());
-               //System.out.println("Existe");
-            }
 
             //System.out.println(addedProducts.size());
 
@@ -254,27 +244,40 @@ public class Import {
     public Product productFinder(List<Product> list, String id) {
         Product temp = null;
 
+        List<Product> tempList = list.stream().collect(Collectors.toList());
+
+        Comparator<Product> compareByID = new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                return o1.compareById(o2.getId());
+            }
+        };
+
+        tempList.sort(compareByID);
+
         int pos = -1;
         int i = 0;
-        int j = list.size() - 1;
+        int j = tempList.size() - 1;
 
         while (i <= j && pos < 0) {
 
             int m = (i + j) / 2;
 
-            if (list.get(m).compareById(id) == 0) {
+            if (tempList.get(m).compareById(id) == 0) {
 
                 pos = m;
 
-            } else if (list.get(m).compareById(id) < 0) {
+            } else if (tempList.get(m).compareById(id) < 0) {
                 i = m + 1;
-            } else if (list.get(m).compareById(id) > 0) {
+            } else if (tempList.get(m).compareById(id) > 0) {
                 j = m - 1;
             }
         }
 
+        System.out.println(pos);
+
         if (pos != -1) {
-            temp = list.get(pos);
+            temp = tempList.get(pos);
         }
         return temp;
     }
