@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RestaurantSystem {
     private List<Client> clients;
@@ -213,7 +214,7 @@ public class RestaurantSystem {
 
     private int idVerificationClient(Client client) {
 
-        List<Client> temp = clients;
+        List<Client> temp = clients.stream().collect(Collectors.toList());
 
         int pos = -1;
         int i = 0;
@@ -238,12 +239,25 @@ public class RestaurantSystem {
 
                 pos = m;
 
-            } else if (client.compareById(temp.get(m)) < 0) {
-                i = m + 1;
             } else if (client.compareById(temp.get(m)) > 0) {
+                i = m + 1;
+            } else if (client.compareById(temp.get(m)) < 0) {
                 j = m - 1;
             }
         }
+
+        /* Comparator<Client> fullNameComparator = new Comparator<Client>() {
+
+            @Override
+            public int compare(Client cl1, Client cl2) {
+                return cl1.compareByFullName(cl2);
+            }
+
+        };
+
+        temp.sort(fullNameComparator); */
+
+        System.out.println(pos);
 
         return pos;
     }

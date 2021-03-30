@@ -270,7 +270,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Label>
-                              <DatePicker promptText="Ordenes desde...">
+                              <DatePicker fx:id="productExpInit" promptText="Ordenes desde...">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
@@ -280,7 +280,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </TextField>
-                              <DatePicker promptText="hasta...">
+                              <DatePicker fx:id="productExpLim" promptText="hasta...">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
@@ -303,7 +303,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="450.0" text="Generar Archivo">
+                              <Button mnemonicParsing="false" onAction="#exportProducts" prefHeight="25.0" prefWidth="450.0" text="Generar Archivo">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>

@@ -76,6 +76,6 @@ public class Client extends Person {
     }
 
     public int compareById(Client other) {
-        return getIdNumber().compareTo(other.getIdNumber());
+        return this.getIdNumber().compareTo(other.getIdNumber());
     }
 }
