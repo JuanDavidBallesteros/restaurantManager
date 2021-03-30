@@ -248,6 +248,8 @@ public class Import {
     }
 
     public Product productFinder(List<Product> list, String id) {
+
+        
         Product temp = null;
 
         int pos = -1;

@@ -238,7 +238,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Label>
-                              <DatePicker promptText="Ordenes desde...">
+                              <DatePicker fx:id="productExpInit" promptText="Ordenes desde...">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
@@ -248,7 +248,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </TextField>
-                              <DatePicker promptText="hasta...">
+                              <DatePicker fx:id="productExpLim" promptText="hasta...">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
