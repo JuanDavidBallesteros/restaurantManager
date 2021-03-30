@@ -119,6 +119,9 @@ public class NewOrderGUI {
     private Label lblEmployee;
 
     @FXML
+    private Label lblClient;
+
+    @FXML
     private TextField txtProduct;
 
     @FXML
@@ -162,9 +165,7 @@ public class NewOrderGUI {
 
     @FXML
     public void initialize() {
-        btnToggleEdit.setVisible(false);
-
-        lblOrder.setText("#o" + restaurantSystem.getOrdersIdCount());
+        lblOrder.setText("#O" + restaurantSystem.getOrdersIdCount());
     }
 
     @FXML
@@ -208,16 +209,6 @@ public class NewOrderGUI {
                 mainGUI.showAlert("ERROR", "Error", "Error al agregar", "Ha ocurrido un error al agregar la orden.");
             }
         }
-    }
-
-    @FXML
-    void addSelectedProduct(ActionEvent event) {
-
-    }
-
-    @FXML
-    void deleteSelectedProduct(ActionEvent event) {
-
     }
 
     @FXML
@@ -307,19 +298,15 @@ public class NewOrderGUI {
     }
 
     public void fillForm(Order order) {
-        toggleEdit(null);
-        btnToggleEdit.setVisible(true);
         txtName.setText(order.getClient().getName());
         txtLastName.setText(order.getClient().getLastName());
         txtID.setText(order.getClient().getIdNumber());
         txtAddress.setText(order.getClient().getAddress());
         txtPhone.setText(order.getClient().getPhone());
         txtObservations.setText(order.getClient().getObservations());
-        // lblClient.setText("Cliente: " + order.getClient().getName() + " " +
-        // order.getClient().getLastName());
-
+        lblClient.setText("Cliente: " + order.getClient().getName() + " " + order.getClient().getLastName());
         add.setText("Actualizar");
-        lblEmployee.setText("Empleado: " + order.getEmployee().getName());
+        lblEmployee.setText("Empleado: " + order.getEmployee().getName() + " " + order.getEmployee().getLastName());
         lblOrder.setText("Orden: " + order.getId());
 
         comoBox.setValue(order.getState());
@@ -333,7 +320,7 @@ public class NewOrderGUI {
         initializeTableView();
     }
 
-    @FXML                               //////////////////////
+    @FXML
     void delete(ActionEvent event) {
         try {
             
@@ -344,54 +331,6 @@ public class NewOrderGUI {
         } catch (IOException e) {
             mainGUI.showAlert("ERROR", "Error", null, "Ha ocurrido un error al eliminar.");
         }
-    }
-
-    @FXML
-    void toggleEdit(ActionEvent event) {
-        if (btnToggleEdit.isSelected()) {
-            btnToggleEdit.setText("Editar: Si");
-            txtProduct.setDisable(false);
-            btnSearchProduct.setDisable(false);
-            tvProducts.setDisable(false);
-            btnAddSelected.setDisable(false);
-            btnDeleteSelected.setDisable(false);
-            txtProductAmount.setDisable(false);
-            btnSearchClient.setDisable(false);
-            txtClient.setDisable(false);
-            lblSearchTime.setDisable(false);
-            tvClient.setDisable(false);
-            txtEmployee.setDisable(false);
-            btnSearchEmployee.setDisable(false);
-            tvEmployees.setDisable(false);
-            txtName.setEditable(true);
-            txtLastName.setEditable(true);
-            txtID.setEditable(true);
-            txtAddress.setEditable(true);
-            txtPhone.setEditable(true);
-            txtObservations.setEditable(true);
-        } else {
-            btnToggleEdit.setText("Editar: No");
-            txtProduct.setDisable(true);
-            btnSearchProduct.setDisable(true);
-            tvProducts.setDisable(true);
-            btnAddSelected.setDisable(true);
-            btnDeleteSelected.setDisable(true);
-            txtProductAmount.setDisable(true);
-            btnSearchClient.setDisable(true);
-            txtClient.setDisable(true);
-            lblSearchTime.setDisable(true);
-            tvClient.setDisable(true);
-            txtEmployee.setDisable(true);
-            btnSearchEmployee.setDisable(true);
-            tvEmployees.setDisable(true);
-            txtName.setEditable(false);
-            txtLastName.setEditable(false);
-            txtID.setEditable(false);
-            txtAddress.setEditable(false);
-            txtPhone.setEditable(false);
-            txtObservations.setEditable(false);
-        }
-
     }
 
     @FXML

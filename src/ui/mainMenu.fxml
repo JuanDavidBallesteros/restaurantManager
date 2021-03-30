@@ -18,12 +18,12 @@
          <children>
             <Label fx:id="lblActiveUser" text="Nombre de Usuario">
                <VBox.margin>
-                  <Insets bottom="10.0" />
+                  <Insets bottom="5.0" />
                </VBox.margin>
             </Label>
             <Button mnemonicParsing="false" onAction="#logout" prefWidth="178.0" text="Cerrar Sesión">
                <VBox.margin>
-                  <Insets bottom="20.0" />
+                  <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
             <Accordion VBox.vgrow="NEVER">
@@ -74,7 +74,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Label>
-                              <DatePicker fx:id="startDateOrder" promptText="Ordenes desde...">
+                              <DatePicker fx:id="startDateOrder" promptText="Desde...">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
@@ -270,7 +270,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Label>
-                              <DatePicker fx:id="startDateProduct" promptText="Ordenes desde...">
+                              <DatePicker fx:id="startDateProduct" promptText="Desde...">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
@@ -363,9 +363,9 @@
                                     <Insets bottom="15.0" />
                                  </VBox.margin>
                               </Separator>
-                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#newUsers" prefHeight="25.0" prefWidth="450.0" text="Nuevo Usuarios">
+                              <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#newUsers" prefHeight="25.0" prefWidth="450.0" text="Nuevo Usuario">
                                  <VBox.margin>
-                                    <Insets bottom="20.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </Button>
                            </children>

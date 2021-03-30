@@ -11,22 +11,17 @@
       <MenuBar fx:id="menuBar">
         <menus>
             <Menu fx:id="menuClock" mnemonicParsing="false" text="Clock" />
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
           <Menu mnemonicParsing="false" text="Datos">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#deleteAllData" text="Borrar todos los datos" />
                   <MenuItem mnemonicParsing="false" onAction="#createTestEmployees" text="Crear empleados de prueba" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Ayuda">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#aboutUs" text="Acerca de..." />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
       <Pane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />

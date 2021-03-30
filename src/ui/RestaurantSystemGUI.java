@@ -436,24 +436,26 @@ public class RestaurantSystemGUI {
 
     @FXML
     void importOrders(ActionEvent event) throws FileNotFoundException, IOException, ParseException {
-        if (txtOrderSeparatorImp.getText().isEmpty()) {
-            showAlert("ERROR", "Error", "Separador vacío", "Ingrese el separador de datos del archivo a importar.");
+
+        if(restaurantSystem.getClients().isEmpty() || restaurantSystem.getEmployees().isEmpty() || restaurantSystem.getIngredients().isEmpty() || restaurantSystem.getProducts().isEmpty()) {
+            showAlert("WARNING", "Advertencia", "Faltan datos", "Recuerde que para importar ordenes, debe haber importado antes los clientes, empleados, productos e ingredientes correspondientes.");
         } else {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Seleccionar Archivo");
-            File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
+            if (txtOrderSeparatorImp.getText().isEmpty()) {
+                showAlert("ERROR", "Error", "Separador vacío", "Ingrese el separador de datos del archivo a importar.");
+            } else {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Seleccionar Archivo");
+                File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
 
-            if (file != null) {
-                int count;
+                if (file != null) {
+                    int count;
 
-                count = restaurantSystem.importOrders(file.getPath(), txtOrderSeparatorImp.getText());
-                showAlert("INFORMATION", "Información", "Ordenes importadas",
-                        count + " Ordenes fueron importados correctamente.");
+                    count = restaurantSystem.importOrders(file.getPath(), txtOrderSeparatorImp.getText());
+                    showAlert("INFORMATION", "Información", "Ordenes importadas",
+                            count + " Ordenes fueron importados correctamente.");
 
-                // showAlert("ERROR", "Error", "Importación fallida", "Ocurrió un error al
-                // importar datos.");
-
-                showOrders(null);
+                    showOrders(null);
+                }
             }
         }
     }
@@ -601,6 +603,11 @@ public class RestaurantSystemGUI {
         clock.play();
     }
 
+    @FXML
+    void aboutUs(ActionEvent event) {
+        showAlert("INFORMATION", "Información", "Restaurant System", "Este programa fue desarrollado por Juan David Ballesteros y Juan Felipe Sinisterra.");
+    }
+
     // ALERTS
     // ----------------------------------------------------------------------------------------------------------
 
@@ -650,11 +657,11 @@ public class RestaurantSystemGUI {
         if (showConfirmAlert("Borrar Datos",
                 "¿Está seguro que desea borrar todos los datos del programa? Esta acción no se podrá deshacer.", "Borrar",
                 "Cancelar")) {
-            /*restaurantSystem.getClients().clear();
+            restaurantSystem.getClients().clear();
             restaurantSystem.getIngredients().clear();
             restaurantSystem.setIngredientIdCount(0);
             restaurantSystem.getProducts().clear();
-            restaurantSystem.setProductIdCount(0);*/
+            restaurantSystem.setProductIdCount(0);
             restaurantSystem.getOrders().clear();
             restaurantSystem.setOrdersIdCount(0);
             restaurantSystem.saveData();
