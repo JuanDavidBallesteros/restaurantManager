@@ -693,14 +693,6 @@ public class RestaurantSystem {
         List<Order> selected = new ArrayList<>();
 
         for(Order order : orders) {
-            System.out.println("--------------------------------");
-            System.out.println("Start Date: " + infLimit);
-            System.out.println("End Date: " + supLimit);
-            System.out.println("--------------------------------");
-            System.out.println("Orden: " + order);
-            System.out.println("A Comparar: " + order.getOrderDate());
-            System.out.println("A Comparar: " + order.getDateTxt());
-            System.out.println("--------------------------------");
             if(order.getOrderDate().compareTo(infLimit)>=0 && order.getOrderDate().compareTo(supLimit)<=0) {
                 selected.add(order);
             }
@@ -726,7 +718,7 @@ public class RestaurantSystem {
             for (int i = 0; i < orders.size(); i++) {
                 Date temp = orders.get(i).getOrderDate();
                 if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0
-                        && orders.get(i).getEmployee() == tEmployee) {
+                        && orders.get(i).getEmployee().equals(tEmployee)) {
                     count += 1;
                     sellAmount = orders.get(i).getAmount();
                 }
@@ -749,29 +741,27 @@ public class RestaurantSystem {
         List<String> line = new ArrayList<>();
         List<Integer> countSells = new ArrayList<>();
 
-        Product tProduct = null;
         for (int k = 0; k < products.size(); k++) {
-            tProduct = products.get(k);
+            Product tProduct = products.get(k);
             int count = 0;
 
             for (int i = 0; i < orders.size(); i++) {
                 Date temp = orders.get(i).getOrderDate();
-                if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0) {
-                    for (int j = 0; j < orders.get(i).getProducts().size(); j++) { // Product list of the order in rage
-                        if (orders.get(i).getProducts().get(j) == tProduct) {
-                            // count += orders.get(i).getProductsQuantity().get(j); //Integer quantity
-                            count++;
-                        }
+                for (int j = 0; j < orders.get(i).getProducts().size(); j++) {
+                if (temp.compareTo(infLimit) > 0 && temp.compareTo(supLimit) < 0 && orders.get(i).getProducts().get(j).equals(tProduct)) {
+                    count++;
+                    System.out.println("Productos J:" + j);
                     }
                 }
             }
+
             countSells.add(count);
         }
 
         for (int i = 0; i < products.size(); i++) {
             long amount = (long) (products.get(i).getPrice() * countSells.get(i));
 
-            line.add(products.get(i) + separator + countSells.get(i) + separator + amount);
+            line.add(products.get(i).getName() + separator + countSells.get(i) + separator + amount);
         }
 
         exports.exportProducts(file, line);

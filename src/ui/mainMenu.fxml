@@ -254,7 +254,7 @@
                                           <Insets right="5.0" />
                                        </padding>
                                     </Label>
-                                    <TextField fx:id="txtProducstSeparatorImp" alignment="CENTER" prefWidth="25.0" />
+                                    <TextField fx:id="txtProductsSeparatorImp" alignment="CENTER" prefWidth="25.0" promptText="," />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="15.0" />
@@ -270,22 +270,22 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Label>
-                              <DatePicker fx:id="productExpInit" promptText="Ordenes desde...">
+                              <DatePicker fx:id="startDateProduct" promptText="Ordenes desde...">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </DatePicker>
-                              <TextField promptText="Hora (hh:mm)" text="00:00">
+                              <TextField fx:id="startTimeProduct" promptText="Hora (hh:mm)" text="00:00">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </TextField>
-                              <DatePicker fx:id="productExpLim" promptText="hasta...">
+                              <DatePicker fx:id="endDateProduct" promptText="hasta...">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </DatePicker>
-                              <TextField layoutX="20.0" layoutY="223.0" promptText="Hora (hh:mm)" text="23:59">
+                              <TextField fx:id="endTimeProduct" layoutX="20.0" layoutY="223.0" promptText="Hora (hh:mm)" text="23:59">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
@@ -297,7 +297,7 @@
                                           <Insets right="5.0" />
                                        </padding>
                                     </Label>
-                                    <TextField fx:id="txtProducstSeparatorEx" alignment="CENTER" prefWidth="25.0" promptText=";" text=";" />
+                                    <TextField fx:id="txtProductsSeparatorExp" alignment="CENTER" prefWidth="25.0" promptText=";" text=";" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="10.0" />

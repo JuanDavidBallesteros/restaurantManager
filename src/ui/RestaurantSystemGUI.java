@@ -125,10 +125,10 @@ public class RestaurantSystemGUI {
     private Menu menuClock;
 
     @FXML
-    private TextField txtProducstSeparatorEx;
+    private TextField txtProductsSeparatorEx;
 
     @FXML
-    private TextField txtProducstSeparatorImp;
+    private TextField txtProductsSeparatorImp;
 
     @FXML
     private DatePicker startDateEmployee;
@@ -144,6 +144,18 @@ public class RestaurantSystemGUI {
 
     @FXML
     private TextField txtEmployeeSeparatorExp;
+
+    @FXML
+    private DatePicker startDateProduct;
+
+    @FXML
+    private TextField startTimeProduct;
+
+    @FXML
+    private DatePicker endDateProduct;
+
+    @FXML
+    private TextField endTimeProduct;
 
     // INITIALIZE
     // ------------------------------------------------------------------------------------------------------
@@ -404,7 +416,7 @@ public class RestaurantSystemGUI {
 
     @FXML
     void importProducts(ActionEvent event) throws FileNotFoundException, IOException {
-        if (txtProducstSeparatorImp.getText().isEmpty()) {
+        if (txtProductsSeparatorImp.getText().isEmpty()) {
             showAlert("ERROR", "Error", "Separador vacío", "Ingrese el separador de datos del archivo a importar.");
         } else {
             FileChooser fileChooser = new FileChooser();
@@ -412,7 +424,7 @@ public class RestaurantSystemGUI {
             File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
 
             if (file != null) {
-                int count = restaurantSystem.importProducts(file.getPath(), txtProducstSeparatorImp.getText());
+                int count = restaurantSystem.importProducts(file.getPath(), txtProductsSeparatorImp.getText());
 
                 showAlert("INFORMATION", "Información", "Clientes importados",
                         count + " clientes fueron importados correctamente.");
@@ -519,6 +531,45 @@ public class RestaurantSystemGUI {
                 restaurantSystem.exportEmployeesReports(file, txtOrderSeparatorExp.getText(), endDate, startDate);
 
                 showAlert("INFORMATION", "Información", "Reporte Generado", "El reporte de los empleados fue generado correctamente.");
+
+            }
+
+        }
+
+    }
+
+    @FXML
+    void exportProducts(ActionEvent event) throws ParseException, FileNotFoundException {
+
+        if(restaurantSystem.getEmployees().isEmpty()) {
+
+            showAlert("ERROR", "Error", "Sin Datos", "No hay empleados para exportar.");
+
+        } else {
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Exportar Reporte");
+            fileChooser.setInitialFileName("reporte-productos");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text File", "*.txt"));
+            File file = fileChooser.showSaveDialog(mainPane.getScene().getWindow());
+
+            if(file!=null) {
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+                String startDateString = startDateProduct.getValue().toString();
+                String startTimeString = startTimeProduct.getText()+":00";
+                String startDateFinal = startDateString + " " + startTimeString;
+                Date startDate = dateFormat.parse(startDateFinal);
+
+                String endDateString = endDateProduct.getValue().toString();
+                String endTimeString = endTimeProduct.getText()+":00";
+                String endDateFinal = endDateString + " " + endTimeString;
+                Date endDate = dateFormat.parse(endDateFinal);
+
+                restaurantSystem.exportProductsReport(file, txtOrderSeparatorExp.getText(), endDate, startDate);
+
+                showAlert("INFORMATION", "Información", "Reporte Generado", "El reporte de los productos fue generado correctamente.");
 
             }
 
